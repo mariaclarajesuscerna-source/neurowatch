@@ -42,8 +42,11 @@ interface PulseBar {
   value: number;
   status: "normal" | "warn";
 }
-
+type Language = "es" | "qch";
 interface NeurowatchContextType {
+  language: Language;
+  setLanguage: (language: Language) => void;
+  
   bleData: BLEData;
   bleError: string | null;
   connectBLE: () => Promise<void>;
@@ -92,6 +95,15 @@ const MAX_RECENT_BPMS = 24;
 const DISCONNECT_THRESHOLD_MS = 10000;
 
 export function NeurowatchProvider({ children }: { children: ReactNode }) {
+   const [language, setLanguageState] = useState<Language>("es");
+
+  const setLanguage = useCallback((newLanguage: Language) => {
+    setLanguageState(newLanguage);
+
+    if (typeof window !== "undefined") {
+      localStorage.setItem("neurowatch-language", newLanguage);
+    }
+  }, []);
   const router = useRouter();
   const {
     data: bleData,
@@ -123,7 +135,11 @@ export function NeurowatchProvider({ children }: { children: ReactNode }) {
   const lastBarTimeRef = useRef<number>(0);
   const lastConnectedRef = useRef<number>(Date.now());
   const bufferSeededRef = useRef(false);
+  const savedLanguage = localStorage.getItem("neurowatch-language");
 
+    if (savedLanguage === "es" || savedLanguage === "qch") {
+      setLanguageState(savedLanguage);
+    }
   useEffect(() => {
     setPatientState(getPatient());
     setContactsState(getContacts());
@@ -306,6 +322,9 @@ export function NeurowatchProvider({ children }: { children: ReactNode }) {
   return (
     <NeurowatchContext.Provider
       value={{
+        language,
+        setLanguage,
+        
         bleData,
         bleError,
         connectBLE,
