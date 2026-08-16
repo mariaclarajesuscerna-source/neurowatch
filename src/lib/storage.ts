@@ -90,7 +90,9 @@ export function getLastCheckPhoto(): string | null {
 
 export function setLastCheckPhoto(image: string): void {
   setItem("lastCheckPhoto", image);
-  export interface StoredFacialCheck {
+}
+
+export interface StoredFacialCheck {
   date: string;
   index: number;
   photo: string;
@@ -105,7 +107,6 @@ export function addFacialHistory(check: StoredFacialCheck): void {
   history.unshift(check);
   setItem("facialHistory", history);
 }
-
 export interface Streak {
   count: number;
   lastCheckDate: string;
