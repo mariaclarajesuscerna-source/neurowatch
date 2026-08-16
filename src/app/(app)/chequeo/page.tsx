@@ -173,7 +173,8 @@ export default function ChequeoPage() {
             playsInline
             muted
             className={`h-full w-full object-cover ${state === "preview" ? "" : "hidden"}`}
-          />
+             style={{ transform: "scaleX(-1)" }}
+           />
 
           {state === "result" && photo && (
             <img
