@@ -90,6 +90,20 @@ export function getLastCheckPhoto(): string | null {
 
 export function setLastCheckPhoto(image: string): void {
   setItem("lastCheckPhoto", image);
+  export interface StoredFacialCheck {
+  date: string;
+  index: number;
+  photo: string;
+}
+
+export function getFacialHistory(): StoredFacialCheck[] {
+  return getItem<StoredFacialCheck[]>("facialHistory", []);
+}
+
+export function addFacialHistory(check: StoredFacialCheck): void {
+  const history = getFacialHistory();
+  history.unshift(check);
+  setItem("facialHistory", history);
 }
 
 export interface Streak {
