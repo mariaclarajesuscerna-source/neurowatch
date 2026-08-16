@@ -148,9 +148,17 @@ export default function HistorialPage() {
                     <span className="w-0.5 flex-1 bg-brand-100" />
                   )}
                 </div>
-                <div className="h-12 w-12 rounded-[10px] bg-brand-100 flex items-center justify-center shrink-0 text-brand-600">
-                  <IconUserRound size={24} />
-                </div>
+                <div className="h-12 w-12 rounded-[10px] bg-brand-100 flex items-center justify-center shrink-0 overflow-hidden">
+                  {entry.photo ? (
+                    <img
+                      src={entry.photo}
+                      alt="Foto del chequeo facial"
+                      className="h-full w-full object-cover"
+                   />
+                 ) : (
+                   <IconUserRound size={24} />
+                 )}
+               </div>
                 <div className="flex flex-col gap-1.5">
                   <span className="text-[13px] font-semibold text-ink-900">
                     {entry.date}
