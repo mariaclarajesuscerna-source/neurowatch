@@ -95,14 +95,21 @@ export default function ChequeoPage() {
     }
   };
 
-  const capture = async () => {
+    const capture = async () => {
     const video = videoRef.current;
     if (!video || !video.videoWidth) return;
 
     const canvas = document.createElement("canvas");
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-    canvas.getContext("2d")?.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    const ctx = canvas.getContext("2d");
+
+    if (ctx) {
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    }
     const image = canvas.toDataURL("image/jpeg", 0.9);
 
     stopCamera();
