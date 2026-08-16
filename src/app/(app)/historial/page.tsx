@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   IconActivity,
   IconSignal,
@@ -14,6 +15,7 @@ import { useNeurowatch } from "@/components/NeurowatchProvider";
 const days = ["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"];
 
 export default function HistorialPage() {
+  const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const { recentBPMs, status, facialHistory } = useNeurowatch();
 
   // Weekly trend: map last 7 readings (padded)
@@ -148,26 +150,25 @@ export default function HistorialPage() {
                     <span className="w-0.5 flex-1 bg-brand-100" />
                   )}
                 </div>
-               <div className="shrink-0">
-                 {entry.photo ? (
-                   <button
-                     type="button"
-                     onClick={() => window.open(entry.photo, "_blank")}
-                     className="h-12 w-12 overflow-hidden rounded-[10px] bg-brand-100"
-                     aria-label="Ver foto del chequeo facial"
-                   >
-                     <img
-                       src={entry.photo}
-                       alt="Foto del chequeo facial"
-                       className="h-full w-full object-cover"
-                     />
-                   </button>
-                 ) : (
-                   <div className="h-12 w-12 rounded-[10px] bg-brand-100 flex items-center justify-center text-brand-600">
-                     <IconUserRound size={24} />
-                   </div>
-                 )}
-               </div>
+            <div className="shrink-0">
+              {entry.photo ? (
+                <button
+                  type="button"
+                  onClick={() => setSelectedPhoto(entry.photo)}
+                  className="h-12 w-12 overflow-hidden rounded-[10px] bg-brand-100"
+                >
+                  <img
+                    src={entry.photo}
+                    alt="Foto del chequeo facial"
+                    className="h-full w-full object-cover"
+                  />
+                </button>
+              ) : (
+                <div className="h-12 w-12 rounded-[10px] bg-brand-100 flex items-center justify-center text-brand-600">
+                  <IconUserRound size={24} />
+                </div>
+              )}
+          </div>
                 <div className="flex flex-col gap-1.5">
                   <span className="text-[13px] font-semibold text-ink-900">
                     {entry.date}
@@ -187,7 +188,33 @@ export default function HistorialPage() {
             );
           })}
         </div>
-      </GlassCard>
+       </GlassCard>
+
+      {selectedPhoto && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-5"
+          onClick={() => setSelectedPhoto(null)}
+        >
+          <div
+            className="relative max-h-[90vh] max-w-[90vw]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={selectedPhoto}
+              alt="Foto del chequeo facial ampliada"
+              className="max-h-[85vh] max-w-[90vw] rounded-2xl object-contain"
+            />
+
+            <button
+              type="button"
+              onClick={() => setSelectedPhoto(null)}
+              className="absolute right-2 top-2 rounded-full bg-black/70 px-3 py-2 text-xl text-white"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
