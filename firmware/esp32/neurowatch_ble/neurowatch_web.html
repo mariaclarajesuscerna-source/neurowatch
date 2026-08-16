@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neurowatch — Monitor BLE</title>
+<style>
+  :root {
+    --bg: #0b0f14;
+    --panel: #10161d;
+    --line: #1e2932;
+    --text: #e8eef2;
+    --muted: #6b8394;
+    --pulse: #ff4d6d;
+    --ok: #2fe6a0;
+    --warn: #ffb020;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at 50% 0%, #101b24 0%, var(--bg) 55%);
+    color: var(--text);
+    font-family: "Segoe UI", system-ui, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .card {
+    width: 100%;
+    max-width: 360px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 28px 24px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .eyebrow {
+    letter-spacing: 0.18em;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  h1 {
+    font-size: 20px;
+    margin: 0 0 20px;
+    font-weight: 600;
+  }
+  .bpm-ring {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    border: 2px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .bpm-ring.beat {
+    border-color: var(--pulse);
+    box-shadow: 0 0 30px rgba(255, 77, 109, 0.35);
+  }
+  .bpm-value {
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .bpm-label {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+  }
+  .status-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #454f57;
+  }
+  .dot.connected { background: var(--ok); box-shadow: 0 0 8px var(--ok); }
+  .dot.alert { background: var(--warn); box-shadow: 0 0 8px var(--warn); }
+  button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: var(--pulse);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  button:not(:disabled):hover { opacity: 0.9; }
+  .note {
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .alert-text {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--warn);
+    font-weight: 600;
+    min-height: 18px;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="eyebrow">Neurowatch</div>
+    <h1>Monitor de pulsaciones</h1>
+
+    <div class="bpm-ring" id="ring">
+      <div class="bpm-value" id="bpmValue">--</div>
+      <div class="bpm-label">BPM</div>
+    </div>
+
+    <div class="status-row">
+      <span class="dot" id="statusDot"></span>
+      <span id="statusText">Desconectado</span>
+    </div>
+
+    <div class="alert-text" id="alertText"></div>
+
+    <button id="connectBtn">Conectar reloj</button>
+
+    <div class="note">
+      Requiere un navegador compatible con Web Bluetooth (Chrome/Edge en escritorio o Android).
+      Debe abrirse por HTTPS o localhost.
+    </div>
+  </div>
+
+<script>
+  const SERVICE_UUID = "4fafc201-1fb5-459e-8fcc-c5c9c331914b";
+  const CHAR_UUID     = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
+
+  const connectBtn = document.getElementById("connectBtn");
+  const bpmValue   = document.getElementById("bpmValue");
+  const ring       = document.getElementById("ring");
+  const statusDot  = document.getElementById("statusDot");
+  const statusText = document.getElementById("statusText");
+  const alertText  = document.getElementById("alertText");
+
+  let device = null;
+
+  connectBtn.addEventListener("click", connect);
+
+  async function connect() {
+    if (!navigator.bluetooth) {
+      alertText.textContent = "Este navegador no soporta Web Bluetooth.";
+      return;
+    }
+    try {
+      connectBtn.disabled = true;
+      connectBtn.textContent = "Buscando...";
+
+      device = await navigator.bluetooth.requestDevice({
+        filters: [{ services: [SERVICE_UUID] }]
+      });
+
+      device.addEventListener("gattserverdisconnected", onDisconnected);
+
+      const server  = await device.gatt.connect();
+      const service = await server.getPrimaryService(SERVICE_UUID);
+      const char    = await service.getCharacteristic(CHAR_UUID);
+
+      await char.startNotifications();
+      char.addEventListener("characteristicvaluechanged", onData);
+
+      setConnected(true);
+      connectBtn.textContent = "Desconectar";
+      connectBtn.disabled = false;
+      connectBtn.onclick = () => device.gatt.disconnect();
+    } catch (err) {
+      console.error(err);
+      alertText.textContent = "No se pudo conectar. Intenta de nuevo.";
+      connectBtn.disabled = false;
+      connectBtn.textContent = "Conectar reloj";
+    }
+  }
+
+  function onDisconnected() {
+    setConnected(false);
+    bpmValue.textContent = "--";
+    ring.classList.remove("beat");
+    alertText.textContent = "";
+    connectBtn.textContent = "Conectar reloj";
+    connectBtn.onclick = connect;
+  }
+
+  function onData(event) {
+    const text = new TextDecoder().decode(event.target.value);
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      return;
+    }
+
+    const bpm = data.bpm ?? 0;
+    const motorOn = !!data.motor;
+
+    bpmValue.textContent = bpm > 0 ? bpm : "0";
+
+    if (bpm === 0) {
+      ring.classList.remove("beat");
+    } else {
+      ring.classList.add("beat");
+    }
+
+    if (motorOn) {
+      alertText.textContent = "Pulsaciones fuera de rango — motor activado";
+      statusDot.classList.add("alert");
+    } else {
+      alertText.textContent = "";
+      statusDot.classList.remove("alert");
+    }
+  }
+
+  function setConnected(isConnected) {
+    if (isConnected) {
+      statusDot.classList.add("connected");
+      statusText.textContent = "Conectado";
+    } else {
+      statusDot.classList.remove("connected");
+      statusDot.classList.remove("alert");
+      statusText.textContent = "Desconectado";
+    }
+  }
+</script>
+</body>
+</html>

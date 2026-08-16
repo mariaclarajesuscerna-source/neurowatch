@@ -1,0 +1,4 @@
+- generic [active] [ref=e1]:
+  - heading "Neurowatch" [level=1] [ref=e3]
+  - button "Open Next.js Dev Tools" [ref=e9] [cursor=pointer]
+  - alert [ref=e13]
