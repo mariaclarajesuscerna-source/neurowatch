@@ -1,5 +1,5 @@
 const STORAGE_PREFIX = "neurowatch_";
-
+}
 export interface StoredPatient {
   name: string;
   age: string;
