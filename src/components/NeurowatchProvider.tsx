@@ -26,6 +26,8 @@ import {
   setBaselineImage,
   getLastCheckPhoto,
   setLastCheckPhoto as persistLastCheckPhoto,
+  getFacialHistory,
+  addFacialHistory,
   getStreak,
   updateStreak,
   getOnboardingComplete,
@@ -112,7 +114,7 @@ export function NeurowatchProvider({ children }: { children: ReactNode }) {
   const [alertSentAt, setAlertSentAt] = useState<number | null>(null);
   const [disconnectedSince, setDisconnectedSince] = useState<number | null>(null);
   const [facialHistory, setFacialHistory] = useState<
-    { date: string; index: number }[]
+  { date: string; index: number; photo: string }[]
   >([]);
   const [lastCheckPhoto, setLastCheckPhoto] = useState<string | null>(null);
   const [streak, setStreak] = useState<Streak>({ count: 0, lastCheckDate: "" });
@@ -128,6 +130,7 @@ export function NeurowatchProvider({ children }: { children: ReactNode }) {
     setSettingsState(getSettings());
     setBaselineImageState(getBaselineImage());
     setLastCheckPhoto(getLastCheckPhoto());
+    setFacialHistory(getFacialHistory());
     setStreak(getStreak());
     setOnboardingCompleteState(getOnboardingComplete());
   }, []);
@@ -270,14 +273,22 @@ export function NeurowatchProvider({ children }: { children: ReactNode }) {
     setOnboardingCompleteState(true);
   }, []);
 
-  const addFacialCheck = useCallback((index: number) => {
+  const addFacialCheck = useCallback((index: number, photo: string) => {
     const today = new Date().toLocaleDateString("es-ES", {
       day: "numeric",
       month: "short",
-    });
-    setFacialHistory((prev) => [{ date: today, index }, ...prev]);
+   });
+
+    const check = {
+      date: today,
+      index,
+      photo,
+    };
+
+    addFacialHistory(check);
+    setFacialHistory((prev) => [check, ...prev]);
     setStreak(updateStreak());
-  }, []);
+   }, []);
 
   const pulseBars: PulseBar[] = recentBPMs.map((bpm) => {
     const lower = restingBPM - tolerance;
