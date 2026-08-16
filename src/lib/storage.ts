@@ -17,10 +17,22 @@ export interface StoredSettings {
   countdownSeconds: number;
 }
 
+function isBrowser(): boolean {
+  return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
+}
+
 function getItem<T>(key: string, fallback: T): T {
+  if (!isBrowser()) {
+    return fallback;
+  }
+
   try {
-    const raw = localStorage.getItem(STORAGE_PREFIX + key);
-    if (raw === null) return fallback;
+    const raw = window.localStorage.getItem(STORAGE_PREFIX + key);
+
+    if (raw === null) {
+      return fallback;
+    }
+
     return JSON.parse(raw) as T;
   } catch {
     return fallback;
@@ -28,10 +40,17 @@ function getItem<T>(key: string, fallback: T): T {
 }
 
 function setItem(key: string, value: unknown): void {
+  if (!isBrowser()) {
+    return;
+  }
+
   try {
-    localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(value));
+    window.localStorage.setItem(
+      STORAGE_PREFIX + key,
+      JSON.stringify(value)
+    );
   } catch {
-    // Storage full or unavailable
+    // Storage lleno o no disponible.
   }
 }
 
@@ -57,6 +76,7 @@ export function removeContact(telegramChatId: string): void {
   const contacts = getContacts().filter(
     (c) => c.telegramChatId !== telegramChatId
   );
+
   setItem("contacts", contacts);
 }
 
@@ -104,29 +124,49 @@ export function getFacialHistory(): StoredFacialCheck[] {
 
 export function addFacialHistory(check: StoredFacialCheck): void {
   const history = getFacialHistory();
+
   history.unshift(check);
+
   setItem("facialHistory", history);
 }
+
 export interface Streak {
   count: number;
   lastCheckDate: string;
 }
 
 export function getStreak(): Streak {
-  return getItem<Streak>("streak", { count: 0, lastCheckDate: "" });
+  return getItem<Streak>("streak", {
+    count: 0,
+    lastCheckDate: "",
+  });
 }
 
 export function updateStreak(): Streak {
   const today = new Date().toISOString().split("T")[0];
+
   const current = getStreak();
 
-  if (current.lastCheckDate === today) return current;
+  if (current.lastCheckDate === today) {
+    return current;
+  }
 
-  const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
-  const count = current.lastCheckDate === yesterday ? current.count + 1 : 1;
+  const yesterday = new Date(Date.now() - 86400000)
+    .toISOString()
+    .split("T")[0];
 
-  const streak: Streak = { count, lastCheckDate: today };
+  const count =
+    current.lastCheckDate === yesterday
+      ? current.count + 1
+      : 1;
+
+  const streak: Streak = {
+    count,
+    lastCheckDate: today,
+  };
+
   setItem("streak", streak);
+
   return streak;
 }
 
@@ -139,12 +179,19 @@ export function setOnboardingComplete(): void {
 }
 
 export function clearAll(): void {
+  if (!isBrowser()) {
+    return;
+  }
+
   try {
-    const keys = Object.keys(localStorage).filter((k) =>
-      k.startsWith(STORAGE_PREFIX)
+    const keys = Object.keys(window.localStorage).filter((key) =>
+      key.startsWith(STORAGE_PREFIX)
     );
-    keys.forEach((k) => localStorage.removeItem(k));
+
+    keys.forEach((key) => {
+      window.localStorage.removeItem(key);
+    });
   } catch {
-    // Storage unavailable
+    // Storage no disponible.
   }
 }
