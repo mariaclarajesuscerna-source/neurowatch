@@ -1,5 +1,12 @@
 const STORAGE_PREFIX = "neurowatch_";
+
+function isBrowser(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    typeof window.localStorage !== "undefined"
+  );
 }
+
 export interface StoredPatient {
   name: string;
   age: string;
@@ -15,10 +22,6 @@ export interface StoredContact {
 export interface StoredSettings {
   toleranceBPM: number;
   countdownSeconds: number;
-}
-
-function isBrowser(): boolean {
-  return typeof window !== "undefined" && typeof window.localStorage !== "undefined";
 }
 
 function getItem<T>(key: string, fallback: T): T {
@@ -124,9 +127,7 @@ export function getFacialHistory(): StoredFacialCheck[] {
 
 export function addFacialHistory(check: StoredFacialCheck): void {
   const history = getFacialHistory();
-
   history.unshift(check);
-
   setItem("facialHistory", history);
 }
 
@@ -144,7 +145,6 @@ export function getStreak(): Streak {
 
 export function updateStreak(): Streak {
   const today = new Date().toISOString().split("T")[0];
-
   const current = getStreak();
 
   if (current.lastCheckDate === today) {
