@@ -83,7 +83,7 @@ interface NeurowatchContextType {
   disconnectedSince: number | null;
 
   facialHistory: { date: string; index: number }[];
-  addFacialCheck: (index: number) => void;
+  addFacialCheck: (index: number, photo: string) => void;
 }
 
 const NeurowatchContext = createContext<NeurowatchContextType | null>(null);
