@@ -148,15 +148,24 @@ export default function HistorialPage() {
                     <span className="w-0.5 flex-1 bg-brand-100" />
                   )}
                 </div>
-                <div className="h-12 w-12 rounded-[10px] bg-brand-100 flex items-center justify-center shrink-0 overflow-hidden">
-                  {entry.photo ? (
-                    <img
-                      src={entry.photo}
-                      alt="Foto del chequeo facial"
-                      className="h-full w-full object-cover"
-                   />
+               <div className="shrink-0">
+                 {entry.photo ? (
+                   <button
+                     type="button"
+                     onClick={() => window.open(entry.photo, "_blank")}
+                     className="h-12 w-12 overflow-hidden rounded-[10px] bg-brand-100"
+                     aria-label="Ver foto del chequeo facial"
+                   >
+                     <img
+                       src={entry.photo}
+                       alt="Foto del chequeo facial"
+                       className="h-full w-full object-cover"
+                     />
+                   </button>
                  ) : (
-                   <IconUserRound size={24} />
+                   <div className="h-12 w-12 rounded-[10px] bg-brand-100 flex items-center justify-center text-brand-600">
+                     <IconUserRound size={24} />
+                   </div>
                  )}
                </div>
                 <div className="flex flex-col gap-1.5">
