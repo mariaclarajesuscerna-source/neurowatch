@@ -147,7 +147,7 @@ export default function ChequeoPage() {
 
     if (!baselineImage) saveBaselineImage(image);
     saveLastCheckPhoto(image);
-    addFacialCheck(symmetryIndex);
+    addFacialCheck(symmetryIndex, image);
   };
 
   const reset = () => {
