@@ -715,13 +715,8 @@ export function NeurowatchProvider({
   const saveLastCheckPhotoFn =
     useCallback(
       (img: string) => {
-        persistLastCheckPhoto(
-          img
-        );
-
-        setLastCheckPhoto(
-          img
-        );
+        persistLastCheckPhoto(img);
+        setLastCheckPhoto(img);
       },
       []
     );
@@ -746,105 +741,43 @@ export function NeurowatchProvider({
      HISTORIAL FACIAL
   ======================================================= */
 
-  const addFacialCheck =
-    useCallback(
-      (
-        index: number,
-        image?: string
-      ) => {
-        const date =
-          new Date().toLocaleDateString(
-            "es-ES",
-            {
-              day: "numeric",
-              month: "short",
-              year: "numeric",
-            }
-          );
+/*
+ * ================================
+ * HISTORIAL FACIAL
+ * ================================
+ */
 
-        /*
-         * IMPORTANTE:
-         *
-         * Tu storage define StoredFacialCheck.
-         *
-         * Para evitar el error image/photo,
-         * aquí usamos exactamente los dos
-         * campos que necesita tu estructura
-         * actual.
-         */
+const addFacialCheck = useCallback(
+  (index: number, image?: string) => {
+    const savedImage = image ?? "";
 
-        const savedImage =
-          image ?? "";
+      /*
+       * IMPORTANTE:
+       * storage.ts recibe primero la imagen
+       * y después el índice.
+       */
+const check =
+        persistFacialCheck(
+          savedImage,
+          index
+        );
 
-        const check: StoredFacialCheck =
+      setFacialHistory(
+        (prev) => [
           {
-            id:
-              `${Date.now()}-${Math.random()
-                .toString(36)
-                .slice(2)}`,
-
-            date,
-
-            index,
-
-            image:
-              savedImage,
-
-            photo:
-              savedImage,
-          };
-
-        /*
-         * Guardar en localStorage
-         */
-
-       persistFacialCheck(
-       check.index,
-       check.image
+            date: check.date,
+            index: check.index,
+          },
+          ...prev,
+        ]
       );
 
-        /*
-         * Actualizar estado
-         */
-
-        setFacialChecks(
-          (previous) => [
-            check,
-            ...previous,
-          ]
-        );
-
-        /*
-         * Actualizar historial
-         */
-
-        setFacialHistory(
-          (previous) => [
-            {
-              date:
-                check.date,
-
-              index:
-                check.index,
-            },
-
-            ...previous,
-          ]
-        );
-
-        /*
-         * Actualizar racha
-         */
-
-        const updatedStreak =
-          updateStreak();
-
-        setStreak(
-          updatedStreak
-        );
-      },
-      []
-    );
+      setStreak(
+        updateStreak()
+      );
+    },
+    []
+  );
 
   /* =======================================================
      BARRAS DE BPM
