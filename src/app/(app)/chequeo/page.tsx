@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/icons";
 
 import GlassCard from "@/components/ui/GlassCard";
-
 import { useNeurowatch } from "@/components/NeurowatchProvider";
 import { evaluateFacialSymmetry } from "@/lib/detection";
 import { useLanguage } from "@/components/LanguageProvider";
@@ -70,7 +69,7 @@ function SymmetryBar({
           : "Asimetría marcada";
 
   return (
-    <div className="flex w-full flex-col gap-3">
+    <div className="flex w-full flex-col gap-2">
       <div className="flex items-center justify-between">
         <span className="text-[15px] font-bold text-[#263a32]">
           {language === "qu"
@@ -120,7 +119,8 @@ export default function ChequeoPage() {
   const streamRef =
     useRef<MediaStream | null>(null);
 
-  // Evita capturas dobles mientras se realiza un chequeo.
+  // Evita que capture() pueda ejecutarse más de una vez
+  // mientras se está realizando un chequeo.
   const capturingRef =
     useRef(false);
 
@@ -130,7 +130,7 @@ export default function ChequeoPage() {
   const [cameraReady, setCameraReady] =
     useState(false);
 
-  // La foto solo aparece después de pulsar "Capturar foto".
+  // La foto solo aparece después de presionar "Capturar foto".
   const [photo, setPhoto] =
     useState<string | null>(null);
 
@@ -154,19 +154,16 @@ export default function ChequeoPage() {
       streamRef.current;
 
     if (stream) {
-      stream.getTracks().forEach(
-        (track) => {
-          track.stop();
-        }
-      );
+      stream.getTracks().forEach((track) => {
+        track.stop();
+      });
     }
 
     streamRef.current = null;
 
     if (videoRef.current) {
       videoRef.current.pause();
-      videoRef.current.srcObject =
-        null;
+      videoRef.current.srcObject = null;
     }
 
     setCameraReady(false);
@@ -204,7 +201,6 @@ export default function ChequeoPage() {
 
     video.srcObject =
       streamRef.current;
-
     video.muted = true;
     video.playsInline = true;
 
@@ -214,9 +210,6 @@ export default function ChequeoPage() {
   /*
    * ======================================================
    * ABRIR CÁMARA
-   *
-   * IMPORTANTE:
-   * Abrir la cámara NO captura ninguna fotografía.
    * ======================================================
    */
 
@@ -226,8 +219,7 @@ export default function ChequeoPage() {
 
       stopCamera();
 
-      capturingRef.current =
-        false;
+      capturingRef.current = false;
 
       if (
         !navigator.mediaDevices ||
@@ -241,25 +233,22 @@ export default function ChequeoPage() {
       }
 
       const stream =
-        await navigator.mediaDevices.getUserMedia(
-          {
-            video: {
-              facingMode: {
-                ideal: "user",
-              },
-              width: {
-                ideal: 720,
-              },
-              height: {
-                ideal: 960,
-              },
+        await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: {
+              ideal: "user",
             },
-            audio: false,
-          }
-        );
+            width: {
+              ideal: 720,
+            },
+            height: {
+              ideal: 960,
+            },
+          },
+          audio: false,
+        });
 
-      streamRef.current =
-        stream;
+      streamRef.current = stream;
 
       setPhoto(null);
       setIndex(null);
@@ -282,16 +271,13 @@ export default function ChequeoPage() {
       );
 
       setState("idle");
-      capturingRef.current =
-        false;
+      capturingRef.current = false;
     }
   };
 
   /*
    * ======================================================
    * CAPTURAR FOTO
-   *
-   * SOLO se ejecuta al pulsar "Capturar foto".
    * ======================================================
    */
 
@@ -300,8 +286,7 @@ export default function ChequeoPage() {
       return;
     }
 
-    capturingRef.current =
-      true;
+    capturingRef.current = true;
 
     const video =
       videoRef.current;
@@ -311,8 +296,7 @@ export default function ChequeoPage() {
       !video.videoWidth ||
       !video.videoHeight
     ) {
-      capturingRef.current =
-        false;
+      capturingRef.current = false;
 
       setError(
         language === "qu"
@@ -324,13 +308,10 @@ export default function ChequeoPage() {
     }
 
     const canvas =
-      document.createElement(
-        "canvas"
-      );
+      document.createElement("canvas");
 
     canvas.width =
       video.videoWidth;
-
     canvas.height =
       video.videoHeight;
 
@@ -338,8 +319,7 @@ export default function ChequeoPage() {
       canvas.getContext("2d");
 
     if (!context) {
-      capturingRef.current =
-        false;
+      capturingRef.current = false;
 
       setError(
         language === "qu"
@@ -351,7 +331,7 @@ export default function ChequeoPage() {
     }
 
     /*
-     * Mantener la misma orientación de la captura original.
+     * Mantiene la orientación de la captura original.
      */
 
     context.save();
@@ -373,19 +353,11 @@ export default function ChequeoPage() {
 
     context.restore();
 
-    /*
-     * Crear la foto.
-     */
-
     const image =
       canvas.toDataURL(
         "image/jpeg",
         0.92
       );
-
-    /*
-     * Detener cámara después de capturar.
-     */
 
     stopCamera();
 
@@ -405,19 +377,14 @@ export default function ChequeoPage() {
 
     const tick =
       window.setInterval(() => {
-        setCountdown(
-          (previous) => {
-            if (previous <= 1) {
-              window.clearInterval(
-                tick
-              );
-
-              return 0;
-            }
-
-            return previous - 1;
+        setCountdown((previous) => {
+          if (previous <= 1) {
+            window.clearInterval(tick);
+            return 0;
           }
-        );
+
+          return previous - 1;
+        });
       }, 1000);
 
     /*
@@ -438,13 +405,8 @@ export default function ChequeoPage() {
       symmetryIndex = 95;
     }
 
-    /*
-     * Mantener el análisis durante aproximadamente 3 segundos.
-     */
-
     const elapsed =
-      Date.now() -
-      startedAt;
+      Date.now() - startedAt;
 
     const remaining =
       Math.max(
@@ -452,29 +414,22 @@ export default function ChequeoPage() {
         3000 - elapsed
       );
 
-    await new Promise<void>(
-      (resolve) => {
-        window.setTimeout(
-          resolve,
-          remaining
-        );
-      }
-    );
+    await new Promise<void>((resolve) => {
+      window.setTimeout(
+        resolve,
+        remaining
+      );
+    });
 
-    window.clearInterval(
-      tick
-    );
+    window.clearInterval(tick);
 
     setCountdown(0);
 
-    setIndex(
-      symmetryIndex
-    );
-
+    setIndex(symmetryIndex);
     setState("result");
 
     /*
-     * Primera foto = línea base.
+     * PRIMERA FOTO = LÍNEA BASE
      */
 
     if (!baselineImage) {
@@ -482,15 +437,13 @@ export default function ChequeoPage() {
     }
 
     /*
-     * Guardar última foto.
+     * GUARDAR ÚLTIMA FOTO
      */
 
-    saveLastCheckPhoto(
-      image
-    );
+    saveLastCheckPhoto(image);
 
     /*
-     * Guardar chequeo en historial.
+     * GUARDAR CHEQUEO EN HISTORIAL
      */
 
     addFacialCheck(
@@ -498,8 +451,7 @@ export default function ChequeoPage() {
       image
     );
 
-    capturingRef.current =
-      false;
+    capturingRef.current = false;
   };
 
   /*
@@ -511,8 +463,7 @@ export default function ChequeoPage() {
   const reset = () => {
     stopCamera();
 
-    capturingRef.current =
-      false;
+    capturingRef.current = false;
 
     setPhoto(null);
     setIndex(null);
@@ -524,95 +475,6 @@ export default function ChequeoPage() {
 
   const lastCheck =
     facialHistory[0];
-
-  /*
-   * ======================================================
-   * TEXTOS
-   * ======================================================
-   */
-
-  const text = {
-    title:
-      language === "qu"
-        ? "Uya qhawariy"
-        : "Chequeo facial",
-
-    subtitle:
-      language === "qu"
-        ? "Uyayki ch'iqiyta qhawariy"
-        : "Evalúa la simetría de tu rostro con la cámara frontal",
-
-    openCamera:
-      language === "qu"
-        ? "Cámarata kichay"
-        : "Pulsa para abrir cámara",
-
-    cameraButton:
-      language === "qu"
-        ? "Cámarata kichay"
-        : "Abrir cámara",
-
-    capture:
-      language === "qu"
-        ? "Rikch'ayta hap'iy"
-        : "Capturar foto",
-
-    placeFace:
-      language === "qu"
-        ? "Uyaykita guía ukuman churay, umaqa allin chiqlla kachun."
-        : "Coloca tu rostro dentro de la guía y mantén la cabeza recta.",
-
-    analyzing:
-      language === "qu"
-        ? "Qhawarichkan..."
-        : "Analizando...",
-
-    processing:
-      language === "qu"
-        ? "Ruwachkan"
-        : "Procesando",
-
-    compare:
-      language === "qu"
-        ? "Uyaykipa ch'iqiynta tupachkan..."
-        : "Comparando simetría facial...",
-
-    streak:
-      language === "qu"
-        ? "Racha"
-        : "Racha de",
-
-    day:
-      language === "qu"
-        ? "p'unchay"
-        : "día",
-
-    days:
-      language === "qu"
-        ? "p'unchaykuna"
-        : "días",
-
-    completed:
-      language === "qu"
-        ? "Sapa p'unchay qhawariy tukusqa"
-        : "Chequeo diario completado",
-
-    newCheck:
-      language === "qu"
-        ? "Musuq qhawariy"
-        : "Nuevo chequeo",
-
-    index:
-      language === "qu"
-        ? "Yupay"
-        : "Índice",
-  };
-
-  /*
-   * ======================================================
-   * INTERFAZ
-   * ======================================================
-   */
 
   return (
     <div className="relative min-h-dvh overflow-hidden bg-[#f7efe0] px-4 pb-28 pt-5 md:px-8 md:pb-10">
@@ -631,15 +493,13 @@ export default function ChequeoPage() {
 
       {/* IMAGEN DECORATIVA */}
 
-      <div className="pointer-events-none absolute right-[-70px] top-20 hidden h-64 w-64 overflow-hidden rounded-full opacity-[0.13] md:block">
+      <div className="pointer-events-none absolute right-[-70px] top-20 hidden h-64 w-64 overflow-hidden rounded-full opacity-[0.12] md:block">
         <img
           src="/images/huaraz-montanas.jpg"
           alt=""
           className="h-full w-full object-cover"
         />
       </div>
-
-      {/* CONTENIDO */}
 
       <div className="relative mx-auto w-full max-w-5xl">
 
@@ -657,30 +517,30 @@ export default function ChequeoPage() {
 
           <div className="flex items-center gap-4 p-5">
 
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[18px] bg-[#e4f1ed] text-[#087f83] shadow-sm">
-
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[18px] bg-[#e4f1ed] text-[#087f83]">
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/80">
-                <IconActivity
-                  size={22}
-                />
+                <IconActivity size={22} />
               </div>
-
             </div>
 
             <div>
-              <h1 className="text-2xl font-black uppercase leading-tight text-[#075d63]">
-                {text.title}
+              <h1 className="text-2xl font-black uppercase text-[#075d63]">
+                {language === "qu"
+                  ? "Uya qhawariy"
+                  : "Chequeo facial"}
               </h1>
 
-              <p className="mt-1 text-xs leading-relaxed text-[#79634d] sm:text-sm">
-                {text.subtitle}
+              <p className="mt-1 text-xs leading-relaxed text-[#79634d]">
+                {language === "qu"
+                  ? "Uyayki ch'iqiyta qhawariy"
+                  : "Evalúa la simetría de tu rostro con la cámara frontal"}
               </p>
             </div>
 
           </div>
         </div>
 
-        {/* TARJETA */}
+        {/* TARJETA PRINCIPAL */}
 
         <GlassCard className="overflow-hidden rounded-[30px] border border-[#dfc49a] bg-[#fff9ed] p-0 shadow-[0_16px_40px_rgba(72,48,25,0.10)]">
 
@@ -704,7 +564,7 @@ export default function ChequeoPage() {
                 }`}
               />
 
-              {/* FOTO */}
+              {/* FOTO CAPTURADA */}
 
               {state === "result" &&
                 photo && (
@@ -738,14 +598,17 @@ export default function ChequeoPage() {
                     <div className="text-center">
 
                       <p className="text-[17px] font-black">
-                        {text.analyzing}
+                        {language === "qu"
+                          ? "Qhawarichkan..."
+                          : "Analizando..."}
                       </p>
 
                       <p className="mt-1 text-[13px] text-white/70">
-                        {countdown >
-                        0
+                        {countdown > 0
                           ? `${countdown}s`
-                          : text.processing}
+                          : language === "qu"
+                            ? "Ruwachkan"
+                            : "Procesando"}
                       </p>
 
                     </div>
@@ -758,23 +621,19 @@ export default function ChequeoPage() {
               {state === "idle" &&
                 !photo && (
                   <button
-                    onClick={
-                      startCamera
-                    }
+                    onClick={startCamera}
                     type="button"
                     className="absolute inset-0 flex h-full w-full flex-col items-center justify-center gap-4 text-white/85 transition-colors hover:text-white"
                   >
-
                     <div className="flex h-16 w-16 items-center justify-center rounded-[22px] bg-white/15 backdrop-blur-sm">
-                      <IconCamera
-                        size={28}
-                      />
+                      <IconCamera size={28} />
                     </div>
 
                     <span className="text-[15px] font-bold">
-                      {text.openCamera}
+                      {language === "qu"
+                        ? "Cámarata kichay"
+                        : "Pulsa para abrir cámara"}
                     </span>
-
                   </button>
                 )}
 
@@ -794,23 +653,22 @@ export default function ChequeoPage() {
 
             </div>
 
-            {/* MENSAJE DE GUÍA */}
+            {/* MENSAJE */}
 
-            {state ===
-              "preview" && (
+            {state === "preview" && (
               <div className="mt-3 rounded-[17px] border border-[#dcebe6] bg-[#edf6f3] px-4 py-3 text-center">
-
                 <p className="text-xs font-semibold leading-relaxed text-[#3f5c4b]">
-                  {text.placeFace}
+                  {language === "qu"
+                    ? "Uyaykita guía ukuman churay, umaqa allin chiqlla kachun."
+                    : "Coloca tu rostro dentro de la guía y mantén la cabeza recta."}
                 </p>
-
               </div>
             )}
 
             {/* ERROR */}
 
             {error && (
-              <p className="mt-3 rounded-[16px] border border-[#efc8bc] bg-[#fff0eb] p-3 text-sm font-semibold leading-relaxed text-alert">
+              <p className="mt-3 rounded-[16px] border border-[#efc8bc] bg-[#fff0eb] p-3 text-sm font-semibold text-alert">
                 {error}
               </p>
             )}
@@ -826,20 +684,26 @@ export default function ChequeoPage() {
                 </div>
 
                 <span className="text-[13px] font-black text-[#263a32]">
-                  {text.streak}{" "}
+                  {language === "qu"
+                    ? "Racha"
+                    : "Racha de"}{" "}
                   {streak.count}{" "}
-                  {streak.count ===
-                  1
-                    ? text.day
-                    : text.days}
+                  {streak.count === 1
+                    ? language === "qu"
+                      ? "p'unchay"
+                      : "día"
+                    : language === "qu"
+                      ? "p'unchaykuna"
+                      : "días"}
                 </span>
 
               </div>
 
-              {streak.count >
-                0 && (
+              {streak.count > 0 && (
                 <span className="text-right text-[10px] font-bold text-[#2f8f5b]">
-                  {text.completed}
+                  {language === "qu"
+                    ? "Sapa p'unchay qhawariy tukusqa"
+                    : "Chequeo diario completado"}
                 </span>
               )}
 
@@ -849,39 +713,32 @@ export default function ChequeoPage() {
 
             {state === "idle" && (
               <button
-                onClick={
-                  startCamera
-                }
+                onClick={startCamera}
                 type="button"
                 className="mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-[17px] bg-[#087f83] font-black text-white shadow-[0_8px_22px_rgba(8,127,131,0.22)] transition-all hover:bg-[#076f74] active:scale-[0.98]"
               >
-                <IconCamera
-                  size={19}
-                />
+                <IconCamera size={19} />
 
-                {text.cameraButton}
+                {language === "qu"
+                  ? "Cámarata kichay"
+                  : "Abrir cámara"}
               </button>
             )}
 
             {/* CAPTURAR */}
 
-            {state ===
-              "preview" && (
+            {state === "preview" && (
               <button
-                onClick={
-                  capture
-                }
+                onClick={capture}
                 type="button"
-                disabled={
-                  !cameraReady
-                }
+                disabled={!cameraReady}
                 className="mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-[17px] bg-[#c1440c] font-black text-white shadow-[0_8px_22px_rgba(193,68,12,0.22)] transition-all hover:bg-[#aa3b0b] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
               >
-                <IconCamera
-                  size={19}
-                />
+                <IconCamera size={19} />
 
-                {text.capture}
+                {language === "qu"
+                  ? "Rikch'ayta hap'iy"
+                  : "Capturar foto"}
               </button>
             )}
 
@@ -892,28 +749,22 @@ export default function ChequeoPage() {
                 <div className="mt-5 flex flex-col gap-4">
 
                   <div className="rounded-[22px] border border-[#dfc49a] bg-[#fffaf0] p-4">
-
                     <SymmetryBar
                       value={index}
-                      language={
-                        language
-                      }
+                      language={language}
                     />
-
                   </div>
 
                   <button
-                    onClick={
-                      reset
-                    }
+                    onClick={reset}
                     type="button"
                     className="flex h-12 items-center justify-center gap-2 rounded-[17px] border-[1.5px] border-[#087f83] bg-white font-black text-[#087f83] transition-all hover:bg-[#edf6f3] active:scale-[0.98]"
                   >
-                    <IconRefreshCw
-                      size={18}
-                    />
+                    <IconRefreshCw size={18} />
 
-                    {text.newCheck}
+                    {language === "qu"
+                      ? "Musuq qhawariy"
+                      : "Nuevo chequeo"}
                   </button>
 
                 </div>
@@ -921,11 +772,12 @@ export default function ChequeoPage() {
 
             {/* ANALIZANDO */}
 
-            {state ===
-              "analyzing" && (
+            {state === "analyzing" && (
               <div className="flex items-center justify-center pt-3">
                 <p className="text-sm font-semibold text-[#6b5842]">
-                  {text.compare}
+                  {language === "qu"
+                    ? "Uyaykipa ch'iqiynta tupachkan..."
+                    : "Comparando simetría facial..."}
                 </p>
               </div>
             )}
@@ -951,52 +803,41 @@ export default function ChequeoPage() {
 
               <div
                 className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${
-                  lastCheck.index >
-                  85
+                  lastCheck.index > 85
                     ? "bg-[#edf8f1] text-[#2f8f5b]"
                     : "bg-[#fff0eb] text-alert"
                 }`}
               >
-                {lastCheck.index >
-                85 ? (
-                  <IconCircleCheck
-                    size={23}
-                  />
+                {lastCheck.index > 85 ? (
+                  <IconCircleCheck size={23} />
                 ) : (
-                  <IconTriangleAlert
-                    size={23}
-                  />
+                  <IconTriangleAlert size={23} />
                 )}
               </div>
 
               <div className="min-w-0">
 
                 <b className="block text-[14px] font-black text-[#263a32]">
-                  {lastCheck.index >
-                  85
-                    ? language ===
-                      "qu"
+                  {lastCheck.index > 85
+                    ? language === "qu"
                       ? "Kuskalla"
                       : "Simétrico"
-                    : lastCheck.index >=
-                        70
-                      ? language ===
-                        "qu"
+                    : lastCheck.index >= 70
+                      ? language === "qu"
                         ? "Pisi mana kuska"
                         : "Leve asimetría"
-                      : language ===
-                          "qu"
+                      : language === "qu"
                         ? "Hatun mana kuska"
                         : "Asimetría marcada"}
                 </b>
 
                 <p className="mt-1 text-xs text-[#8c7660]">
-                  {text.index}{" "}
+                  {language === "qu"
+                    ? "Yupay"
+                    : "Índice"}{" "}
                   {lastCheck.index}{" "}
                   —{" "}
-                  {
-                    lastCheck.date
-                  }
+                  {lastCheck.date}
                 </p>
 
               </div>
