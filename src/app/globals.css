@@ -1,44 +1,78 @@
 @import "tailwindcss";
+
 @theme {
-  --color-brand-600: #4F46E5;
-  --color-brand-500: #6366F1;
-  --color-brand-300: #A5B4FC;
-  --color-brand-100: #E0E7FF;
+  --color-brand-600: #087f83;
+  --color-brand-500: #0b9296;
+  --color-brand-300: #79c7c5;
+  --color-brand-100: #d9eeee;
 
-  --color-bg-from: #EEF2FF;
-  --color-bg-to: #ECFEFF;
+  --color-bg-from: #f7efe0;
+  --color-bg-to: #fff9ed;
 
-  --color-ok: #10B981;
-  --color-warn: #F59E0B;
-  --color-alert: #EF4444;
-  --color-muted: #94A3B8;
+  --color-ok: #2f8f5b;
+  --color-warn: #e8a33d;
+  --color-alert: #c1272d;
+  --color-muted: #a9967d;
 
-  --color-ink-900: #0F172A;
-  --color-ink-600: #475569;
-  --color-ink-400: #94A3B8;
+  --color-ink-900: #263a32;
+  --color-ink-600: #6b5842;
+  --color-ink-400: #a9967d;
 
-  --color-glass-fill: #FFFFFF8C;
-  --color-glass-border: #FFFFFFB3;
-  --color-alert-fill: #EF44441A;
-  --color-alert-border: #EF444459;
-  --color-ok-fill: #10B9811A;
+  --color-glass-fill: #fff9eddd;
+  --color-glass-border: #e4c99e;
 
-  --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --color-alert-fill: #c1272d1a;
+  --color-alert-border: #c1272d59;
+
+  --color-ok-fill: #2f8f5b1a;
+
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
-body {
-  background: linear-gradient(
-    135deg,
-    #EEF2FF 0%,
-    #ECFEFF 100%
-  );
-  color: var(--color-ink-900);
-  font-family: var(--font-body);
-  min-height: 100dvh;
+:root {
+  color-scheme: light;
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100dvh;
+  margin: 0;
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(232, 163, 61, 0.12),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 90% 30%,
+      rgba(8, 127, 131, 0.09),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #f7efe0 0%,
+      #fff9ed 52%,
+      #f2ead9 100%
+    );
+  color: #263a32;
+  font-family: var(--font-body);
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+::selection {
+  background: #087f83;
+  color: white;
 }
 
 @media (prefers-reduced-motion: reduce) {
