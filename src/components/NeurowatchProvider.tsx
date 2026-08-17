@@ -135,17 +135,21 @@ export function NeurowatchProvider({ children }: { children: ReactNode }) {
   const lastBarTimeRef = useRef<number>(0);
   const lastConnectedRef = useRef<number>(Date.now());
   const bufferSeededRef = useRef(false);
+  
     useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const savedLanguage = window.localStorage.getItem(
-      "neurowatch-language"
-    );
+   useEffect(() => {
+  if (typeof window === "undefined") return;
 
-    if (savedLanguage === "es" || savedLanguage === "qch") {
-      setLanguageState(savedLanguage);
-    }
-  }, []);
+  const savedLanguage = window.localStorage.getItem(
+    "neurowatch-language"
+  );
+
+  if (savedLanguage === "es" || savedLanguage === "qch") {
+    setLanguageState(savedLanguage);
+  }
+}, []);
   
   useEffect(() => {
     setPatientState(getPatient());
