@@ -313,24 +313,7 @@ export default function ChequeoPage() {
        *
        * Esto conserva la orientación real.
        */
-
-      context.setTransform(
-        1,
-        0,
-        0,
-        1,
-        0,
-        0
-      );
-
-      context.setTransform(
-  1,
-  0,
-  0,
-  1,
-  0,
-  0
-);
+context.setTransform(1, 0, 0, 1, 0, 0);
 
 context.drawImage(
   video,
@@ -543,7 +526,7 @@ context.drawImage(
               CÁMARA REAL
           ============================== */}
 
-         <video
+        <video
   ref={videoRef}
   playsInline
   muted
@@ -552,9 +535,7 @@ context.drawImage(
     state === "preview" ? "" : "hidden"
   }`}
   style={{
-    transform: "none",
-    WebkitTransform: "none",
-    direction: "ltr",
+    transform: "scaleX(-1)",
   }}
 />
           {/* ==============================
