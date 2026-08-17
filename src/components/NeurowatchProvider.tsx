@@ -798,9 +798,10 @@ export function NeurowatchProvider({
          * Guardar en localStorage
          */
 
-        persistFacialCheck(
-          check
-        );
+       persistFacialCheck(
+       check.index,
+       check.image
+      );
 
         /*
          * Actualizar estado
