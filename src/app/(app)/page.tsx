@@ -3,6 +3,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+
 import {
   IconActivity,
   IconSignal,
@@ -10,11 +11,13 @@ import {
   IconBatteryFull,
   IconBluetooth,
 } from "@/components/ui/icons";
+
 import StatusChip from "@/components/ui/StatusChip";
 import HeroStatus from "@/components/dashboard/HeroStatus";
 import PulseCard from "@/components/dashboard/PulseCard";
 import DeviceCard from "@/components/dashboard/DeviceCard";
 import AlertModal from "@/components/alert/AlertModal";
+
 import { useNeurowatch } from "@/components/NeurowatchProvider";
 
 export default function DashboardPage() {
@@ -48,14 +51,10 @@ export default function DashboardPage() {
     ? "Conectado"
     : "Desconectado";
 
-  const batteryPercent = Math.round(
-    bleData.batteryPercent
-  );
-
   return (
     <div className="flex flex-col gap-3.5 px-5 pt-3.5 md:mx-auto md:max-w-lg md:pt-6">
 
-      {/* Status Bar */}
+      {/* BARRA SUPERIOR */}
       <div className="flex items-center justify-between px-1 md:hidden">
         <span className="text-[15px] font-semibold text-ink-900">
           {new Date().toLocaleTimeString("es-ES", {
@@ -71,8 +70,9 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Header */}
+      {/* ENCABEZADO */}
       <div className="flex items-center justify-between">
+
         <div className="flex items-center gap-2.5">
 
           <div className="flex h-[34px] w-[34px] items-center justify-center rounded-[11px] bg-brand-600 text-white shadow-[0_4px_12px_rgba(79,70,229,0.25)]">
@@ -80,6 +80,7 @@ export default function DashboardPage() {
           </div>
 
           <div className="flex flex-col gap-0.5">
+
             <span className="text-[22px] font-bold leading-tight text-ink-900">
               Neurowatch
             </span>
@@ -87,6 +88,7 @@ export default function DashboardPage() {
             <span className="text-[13px] font-normal leading-tight text-ink-600">
               Monitoreo en vivo
             </span>
+
           </div>
 
         </div>
@@ -95,13 +97,14 @@ export default function DashboardPage() {
           label={connLabel}
           status={connStatus}
         />
+
       </div>
 
-      {/* Connect button */}
+      {/* BOTÓN CONECTAR */}
       {!bleData.connected && (
         <button
-          onClick={connectBLE}
           type="button"
+          onClick={connectBLE}
           className="flex w-full items-center justify-center gap-2.5 rounded-[18px] bg-brand-600 py-4 text-white shadow-[0_8px_20px_rgba(79,70,229,0.25)] transition-transform active:scale-[0.98]"
         >
           <IconBluetooth size={22} />
@@ -112,7 +115,7 @@ export default function DashboardPage() {
         </button>
       )}
 
-      {/* BLE error */}
+      {/* ERROR BLUETOOTH */}
       {bleError && (
         <div className="rounded-[14px] border border-alert-border bg-alert-fill p-3.5">
           <p className="text-[13px] font-medium text-alert">
@@ -121,12 +124,12 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Connected status */}
+      {/* ESTADO PRINCIPAL */}
       {bleData.connected && bleData.bpm > 0 && (
         <HeroStatus state={status} />
       )}
 
-      {/* Waiting for pulse */}
+      {/* ESPERANDO PULSO */}
       {bleData.connected && bleData.bpm === 0 && (
         <div className="rounded-[20px] border border-white/70 bg-white/55 p-6 text-center backdrop-blur-xl">
           <p className="text-[15px] font-medium text-ink-600">
@@ -135,13 +138,13 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Pulse */}
+      {/* PULSO */}
       <PulseCard
         bpm={bleData.bpm}
         bars={pulseBars}
       />
 
-      {/* Device */}
+      {/* DISPOSITIVO */}
       <DeviceCard
         connected={bleData.connected}
         signalStatus={
@@ -149,48 +152,10 @@ export default function DashboardPage() {
             ? "Señal estable"
             : "Sin conectar"
         }
-        batteryPercent={batteryPercent}
+        batteryPercent={Math.round(bleData.batteryPercent)}
       />
 
-      {/* Extra battery information */}
-      <div className="rounded-[20px] border border-white/70 bg-white/55 p-4 backdrop-blur-xl">
-        <div className="flex items-center justify-between">
-
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-600/10 text-brand-600">
-              <IconBatteryFull size={22} />
-            </div>
-
-            <div>
-              <p className="text-[13px] font-medium text-ink-600">
-                Batería del dispositivo
-              </p>
-
-              <p className="mt-1 text-[20px] font-bold text-ink-900">
-                {bleData.connected
-                  ? `${batteryPercent}%`
-                  : "--"}
-              </p>
-            </div>
-
-          </div>
-
-          <div
-            className={`rounded-full px-3 py-1 text-xs font-semibold ${
-              bleData.connected
-                ? "bg-ok/10 text-ok"
-                : "bg-ink-900/5 text-ink-500"
-            }`}
-          >
-            {bleData.connected
-              ? "Activo"
-              : "Sin conectar"}
-          </div>
-
-        </div>
-      </div>
-
-      {/* Alert Modal */}
+      {/* ALERTA */}
       <AlertModal
         open={alertOpen}
         remainingSeconds={countdownSeconds}
