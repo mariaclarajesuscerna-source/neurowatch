@@ -15,8 +15,123 @@ import {
 
 import GlassCard from "@/components/ui/GlassCard";
 import StatusChip from "@/components/ui/StatusChip";
+
 import { useNeurowatch } from "@/components/NeurowatchProvider";
 import { useLanguage } from "@/components/LanguageProvider";
+
+/* =====================================================
+   PATRÓN TEXTIL
+===================================================== */
+
+const textilePattern = `
+  repeating-linear-gradient(
+    45deg,
+    #c94a20 0px,
+    #c94a20 8px,
+    #e8a33d 8px,
+    #e8a33d 16px,
+    #087f83 16px,
+    #087f83 24px
+  )
+`;
+
+/* =====================================================
+   TEXTOS
+===================================================== */
+
+const pageText = {
+  es: {
+    emergency: "Emergencia",
+    sent: "Alerta enviada",
+    notified:
+      "Tus contactos de emergencia fueron notificados.",
+    patient: "Paciente",
+    contacts: "Contactos notificados",
+    sentStatus: "Enviado",
+    ago: "hace",
+    telegram: "Telegram",
+
+    meanwhile:
+      "Mientras tanto, mantén la calma",
+
+    instruction1:
+      "Acompaña a la persona y háblale con calma.",
+
+    instruction2:
+      "No la muevas bruscamente; afloja ropa ajustada.",
+
+    instruction3:
+      "Mantén el teléfono cerca para recibir llamadas.",
+
+    callEmergency:
+      "Llamar a urgencias",
+
+    back:
+      "Volver al dashboard",
+
+    noContacts:
+      "No hay contactos registrados.",
+
+    menu: "Menú",
+    notifications: "Notificaciones",
+  },
+
+  qu: {
+    emergency: "Utqay yanapakuy",
+
+    sent:
+      "Uyariy kachasqa",
+
+    notified:
+      "Utqay yanapakuqkikunata willasqa.",
+
+    patient:
+      "Unquq",
+
+    contacts:
+      "Willasqa tinkiqkuna",
+
+    sentStatus:
+      "Kachasqa",
+
+    ago:
+      "ñawpaq",
+
+    telegram:
+      "Telegram",
+
+    meanwhile:
+      "Chay pacha, samayta waqaychay",
+
+    instruction1:
+      "Runata qhawariy hinaspa allin rimaywan yanapay.",
+
+    instruction2:
+      "Ama utqaylla kuyuchiychu; p'achata pisiqa kachiy.",
+
+    instruction3:
+      "Celularta qayllapi waqaychay, waqyakuna chaskinaykipaq.",
+
+    callEmergency:
+      "Utqay yanapakuyman waqyay",
+
+    back:
+      "Qallariyman kutiy",
+
+    noContacts:
+      "Mana tinkiqkuna kanchu.",
+
+    menu:
+      "Menú",
+
+    notifications:
+      "Willakuykuna",
+  },
+} as const;
+
+/* =====================================================
+   PÁGINA
+===================================================== */
 
 export default function AlertaEnviadaPage() {
   const router = useRouter();
@@ -30,10 +145,20 @@ export default function AlertaEnviadaPage() {
 
   const { language } = useLanguage();
 
+  const text = pageText[language];
+
+  /* =====================================================
+     SI NO HAY ALERTA ENVIADA
+  ====================================================== */
+
   if (!alertSentAt) {
     router.replace("/");
     return null;
   }
+
+  /* =====================================================
+     TIEMPO DESDE EL ENVÍO
+  ====================================================== */
 
   const secondsAgo = Math.floor(
     (Date.now() - alertSentAt) / 1000
@@ -45,58 +170,9 @@ export default function AlertaEnviadaPage() {
       ? "unquq"
       : "el paciente");
 
-  const text =
-    language === "qu"
-      ? {
-          emergency: "Utqay yanapakuy",
-          sent: "Uyariy kachasqa",
-          notified:
-            "Utqay yanapakuqkikunata willasqa.",
-          contacts:
-            "Willasqa tinkiqkuna",
-          sentStatus: "Kachasqa",
-          ago: "ñawpaq",
-          meanwhile:
-            "Chay pacha, samayta waqaychay",
-          instruction1:
-            "Runata qhawariy hinaspa allin rimaywan yanapay.",
-          instruction2:
-            "Ama utqaylla kuyuchiychu; p'achata pisiqa kachiy.",
-          instruction3:
-            "Celularta qayllapi waqaychay, waqyakuna chaskinaykipaq.",
-          callEmergency:
-            "Utqay yanapakuyman waqyay",
-          back: "Qallariyman kutiy",
-          telegram: "Telegram",
-          patient: "Unquq",
-          noContacts:
-            "Mana tinkiqkuna kanchu.",
-        }
-      : {
-          emergency: "Emergencia",
-          sent: "Alerta enviada",
-          notified:
-            "Tus contactos de emergencia fueron notificados.",
-          contacts:
-            "Contactos notificados",
-          sentStatus: "Enviado",
-          ago: "hace",
-          meanwhile:
-            "Mientras tanto, mantén la calma",
-          instruction1:
-            "Acompaña a la persona y háblale con calma.",
-          instruction2:
-            "No la muevas bruscamente; afloja ropa ajustada.",
-          instruction3:
-            "Mantén el teléfono cerca para recibir llamadas.",
-          callEmergency:
-            "Llamar a urgencias",
-          back: "Volver al dashboard",
-          telegram: "Telegram",
-          patient: "Paciente",
-          noContacts:
-            "No hay contactos registrados.",
-        };
+  /* =====================================================
+     INSTRUCCIONES
+  ====================================================== */
 
   const instructions = [
     text.instruction1,
@@ -104,38 +180,55 @@ export default function AlertaEnviadaPage() {
     text.instruction3,
   ];
 
+  /* =====================================================
+     RENDER
+  ====================================================== */
+
   return (
     <div className="relative min-h-dvh overflow-hidden bg-[#f7efe0] px-4 pb-28 pt-5 md:px-8 md:pb-10">
-      {/* DECORACIÓN TEXTIL */}
+      {/* =================================================
+          PATRÓN TEXTIL SUPERIOR
+      ================================================= */}
+
       <div className="pointer-events-none absolute left-0 right-0 top-0 h-2">
         <div
           className="h-full"
           style={{
-            backgroundImage: `
-              repeating-linear-gradient(
-                45deg,
-                #c94a20 0px,
-                #c94a20 8px,
-                #e8a33d 8px,
-                #e8a33d 16px,
-                #2f8f5b 16px,
-                #2f8f5b 24px,
-                #087f83 24px,
-                #087f83 32px
-              )
-            `,
+            backgroundImage: textilePattern,
           }}
         />
       </div>
 
-      <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-4">
-        {/* STATUS BAR */}
+      {/* =================================================
+          FONDO DECORATIVO
+      ================================================= */}
+
+      <div className="pointer-events-none absolute right-[-80px] top-20 hidden h-72 w-72 overflow-hidden rounded-full opacity-[0.10] md:block">
+        <img
+          src="/images/huaraz-montanas.jpg"
+          alt=""
+          className="h-full w-full object-cover"
+        />
+      </div>
+
+      {/* =================================================
+          CONTENIDO
+      ================================================= */}
+
+      <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-4 pt-2">
+        {/* =================================================
+            STATUS BAR — MOBILE
+        ================================================= */}
+
         <div className="flex items-center justify-between px-1 md:hidden">
           <span className="text-[15px] font-semibold text-[#263a32]">
-            {new Date().toLocaleTimeString("es-ES", {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
+            {new Date().toLocaleTimeString(
+              "es-ES",
+              {
+                hour: "2-digit",
+                minute: "2-digit",
+              }
+            )}
           </span>
 
           <div className="flex items-center gap-1.5 text-[#263a32]">
@@ -145,43 +238,61 @@ export default function AlertaEnviadaPage() {
           </div>
         </div>
 
-        {/* HEADER */}
+        {/* =================================================
+            HEADER
+        ================================================= */}
+
         <div className="overflow-hidden rounded-[28px] border border-[#dfc49a] bg-[#fff9ed] shadow-[0_14px_35px_rgba(72,48,25,0.10)]">
           <div
             className="h-2"
             style={{
-              backgroundImage: `
-                repeating-linear-gradient(
-                  45deg,
-                  #c94a20 0px,
-                  #c94a20 8px,
-                  #e8a33d 8px,
-                  #e8a33d 16px,
-                  #087f83 16px,
-                  #087f83 24px
-                )
-              `,
+              backgroundImage: textilePattern,
             }}
           />
 
-          <div className="flex items-center gap-3 p-5">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[16px] bg-[#087f83] text-white shadow-[0_7px_18px_rgba(8,127,131,0.25)]">
-              <IconActivity size={23} />
+          <div className="flex items-center justify-between gap-3 p-5">
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[16px] bg-[#087f83] text-white shadow-[0_7px_18px_rgba(8,127,131,0.25)]">
+                <IconActivity size={23} />
+              </div>
+
+              <div className="min-w-0">
+                <span className="block text-[22px] font-black leading-tight text-[#075d63]">
+                  NeuroWatch
+                </span>
+
+                <span className="block text-[11px] font-bold uppercase tracking-[0.12em] text-[#c1440c]">
+                  {text.emergency}
+                </span>
+              </div>
             </div>
 
-            <div className="min-w-0">
-              <span className="block text-[20px] font-black leading-tight text-[#075d63]">
-                NeuroWatch
-              </span>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                aria-label={text.menu}
+                className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#e3c89f] bg-white/80 text-lg shadow-sm"
+              >
+                ☰
+              </button>
 
-              <span className="block text-[11px] font-bold uppercase tracking-[0.12em] text-[#c1440c]">
-                {text.emergency}
-              </span>
+              <button
+                type="button"
+                aria-label={text.notifications}
+                className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-[#e3c89f] bg-white/80 text-lg shadow-sm"
+              >
+                🔔
+
+                <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-[#c1272d]" />
+              </button>
             </div>
           </div>
         </div>
 
-        {/* ALERTA ENVIADA */}
+        {/* =================================================
+            ALERTA ENVIADA
+        ================================================= */}
+
         <GlassCard className="flex flex-col items-center gap-3 rounded-[26px] border border-[#b8ddc5] bg-[#edf8f1] p-6 text-center shadow-[0_10px_28px_rgba(47,143,91,0.10)]">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#2f8f5b] text-white shadow-[0_8px_20px_rgba(47,143,91,0.25)]">
             <IconCheck size={30} />
@@ -200,7 +311,10 @@ export default function AlertaEnviadaPage() {
           </span>
         </GlassCard>
 
-        {/* CONTACTOS */}
+        {/* =================================================
+            CONTACTOS
+        ================================================= */}
+
         <GlassCard className="rounded-[26px] border border-[#dfc49a] bg-[#fff9ed] p-5 shadow-[0_10px_28px_rgba(72,48,25,0.08)]">
           <span className="text-[12px] font-black uppercase tracking-[0.08em] text-[#6b5842]">
             {text.contacts}
@@ -214,80 +328,99 @@ export default function AlertaEnviadaPage() {
             </div>
           ) : (
             <div className="mt-4 flex flex-col gap-4">
-              {contacts.map((contact, index) => {
-                const initials =
-                  contact.name
-                    .charAt(0)
-                    .toUpperCase();
+              {contacts.map(
+                (contact, index) => {
+                  const initials =
+                    contact.name
+                      .charAt(0)
+                      .toUpperCase();
 
-                const bgColors = [
-                  "bg-[#087f83]",
-                  "bg-[#2f8f5b]",
-                ];
+                  const bgColors = [
+                    "bg-[#087f83]",
+                    "bg-[#2f8f5b]",
+                  ];
 
-                const elapsedSeconds =
-                  Math.max(
-                    0,
-                    secondsAgo - index * 2
-                  );
+                  const elapsedSeconds =
+                    Math.max(
+                      0,
+                      secondsAgo -
+                        index * 2
+                    );
 
-                return (
-                  <div
-                    key={
-                      contact.telegramChatId
-                    }
-                    className="flex items-center gap-3"
-                  >
-                    {/* AVATAR */}
+                  return (
                     <div
-                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${
-                        bgColors[index % 2]
-                      }`}
+                      key={
+                        contact.telegramChatId
+                      }
+                      className="flex items-center gap-3"
                     >
-                      <span className="text-base font-black text-white">
-                        {initials}
-                      </span>
-                    </div>
+                      {/* AVATAR */}
 
-                    {/* INFO */}
-                    <div className="min-w-0 flex-1">
-                      <span className="block truncate text-[15px] font-bold text-[#263a32]">
-                        {contact.name}
-                      </span>
+                      <div
+                        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${
+                          bgColors[
+                            index % 2
+                          ]
+                        }`}
+                      >
+                        <span className="text-base font-black text-white">
+                          {initials}
+                        </span>
+                      </div>
 
-                      <div className="mt-0.5 flex items-center gap-1.5">
-                        <IconSend size={13} />
+                      {/* INFO */}
 
-                        <span className="truncate text-xs text-[#6b5842]">
-                          {contact.relation} ·{" "}
-                          {text.telegram}
+                      <div className="min-w-0 flex-1">
+                        <span className="block truncate text-[15px] font-bold text-[#263a32]">
+                          {contact.name}
+                        </span>
+
+                        <div className="mt-0.5 flex items-center gap-1.5">
+                          <IconSend size={13} />
+
+                          <span className="truncate text-xs text-[#6b5842]">
+                            {
+                              contact.relation
+                            }{" "}
+                            ·{" "}
+                            {
+                              text.telegram
+                            }
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* ESTADO */}
+
+                      <div className="flex shrink-0 flex-col items-end gap-1">
+                        <StatusChip
+                          label={
+                            text.sentStatus
+                          }
+                          status="ok"
+                          size="sm"
+                        />
+
+                        <span className="text-[11px] text-[#9a8065]">
+                          {text.ago}{" "}
+                          {
+                            elapsedSeconds
+                          }
+                          s
                         </span>
                       </div>
                     </div>
-
-                    {/* ESTADO */}
-                    <div className="flex shrink-0 flex-col items-end gap-1">
-                      <StatusChip
-                        label={
-                          text.sentStatus
-                        }
-                        status="ok"
-                        size="sm"
-                      />
-
-                      <span className="text-[11px] text-[#9a8065]">
-                        {text.ago}{" "}
-                        {elapsedSeconds}s
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                }
+              )}
             </div>
           )}
         </GlassCard>
 
-        {/* RECOMENDACIONES */}
+        {/* =================================================
+            RECOMENDACIONES
+        ================================================= */}
+
         <GlassCard className="rounded-[26px] border border-[#dfc49a] bg-[#fff9ed] p-5 shadow-[0_10px_28px_rgba(72,48,25,0.08)]">
           <div className="flex items-center gap-2.5">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#087f83]/10 text-[#087f83]">
@@ -321,7 +454,10 @@ export default function AlertaEnviadaPage() {
           </div>
         </GlassCard>
 
-        {/* LLAMAR A URGENCIAS */}
+        {/* =================================================
+            LLAMAR A URGENCIAS
+        ================================================= */}
+
         <a
           href="tel:911"
           className="flex w-full items-center justify-center gap-2.5 rounded-[18px] bg-[#c1272d] py-[18px] text-white shadow-[0_8px_22px_rgba(193,39,45,0.28)] transition-all hover:bg-[#ad2026] active:scale-[0.98]"
@@ -333,7 +469,10 @@ export default function AlertaEnviadaPage() {
           </span>
         </a>
 
-        {/* VOLVER */}
+        {/* =================================================
+            VOLVER
+        ================================================= */}
+
         <button
           type="button"
           onClick={() => {
