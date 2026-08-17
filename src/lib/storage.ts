@@ -157,7 +157,25 @@ export function getOnboardingComplete(): boolean {
 export function setOnboardingComplete(): void {
   setItem("onboardingComplete", true);
 }
+export interface StoredFacialCheck {
+  id: string;
+  date: string;
+  index: number;
+  photo: string;
+}
 
+export function getFacialHistory(): StoredFacialCheck[] {
+  return getItem<StoredFacialCheck[]>("facialHistory", []);
+}
+
+export function addFacialHistory(check: StoredFacialCheck): void {
+  const history = getFacialHistory();
+
+  // La más reciente siempre va primero
+  const updated = [check, ...history];
+
+  setItem("facialHistory", updated);
+}
 export function clearAll(): void {
   try {
     const keys = Object.keys(localStorage).filter((k) =>
