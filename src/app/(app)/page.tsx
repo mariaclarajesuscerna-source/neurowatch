@@ -169,12 +169,11 @@ export default function DashboardPage() {
                 Batería
               </p>
 
-              <p className="mt-1 text-[20px] font-bold">
-                {bleData.connected
-                  ? `${battery}%`
-                  : "--"}
-              </p>
-
+            <p className="mt-1 text-[20px] font-bold">
+  {bleData.connected
+    ? `${Math.round(bleData.batteryPercent)}%`
+    : "--"}
+</p>
               <p className="text-[10px] text-white/55">
                 dispositivo
               </p>
