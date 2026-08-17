@@ -20,6 +20,105 @@ import AlertModal from "@/components/alert/AlertModal";
 import { useNeurowatch } from "@/components/NeurowatchProvider";
 
 const textilePattern = `
+const pageText = {
+  es: {
+    tagline: "Tecnología que cuida tu vida, con raíces que nos unen.",
+    technology: "Tecnología que cuida tu vida",
+    wellbeing: "Tu bienestar,",
+    mission: "nuestra misión.",
+    monitor:
+      "Monitorea tus signos vitales en tiempo real con tecnología creada pensando en nuestra gente.",
+    why: "¿Por qué NeuroWatch?",
+    realtime: "Monitoreo en tiempo real",
+    realtimeDesc: "Cuida tu corazón y vigila tus signos vitales.",
+    purpose: "Tecnología con propósito",
+    purposeDesc: "Innovación que busca mejorar vidas en Huaraz.",
+    connected: "Conectado contigo",
+    connectedDesc: "Datos y monitoreo siempre cerca de ti.",
+    people: "Hecho para nuestra gente",
+    peopleDesc: "Diseñado pensando en nuestra tierra.",
+    liveMonitoring: "Monitoreo en vivo",
+    heartRate: "Frecuencia cardíaca",
+    currentStatus: "Estado actual",
+    activeMonitoring: "Monitoreo activo",
+    waitingConnection: "Esperando conexión",
+    connectWatch: "Conectar reloj NeuroWatch",
+    liveSigns: "Signos en vivo",
+    live: "● EN VIVO",
+    connectedWatch: "Conectado al reloj.",
+    finger:
+      "Coloca el dedo en el sensor para comenzar a recibir tus datos de pulso.",
+    alerts: "Alertas",
+    highRate: "Frecuencia alta",
+    waitingData: "Esperando datos del reloj.",
+    rest: "Recuerda descansar",
+    restDesc: "Tómate un momento para relajarte.",
+    allGood: "¡Todo bien!",
+    monitoring: "Tus signos vitales están siendo monitoreados.",
+    ourLand: "Nuestra tierra",
+    ourStrength: "Nuestra tierra, nuestra fuerza.",
+    connectedWithYou: "Conectado contigo",
+    status: "Estado",
+    battery: "Batería",
+    active: "ACTIVO",
+    ready: "LISTO",
+    health: "Salud",
+    trust: "Confianza",
+    innovation: "Innovación",
+    community: "Comunidad",
+    mountain: "Cordillera Blanca",
+    huaraz: "Huaraz",
+  },
+
+  qu: {
+    tagline: "Kawsayniykita waqaychanapaq tecnología, ñawpa yachayninchiswan.",
+    technology: "Kawsayniykita waqaychay",
+    wellbeing: "Allin kawsayniyki,",
+    mission: "llank'ayninchis.",
+    monitor:
+      "Kawsayniykipa señalkunata pachan pachan qhawariy, runakunapaq ruwasqa tecnologíawan.",
+    why: "¿Imaraykutaq NeuroWatch?",
+    realtime: "Pachanmanta qhawariy",
+    realtimeDesc: "Sunquykita waqaychay, kawsayniykipa señalkunata qhawariy.",
+    purpose: "Tecnología munaywan",
+    purposeDesc: "Huarazpi runakunapa kawsayninta allinchayta munan.",
+    connected: "Qamwan tinkisqa",
+    connectedDesc: "Datoskunata qhawariy, qanpa qayllaykipi.",
+    people: "Ñuqanchispaq ruwasqa",
+    peopleDesc: "Allpa suyunchispa yuyayninwan ruwasqa.",
+    liveMonitoring: "Kawsay qhawariy",
+    heartRate: "Sunqupa pisiqnin",
+    currentStatus: "Kunan kawsay",
+    activeMonitoring: "Qhawariy kachkan",
+    waitingConnection: "Tinkiyta suyachkan",
+    connectWatch: "NeuroWatch relojwan tinkiy",
+    liveSigns: "Kawsay señalkuna",
+    live: "● KAWSACHKAN",
+    connectedWatch: "Relojwan tinkisqa.",
+    finger:
+      "Ruk'aykita sensorpi churay, sunqupa pisiqninpa datonkuna chayamunanpaq.",
+    alerts: "Willakuykuna",
+    highRate: "Sunqupa pisiqnin hatun",
+    waitingData: "Relojpa datonta suyachkan.",
+    rest: "Samayta yuyariy",
+    restDesc: "Pisi pachata samakuy.",
+    allGood: "¡Allinmi!",
+    monitoring: "Kawsayniykipa señalkunata qhawarichkan.",
+    ourLand: "Llaqtanchis",
+    ourStrength: "Llaqtanchis, kallpanchis.",
+    connectedWithYou: "Qamwan tinkisqa",
+    status: "Kawsay",
+    battery: "Batería",
+    active: "KACHKAN",
+    ready: "LISTO",
+    health: "Kawsay",
+    trust: "Kuska yuyay",
+    innovation: "Musuq yachay",
+    community: "Ayllu",
+    mountain: "Cordillera Blanca",
+    huaraz: "Huaraz",
+  },
+} as const;
   repeating-linear-gradient(
     45deg,
     #c94a20 0px,
@@ -41,7 +140,7 @@ export default function DashboardPage() {
     setLanguage,
     t,
   } = useLanguage();
-
+const text = pageText[language];
   const {
     bleData,
     bleError,
@@ -65,31 +164,45 @@ export default function DashboardPage() {
   return (
     <div className="relative min-h-dvh overflow-hidden bg-[#f7efe0] text-[#263a32]">
 
-      {/* FONDO */}
+    {/* =========================
+    FONDO
+========================= */}
 
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute -left-40 top-20 h-96 w-96 rounded-full bg-[#e8a33d]/15 blur-3xl" />
+<div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
 
-        <div className="absolute -right-40 top-96 h-[500px] w-[500px] rounded-full bg-[#087f83]/10 blur-3xl" />
+  {/* Brillo cálido */}
+  <div className="absolute -left-40 top-20 h-96 w-96 rounded-full bg-[#e8a33d]/15 blur-3xl" />
 
-        <div className="absolute bottom-0 left-0 right-0 h-72 opacity-[0.08]">
-          <svg
-            viewBox="0 0 1200 300"
-            className="h-full w-full"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M0 300V205L130 95l95 100L355 60l130 155L625 85l120 120L890 45l140 150 90-95 80 60v140Z"
-              fill="#087f83"
-            />
+  {/* Brillo turquesa */}
+  <div className="absolute -right-40 top-96 h-[500px] w-[500px] rounded-full bg-[#087f83]/10 blur-3xl" />
 
-            <path
-              d="M0 300V245l170-110 100 70 145-105 130 105 130-85 120 75 145-110 160 95 120-70v190Z"
-              fill="#c94a20"
-            />
-          </svg>
-        </div>
-      </div>
+  {/* Montañas andinas */}
+  <div className="absolute bottom-0 left-0 right-0 h-72 opacity-[0.08]">
+
+    <svg
+      viewBox="0 0 1200 300"
+      className="h-full w-full"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+
+      {/* Montaña turquesa */}
+      <path
+        d="M0 300V205L130 95l95 100L355 60l130 155L625 85l120 120L890 45l140 150 90-95 80 60v140Z"
+        fill="#087f83"
+      />
+
+      {/* Montaña terracota */}
+      <path
+        d="M0 300V245l170-110 100 70 145-105 130 105 130-85 120 75 145-110 160 95 120-70v190Z"
+        fill="#c94a20"
+      />
+
+    </svg>
+
+  </div>
+
+</div>
 
       <main className="mx-auto w-full max-w-[1500px] px-3 pb-28 pt-3 sm:px-5 lg:px-8 lg:pb-12 lg:pt-6">
 
@@ -253,7 +366,7 @@ export default function DashboardPage() {
 
                     <div className="absolute inset-0 bg-gradient-to-t from-[#173c3a]/60 via-transparent to-transparent" />
 
-                    <div className="absolute bottom-3 left-4">
+                    <div className="absolute bottom-3 left-4 right-4">
                       <p className="text-[10px] font-black uppercase tracking-[0.18em] text-white">
                         Huaraz · Áncash
                       </p>
