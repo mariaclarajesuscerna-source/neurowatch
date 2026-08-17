@@ -1,9 +1,57 @@
 export type Language = "es" | "qu";
 
 export const translations = {
-  es: {
+  es: {  
     spanish: "ESPAÑOL",
     quechua: "QUECHUA",
+    navHome: "Inicio",
+navCheck: "Chequeo",
+navHistory: "Historial",
+navContacts: "Contactos",
+navSettings: "Ajustes",
+
+historyTitle: "Historial de salud",
+historySubtitle: "Tus registros y evolución",
+
+checkTitle: "Chequeo facial",
+checkSubtitle: "Evalúa la simetría de tu rostro",
+
+contactsTitle: "Contactos de emergencia",
+contactsSubtitle: "Personas que recibirán tus alertas",
+
+settingsTitle: "Ajustes",
+settingsSubtitle: "Perfil, reloj y configuración",
+
+addContact: "Agregar contacto",
+newContact: "Nuevo contacto",
+name: "Nombre",
+relation: "Relación",
+phoneNumber: "Número de celular",
+sendSMS: "Enviar mensaje SMS",
+
+myData: "Mis datos",
+age: "Edad",
+restingHeartRate: "Frecuencia en reposo",
+saveMyData: "Guardar mis datos",
+
+watch: "Reloj",
+connected: "Conectado",
+disconnected: "Desconectado",
+connect: "Conectar",
+disconnect: "Desconectar",
+
+facialSummary: "Resumen facial",
+checks: "Chequeos",
+average: "Promedio",
+latest: "Último",
+symmetryEvolution: "Evolución de simetría",
+lastChecks: "Últimos chequeos",
+pulseTrend: "Tendencia de pulso",
+
+noFacialChecks:
+  "Todavía no hay chequeos faciales registrados.",
+startFirstCheck:
+  "Realiza tu primer chequeo para comenzar.",
 
     neuroWatch: "NeuroWatch",
     huarazPeru: "HUARAZ · PERÚ",
@@ -116,6 +164,51 @@ export const translations = {
   qu: {
     spanish: "ESPAÑOL",
     quechua: "RUNASIMI",
+    navHome: "Qallariy",
+navCheck: "Uya qhawariy",
+navHistory: "Ñawpaq qhawariykuna",
+navContacts: "Tinkiqkuna",
+navSettings: "Rurayninkuna",
+
+historyTitle: "Kawsaypa ñawpaq qhawariyninkuna",
+historySubtitle: "Qhawariykuna hinallataq wiñaynin",
+
+checkTitle: "Uya qhawariy",
+checkSubtitle: "Uyayki ch'iqiyta qhawariy",
+
+contactsTitle: "Utqay yanapakuqkuna",
+contactsSubtitle: "Runakuna alertakunata chaskiq",
+
+addContact: "Tinkiqta yapay",
+newContact: "Musuq tinkiq",
+name: "Suti",
+relation: "Imayna tinkisqa",
+phoneNumber: "Celularpa yupaynin",
+sendSMS: "SMS willakuyta kachay",
+
+myData: "Datosniy",
+age: "Watay",
+restingHeartRate: "Samaypi sunqupa muyuriynin",
+saveMyData: "Datosniyta waqaychay",
+
+watch: "Reloj",
+connected: "Tinkisqa",
+disconnected: "Rakisqa",
+connect: "Tinkichiy",
+disconnect: "Rakiy",
+
+facialSummary: "Uya qhawariypa pisiyachiy",
+checks: "Qhawariykuna",
+average: "Chawpi",
+latest: "Qhipa",
+symmetryEvolution: "Ch'iqiy wiñaynin",
+lastChecks: "Qhipa qhawariykuna",
+pulseTrend: "Sunqupa muyuriyninpa wiñaynin",
+
+noFacialChecks:
+  "Manaraqmi uya qhawariykuna waqaychasqachu.",
+startFirstCheck:
+  "Ruwariy ñawpaq uya qhawariyta qallarinaykipaq.",
 
     neuroWatch: "NeuroWatch",
     huarazPeru: "WARAS · PERÚ",
