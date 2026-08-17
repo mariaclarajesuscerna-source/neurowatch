@@ -194,44 +194,33 @@ export default function ChequeoPage() {
     ) {
       return;
     }
+    const canvas = document.createElement("canvas");
 
-    const canvas =
-      document.createElement("canvas");
+canvas.width = video.videoWidth;
+canvas.height = video.videoHeight;
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+const context = canvas.getContext("2d");
 
-    const context =
-      canvas.getContext("2d");
+if (!context) {
+  return;
+}
 
-    if (!context) {
-      return;
-    }
+/*
+ * ORIENTACIÓN REAL
+ * No hacemos espejo.
+ * No hacemos translate().
+ * No hacemos scale(-1, 1).
+ * No hacemos rotate().
+ */
+context.drawImage(
+  video,
+  0,
+  0,
+  canvas.width,
+  canvas.height
+);
 
-    /*
-     * Sin espejo.
-     * La foto mantiene la orientación real
-     * del video.
-     */
-    context.save();
-
-    context.translate(canvas.width, 0);
-    context.scale(-1, 1);
-
-    context.drawImage(
-    video,
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
-
-    context.restore();
-    const image =
-      canvas.toDataURL(
-        "image/jpeg",
-        0.9
-      );
+const image = canvas.toDataURL("image/jpeg", 0.9);
 
     stopCamera();
 
@@ -376,7 +365,6 @@ export default function ChequeoPage() {
                 src={photo}
                 alt="Foto capturada"
                 className="absolute inset-0 h-full w-full object-cover"
-               }}
               />
             )}
 
