@@ -10,16 +10,16 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Neurowatch — Huaraz",
+  title: "Neurowatch — Monitoreo de salud en tiempo real",
   description:
-    "NeuroWatch: tecnología que cuida tu vida, con raíces que nos unen. Herramienta asistiva de monitoreo de salud en tiempo real.",
+    "Herramienta asistiva de detección de anomalías de salud. Monitoreo de pulso en tiempo real y chequeo facial. No reemplaza atención médica.",
 };
 
 export const viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#0B555B",
+  themeColor: "#4F46E5",
 };
 
 export default function RootLayout({
@@ -34,9 +34,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full">
-        <NeurowatchProvider>
-          {children}
-        </NeurowatchProvider>
+        <NeurowatchProvider>{children}</NeurowatchProvider>
       </body>
     </html>
   );
