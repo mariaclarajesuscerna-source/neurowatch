@@ -211,6 +211,9 @@ export function getFacialChecks(): StoredFacialCheck[] {
  * ORDEN:
  * image -> string
  * index -> number
+ *
+ * AHORA GUARDA:
+ * fecha + hora + segundos
  */
 export function addFacialCheck(
   image: string,
@@ -226,12 +229,22 @@ export function addFacialCheck(
 
     image,
 
-    date: new Date().toLocaleDateString(
+    /*
+     * Fecha y hora exacta del chequeo.
+     *
+     * Ejemplo:
+     * 17/08/2026, 04:42:18 p. m.
+     */
+    date: new Date().toLocaleString(
       "es-PE",
       {
-        day: "numeric",
-        month: "short",
+        day: "2-digit",
+        month: "2-digit",
         year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
       }
     ),
 
