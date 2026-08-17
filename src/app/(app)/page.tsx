@@ -1,3 +1,4 @@
+import { useLanguage } from "@/components/LanguageProvider";
 "use client";
 
 import { useEffect } from "react";
