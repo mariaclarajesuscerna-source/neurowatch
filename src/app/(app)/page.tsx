@@ -25,104 +25,307 @@ import { useNeurowatch } from "@/components/NeurowatchProvider";
 
 const pageText = {
   es: {
-    tagline: "Tecnología que cuida tu vida, con raíces que nos unen.",
-    technology: "Tecnología que cuida tu vida",
-    wellbeing: "Tu bienestar,",
-    mission: "nuestra misión.",
+    tagline:
+      "Tecnología que cuida tu vida, con raíces que nos unen.",
+
+    technology:
+      "Tecnología que cuida tu vida",
+
+    wellbeing:
+      "Tu bienestar,",
+
+    mission:
+      "nuestra misión.",
+
     monitor:
       "Monitorea tus signos vitales en tiempo real con tecnología creada pensando en nuestra gente.",
-    why: "¿Por qué NeuroWatch?",
-    realtime: "Monitoreo en tiempo real",
-    realtimeDesc: "Cuida tu corazón y vigila tus signos vitales.",
-    purpose: "Tecnología con propósito",
-    purposeDesc: "Innovación que busca mejorar vidas en Huaraz.",
-    connected: "Conectado contigo",
-    connectedDesc: "Datos y monitoreo siempre cerca de ti.",
-    people: "Hecho para nuestra gente",
-    peopleDesc: "Diseñado pensando en nuestra tierra.",
-    liveMonitoring: "Monitoreo en vivo",
-    heartRate: "Frecuencia cardíaca",
-    currentStatus: "Estado actual",
-    activeMonitoring: "Monitoreo activo",
-    waitingConnection: "Esperando conexión",
-    connectWatch: "Conectar reloj NeuroWatch",
-    liveSigns: "Signos en vivo",
-    live: "● EN VIVO",
-    connectedWatch: "Conectado al reloj.",
+
+    why:
+      "¿Por qué NeuroWatch?",
+
+    realtime:
+      "Monitoreo en tiempo real",
+
+    realtimeDesc:
+      "Cuida tu corazón y vigila tus signos vitales.",
+
+    purpose:
+      "Tecnología con propósito",
+
+    purposeDesc:
+      "Innovación que busca mejorar vidas en Huaraz.",
+
+    connected:
+      "Conectado contigo",
+
+    connectedDesc:
+      "Datos y monitoreo siempre cerca de ti.",
+
+    people:
+      "Hecho para nuestra gente",
+
+    peopleDesc:
+      "Diseñado pensando en nuestra tierra.",
+
+    liveMonitoring:
+      "Monitoreo en vivo",
+
+    heartRate:
+      "Frecuencia cardíaca",
+
+    livePulse:
+      "Pulso en vivo",
+
+    realPulse:
+      "Pulso real",
+
+    expectedRange:
+      "Rango esperado",
+
+    currentStatus:
+      "Estado actual",
+
+    activeMonitoring:
+      "Monitoreo activo",
+
+    waitingConnection:
+      "Esperando conexión",
+
+    connectWatch:
+      "Conectar reloj NeuroWatch",
+
+    liveSigns:
+      "Signos en vivo",
+
+    live:
+      "● EN VIVO",
+
+    connectedWatch:
+      "Conectado al reloj.",
+
     finger:
       "Coloca el dedo en el sensor para comenzar a recibir tus datos de pulso.",
-    alerts: "Alertas",
-    highRate: "Frecuencia alta",
-    waitingData: "Esperando datos del reloj.",
-    rest: "Recuerda descansar",
-    restDesc: "Tómate un momento para relajarte.",
-    allGood: "¡Todo bien!",
-    monitoring: "Tus signos vitales están siendo monitoreados.",
-    ourLand: "Nuestra tierra",
-    ourStrength: "Nuestra tierra, nuestra fuerza.",
-    connectedWithYou: "Conectado contigo",
-    status: "Estado",
-    battery: "Batería",
-    active: "ACTIVO",
-    ready: "LISTO",
-    health: "Salud",
-    trust: "Confianza",
-    innovation: "Innovación",
-    community: "Comunidad",
-    mountain: "Cordillera Blanca",
-    huaraz: "Huaraz",
+
+    alerts:
+      "Alertas",
+
+    highRate:
+      "Frecuencia alta",
+
+    waitingData:
+      "Esperando datos del reloj.",
+
+    rest:
+      "Recuerda descansar",
+
+    restDesc:
+      "Tómate un momento para relajarte.",
+
+    allGood:
+      "¡Todo bien!",
+
+    monitoring:
+      "Tus signos vitales están siendo monitoreados.",
+
+    ourLand:
+      "Nuestra tierra",
+
+    ourStrength:
+      "Nuestra tierra, nuestra fuerza.",
+
+    connectedWithYou:
+      "Conectado contigo",
+
+    status:
+      "Estado",
+
+    battery:
+      "Batería",
+
+    active:
+      "ACTIVO",
+
+    ready:
+      "LISTO",
+
+    stableSignal:
+      "Señal estable",
+
+    notConnected:
+      "Sin conectar",
+
+    watchDisconnected:
+      "Reloj desconectado",
+
+    health:
+      "Salud",
+
+    trust:
+      "Confianza",
+
+    innovation:
+      "Innovación",
+
+    community:
+      "Comunidad",
+
+    mountain:
+      "Cordillera Blanca",
+
+    huaraz:
+      "Huaraz",
   },
 
   qu: {
     tagline:
       "Kawsayniykita waqaychanapaq tecnología, ñawpa yachayninchiswan.",
-    technology: "Kawsayniykita waqaychay",
-    wellbeing: "Allin kawsayniyki,",
-    mission: "llank'ayninchis.",
+
+    technology:
+      "Kawsayniykita waqaychay",
+
+    wellbeing:
+      "Allin kawsayniyki,",
+
+    mission:
+      "llank'ayninchis.",
+
     monitor:
       "Kawsayniykipa señalkunata pachan pachan qhawariy, runakunapaq ruwasqa tecnologíawan.",
-    why: "¿Imaraykutaq NeuroWatch?",
-    realtime: "Pachanmanta qhawariy",
+
+    why:
+      "¿Imaraykutaq NeuroWatch?",
+
+    realtime:
+      "Pachanmanta qhawariy",
+
     realtimeDesc:
       "Sunquykita waqaychay, kawsayniykipa señalkunata qhawariy.",
-    purpose: "Tecnología munaywan",
+
+    purpose:
+      "Tecnología munaywan",
+
     purposeDesc:
       "Huarazpi runakunapa kawsayninta allinchayta munan.",
-    connected: "Qamwan tinkisqa",
-    connectedDesc: "Datoskunata qhawariy, qanpa qayllaykipi.",
-    people: "Ñuqanchispaq ruwasqa",
-    peopleDesc: "Allpa suyunchispa yuyayninwan ruwasqa.",
-    liveMonitoring: "Kawsay qhawariy",
-    heartRate: "Sunqupa pisiqnin",
-    currentStatus: "Kunan kawsay",
-    activeMonitoring: "Qhawariy kachkan",
-    waitingConnection: "Tinkiyta suyachkan",
-    connectWatch: "NeuroWatch relojwan tinkiy",
-    liveSigns: "Kawsay señalkuna",
-    live: "● KAWSACHKAN",
-    connectedWatch: "Relojwan tinkisqa.",
+
+    connected:
+      "Qamwan tinkisqa",
+
+    connectedDesc:
+      "Datoskunata qhawariy, qanpa qayllaykipi.",
+
+    people:
+      "Ñuqanchispaq ruwasqa",
+
+    peopleDesc:
+      "Allpa suyunchispa yuyayninwan ruwasqa.",
+
+    liveMonitoring:
+      "Kawsay qhawariy",
+
+    heartRate:
+      "Sunqupa pisiqnin",
+
+    livePulse:
+      "Sunqupa muyuriynin kawsachkan",
+
+    realPulse:
+      "Sunqupa cheqaq muyuriynin",
+
+    expectedRange:
+      "Suyasqa rango",
+
+    currentStatus:
+      "Kunan kawsay",
+
+    activeMonitoring:
+      "Qhawariy kachkan",
+
+    waitingConnection:
+      "Tinkiyta suyachkan",
+
+    connectWatch:
+      "NeuroWatch relojwan tinkiy",
+
+    liveSigns:
+      "Kawsay señalkuna",
+
+    live:
+      "● KAWSACHKAN",
+
+    connectedWatch:
+      "Relojwan tinkisqa.",
+
     finger:
       "Ruk'aykita sensorpi churay, sunqupa pisiqninpa datonkuna chayamunanpaq.",
-    alerts: "Willakuykuna",
-    highRate: "Sunqupa pisiqnin hatun",
-    waitingData: "Relojpa datonta suyachkan.",
-    rest: "Samayta yuyariy",
-    restDesc: "Pisi pachata samakuy.",
-    allGood: "¡Allinmi!",
-    monitoring: "Kawsayniykipa señalkunata qhawarichkan.",
-    ourLand: "Llaqtanchis",
-    ourStrength: "Llaqtanchis, kallpanchis.",
-    connectedWithYou: "Qamwan tinkisqa",
-    status: "Kawsay",
-    battery: "Batería",
-    active: "KACHKAN",
-    ready: "LISTO",
-    health: "Kawsay",
-    trust: "Kuska yuyay",
-    innovation: "Musuq yachay",
-    community: "Ayllu",
-    mountain: "Cordillera Blanca",
-    huaraz: "Huaraz",
+
+    alerts:
+      "Willakuykuna",
+
+    highRate:
+      "Sunqupa pisiqnin hatun",
+
+    waitingData:
+      "Relojpa datonta suyachkan.",
+
+    rest:
+      "Samayta yuyariy",
+
+    restDesc:
+      "Pisi pachata samakuy.",
+
+    allGood:
+      "¡Allinmi!",
+
+    monitoring:
+      "Kawsayniykipa señalkunata qhawarichkan.",
+
+    ourLand:
+      "Llaqtanchis",
+
+    ourStrength:
+      "Llaqtanchis, kallpanchis.",
+
+    connectedWithYou:
+      "Qamwan tinkisqa",
+
+    status:
+      "Kawsay",
+
+    battery:
+      "Batería",
+
+    active:
+      "KACHKAN",
+
+    ready:
+      "LISTO",
+
+    stableSignal:
+      "Señal allin",
+
+    notConnected:
+      "Mana tinkisqachu",
+
+    watchDisconnected:
+      "Reloj rakisqa",
+
+    health:
+      "Kawsay",
+
+    trust:
+      "Kuska yuyay",
+
+    innovation:
+      "Musuq yachay",
+
+    community:
+      "Ayllu",
+
+    mountain:
+      "Cordillera Blanca",
+
+    huaraz:
+      "Huaraz",
   },
 } as const;
 
@@ -150,7 +353,12 @@ const textilePattern = `
 
 export default function DashboardPage() {
   const router = useRouter();
-  const { language, setLanguage } = useLanguage();
+
+  const {
+    language,
+    setLanguage,
+  } = useLanguage();
+
   const text = pageText[language];
 
   const {
@@ -175,7 +383,9 @@ export default function DashboardPage() {
 
   return (
     <div className="relative min-h-dvh overflow-hidden bg-[#f7efe0] text-[#263a32]">
+
       {/* FONDO */}
+
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute -left-40 top-20 h-96 w-96 rounded-full bg-[#e8a33d]/15 blur-3xl" />
 
@@ -202,7 +412,9 @@ export default function DashboardPage() {
       </div>
 
       <main className="mx-auto w-full max-w-[1500px] px-3 pb-28 pt-3 sm:px-5 lg:px-8 lg:pb-12 lg:pt-6">
+
         {/* BARRA SUPERIOR */}
+
         <div className="mb-3 flex items-center justify-between lg:hidden">
           <span className="text-sm font-black text-[#3b2a1a]">
             {new Date().toLocaleTimeString("es-ES", {
@@ -219,38 +431,53 @@ export default function DashboardPage() {
         </div>
 
         {/* PATRÓN TEXTIL */}
+
         <div
           className="mb-4 h-7 w-full overflow-hidden rounded-b-2xl border border-[#b86b31]/30 shadow-sm"
-          style={{ backgroundImage: textilePattern }}
+          style={{
+            backgroundImage: textilePattern,
+          }}
         />
 
         {/* HEADER */}
+
         <header className="mb-5 flex flex-col gap-4 rounded-[28px] border border-[#e4c99e] bg-[#fff9ed]/90 p-4 shadow-[0_12px_35px_rgba(72,48,25,0.08)] backdrop-blur-xl sm:p-5 lg:flex-row lg:items-center lg:justify-between">
+
           <div className="flex items-center gap-4">
+
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#087f83] text-3xl text-white shadow-[0_8px_20px_rgba(8,127,131,0.25)]">
               ❤️
             </div>
 
             <div>
+
               <h1 className="font-display text-3xl font-black uppercase leading-none tracking-tight text-[#075d63] sm:text-4xl">
                 NeuroWatch
               </h1>
 
               <p className="mt-1 text-xs font-black uppercase tracking-[0.22em] text-[#c1440c]">
-                Huaraz · Áncash
+                {language === "qu"
+                  ? "WARAS · ÁNCASH"
+                  : "HUARAZ · ÁNCASH"}
               </p>
 
               <p className="mt-1 text-xs font-semibold text-[#79634d]">
                 {text.tagline}
               </p>
+
             </div>
           </div>
 
           <div className="flex items-center gap-2">
+
             <button
               type="button"
               className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#e3c89f] bg-white/80 text-xl shadow-sm"
-              aria-label="Menú"
+              aria-label={
+                language === "qu"
+                  ? "Menú"
+                  : "Menú"
+              }
             >
               ☰
             </button>
@@ -258,17 +485,26 @@ export default function DashboardPage() {
             <button
               type="button"
               className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-[#e3c89f] bg-white/80 text-xl shadow-sm"
-              aria-label="Notificaciones"
+              aria-label={
+                language === "qu"
+                  ? "Willakuykuna"
+                  : "Notificaciones"
+              }
             >
               🔔
+
               <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-[#c1272d]" />
             </button>
+
           </div>
         </header>
 
         {/* IDIOMAS */}
+
         <div className="mb-5 flex justify-center">
+
           <div className="flex w-full max-w-sm rounded-2xl border border-[#e3c89f] bg-[#fffaf0] p-1 shadow-sm">
+
             <button
               type="button"
               onClick={() => setLanguage("es")}
@@ -292,23 +528,35 @@ export default function DashboardPage() {
             >
               QUECHUA
             </button>
+
           </div>
         </div>
 
         {/* GRID PRINCIPAL */}
+
         <div className="grid gap-5 lg:grid-cols-[0.8fr_1.35fr_0.8fr]">
+
           {/* COLUMNA IZQUIERDA */}
+
           <aside className="space-y-5">
+
             {/* HERO HUARAZ */}
+
             <section className="relative overflow-hidden rounded-[30px] border border-[#dfbf8e] bg-[#fff7e8] shadow-[0_16px_40px_rgba(72,48,25,0.12)]">
+
               <div
                 className="h-7"
-                style={{ backgroundImage: textilePattern }}
+                style={{
+                  backgroundImage: textilePattern,
+                }}
               />
 
               <div className="p-6">
+
                 <div className="flex justify-end">
-                  <span className="text-5xl opacity-80">☀️</span>
+                  <span className="text-5xl opacity-80">
+                    ☀️
+                  </span>
                 </div>
 
                 <p className="mt-1 max-w-[260px] text-xs font-black uppercase tracking-[0.18em] text-[#c1440c]">
@@ -326,23 +574,29 @@ export default function DashboardPage() {
                 </p>
 
                 <div className="mt-8">
+
                   <div className="relative h-48 overflow-hidden rounded-3xl shadow-lg">
+
                     <img
                       src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Huascaran_Huandoy_Chopicalqui_seen_from_Huaraz.JPG"
-                      alt="Cordillera Blanca vista desde Huaraz"
+                      alt="Cordillera Blanca"
                       className="h-full w-full object-cover"
                     />
 
                     <div className="absolute inset-0 bg-gradient-to-t from-[#173c3a]/70 via-transparent to-transparent" />
 
                     <div className="absolute bottom-3 left-4 right-4">
+
                       <p className="text-[10px] font-black uppercase tracking-[0.18em] text-white">
-                        Huaraz · Áncash
+                        {language === "qu"
+                          ? "Waras · Áncash"
+                          : "Huaraz · Áncash"}
                       </p>
 
                       <p className="mt-1 text-lg font-black text-white">
                         {text.mountain}
                       </p>
+
                     </div>
                   </div>
                 </div>
@@ -350,22 +604,28 @@ export default function DashboardPage() {
             </section>
 
             {/* POR QUÉ NEUROWATCH */}
+
             <section className="overflow-hidden rounded-[27px] border border-[#dfbf8e] bg-[#fff9ed] shadow-[0_12px_30px_rgba(72,48,25,0.09)]">
+
               <div className="flex items-center justify-between bg-[#c1440c] px-5 py-4 text-white">
+
                 <h2 className="font-display text-xl font-black uppercase">
                   {text.why}
                 </h2>
 
                 <span>✦</span>
+
               </div>
 
               <div className="space-y-5 p-5">
+
                 <div className="flex gap-3">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#c1440c]/10 text-2xl">
                     ❤️
                   </div>
 
                   <div>
+
                     <h3 className="text-sm font-black uppercase text-[#263a32]">
                       {text.realtime}
                     </h3>
@@ -373,15 +633,18 @@ export default function DashboardPage() {
                     <p className="mt-1 text-xs leading-relaxed text-[#6b5842]">
                       {text.realtimeDesc}
                     </p>
+
                   </div>
                 </div>
 
                 <div className="flex gap-3">
+
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#087f83]/10 text-2xl">
                     💡
                   </div>
 
                   <div>
+
                     <h3 className="text-sm font-black uppercase">
                       {text.purpose}
                     </h3>
@@ -389,15 +652,18 @@ export default function DashboardPage() {
                     <p className="mt-1 text-xs leading-relaxed text-[#6b5842]">
                       {text.purposeDesc}
                     </p>
+
                   </div>
                 </div>
 
                 <div className="flex gap-3">
+
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#2f8f5b]/10 text-2xl">
                     🛡️
                   </div>
 
                   <div>
+
                     <h3 className="text-sm font-black uppercase">
                       {text.connected}
                     </h3>
@@ -405,15 +671,18 @@ export default function DashboardPage() {
                     <p className="mt-1 text-xs leading-relaxed text-[#6b5842]">
                       {text.connectedDesc}
                     </p>
+
                   </div>
                 </div>
 
                 <div className="flex gap-3">
+
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e8a33d]/15 text-2xl">
                     👥
                   </div>
 
                   <div>
+
                     <h3 className="text-sm font-black uppercase">
                       {text.people}
                     </h3>
@@ -421,21 +690,31 @@ export default function DashboardPage() {
                     <p className="mt-1 text-xs leading-relaxed text-[#6b5842]">
                       {text.peopleDesc}
                     </p>
+
                   </div>
                 </div>
+
               </div>
 
               <div
                 className="h-5"
-                style={{ backgroundImage: textilePattern }}
+                style={{
+                  backgroundImage: textilePattern,
+                }}
               />
+
             </section>
+
           </aside>
 
           {/* COLUMNA CENTRAL */}
+
           <section className="space-y-5">
+
             {/* FRECUENCIA CARDÍACA */}
+
             <section className="relative overflow-hidden rounded-[32px] border border-[#dfbf8e] bg-[#fff9ed] p-5 shadow-[0_16px_40px_rgba(72,48,25,0.11)] sm:p-7">
+
               <div className="absolute right-5 top-5 text-5xl opacity-80">
                 ❤️
               </div>
@@ -449,22 +728,31 @@ export default function DashboardPage() {
               </h2>
 
               <div className="my-6 flex justify-center">
+
                 <div className="relative flex h-48 w-52 items-center justify-center">
+
                   <div className="absolute text-[170px] leading-none drop-shadow-[0_12px_18px_rgba(193,68,12,0.25)]">
                     ❤️
                   </div>
 
                   <div className="relative z-10 mt-2 text-center text-white">
+
                     <div className="text-5xl font-black leading-none">
-                      {bleData.bpm > 0 ? bleData.bpm : "--"}
+                      {bleData.bpm > 0
+                        ? bleData.bpm
+                        : "--"}
                     </div>
 
-                    <div className="mt-1 text-sm font-black">ppm</div>
+                    <div className="mt-1 text-sm font-black">
+                      ppm
+                    </div>
+
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
+
                 <div className="h-0.5 flex-1 bg-[#2f8f5b]/40" />
 
                 <div className="text-3xl font-bold tracking-tight text-[#2f8f5b]">
@@ -472,10 +760,13 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="h-0.5 flex-1 bg-[#2f8f5b]/40" />
+
               </div>
 
               <div className="mt-5 flex items-center justify-between rounded-2xl border border-[#e5cba3] bg-white/75 p-4">
+
                 <div>
+
                   <p className="text-xs font-black uppercase text-[#3b2a1a]">
                     {text.currentStatus}
                   </p>
@@ -485,6 +776,7 @@ export default function DashboardPage() {
                       ? text.activeMonitoring
                       : text.waitingConnection}
                   </p>
+
                 </div>
 
                 <span
@@ -494,39 +786,56 @@ export default function DashboardPage() {
                       : "bg-[#a9967d]"
                   }`}
                 />
+
               </div>
             </section>
 
             {/* BOTÓN BLUETOOTH */}
+
             {!bleData.connected && (
               <button
                 onClick={connectBLE}
                 type="button"
                 className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#087f83] px-5 py-4 text-white shadow-[0_10px_25px_rgba(8,127,131,0.25)] transition hover:scale-[1.01] active:scale-[0.98]"
               >
+
                 <IconBluetooth size={22} />
 
-                <span className="font-black">{text.connectWatch}</span>
+                <span className="font-black">
+                  {text.connectWatch}
+                </span>
+
               </button>
             )}
 
             {/* ERROR */}
+
             {bleError && (
               <div className="rounded-2xl border border-[#c1272d]/30 bg-[#c1272d]/10 p-4">
+
                 <p className="text-sm font-semibold text-[#c1272d]">
                   {bleError}
                 </p>
+
               </div>
             )}
 
             {/* ESTADO */}
-            {bleData.connected && bleData.bpm > 0 && (
-              <HeroStatus state={status} />
-            )}
+
+            {bleData.connected &&
+              bleData.bpm > 0 && (
+                <HeroStatus
+                  state={status}
+                  language={language}
+                />
+              )}
 
             {/* SIGNOS EN VIVO */}
+
             <section className="rounded-[28px] border border-[#dfbf8e] bg-[#fff9ed] p-5 shadow-[0_12px_30px_rgba(72,48,25,0.08)]">
+
               <div className="mb-4 flex items-center justify-between">
+
                 <h2 className="font-display text-2xl font-black uppercase text-[#075d63]">
                   {text.liveSigns}
                 </h2>
@@ -534,70 +843,106 @@ export default function DashboardPage() {
                 <span className="text-xs font-black text-[#2f8f5b]">
                   {text.live}
                 </span>
+
               </div>
 
               <div className="grid grid-cols-1 gap-3">
+
                 <VitalCard
                   icon="❤️"
-                  title={text.heartRate}
-                  value={bleData.bpm > 0 ? String(bleData.bpm) : "--"}
+                  title={text.realPulse}
+                  value={
+                    bleData.bpm > 0
+                      ? String(bleData.bpm)
+                      : "--"
+                  }
                   unit="ppm"
                 />
+
               </div>
             </section>
 
             {/* ESPERANDO DATOS */}
-            {bleData.connected && bleData.bpm === 0 && (
-              <div className="rounded-[24px] border border-[#dfbf8e] bg-white/70 p-6 text-center shadow-sm">
-                <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-[#087f83]/10 text-2xl">
-                  ❤️
+
+            {bleData.connected &&
+              bleData.bpm === 0 && (
+                <div className="rounded-[24px] border border-[#dfbf8e] bg-white/70 p-6 text-center shadow-sm">
+
+                  <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-[#087f83]/10 text-2xl">
+                    ❤️
+                  </div>
+
+                  <p className="font-semibold text-[#6b5842]">
+                    {text.connectedWatch}
+                  </p>
+
+                  <p className="mx-auto mt-1 max-w-sm text-xs leading-relaxed text-[#8c7660]">
+                    {text.finger}
+                  </p>
+
                 </div>
-
-                <p className="font-semibold text-[#6b5842]">
-                  {text.connectedWatch}
-                </p>
-
-                <p className="mx-auto mt-1 max-w-sm text-xs leading-relaxed text-[#8c7660]">
-                  {text.finger}
-                </p>
-              </div>
-            )}
+              )}
 
             {/* GRÁFICA */}
-            <PulseCard bpm={bleData.bpm} bars={pulseBars} />
+
+            <PulseCard
+              bpm={bleData.bpm}
+              bars={pulseBars}
+              language={language}
+            />
 
             {/* RELOJ */}
+
             <DeviceCard
               connected={bleData.connected}
               signalStatus={
-                bleData.connected ? "Señal estable" : "Sin conectar"
+                bleData.connected
+                  ? text.stableSignal
+                  : text.notConnected
               }
-              batteryPercent={Math.round(bleData.batteryPercent)}
+              batteryPercent={Math.round(
+                bleData.batteryPercent
+              )}
+              language={language}
             />
+
           </section>
 
           {/* COLUMNA DERECHA */}
+
           <aside className="space-y-5">
+
             {/* ALERTAS */}
+
             <section className="overflow-hidden rounded-[30px] border border-[#dfbf8e] bg-[#fff9ed] shadow-[0_16px_40px_rgba(72,48,25,0.10)]">
+
               <div className="flex items-center justify-between bg-[#e85a20] px-5 py-4 text-white">
+
                 <h2 className="font-display text-2xl font-black uppercase">
                   {text.alerts}
                 </h2>
 
-                <span className="text-2xl">🔔</span>
+                <span className="text-2xl">
+                  🔔
+                </span>
+
               </div>
 
               <div className="space-y-3 p-5">
+
                 <AlertRow
                   icon="❤️"
                   title={text.highRate}
                   description={
                     bleData.bpm > 0
-                      ? `Frecuencia cardíaca: ${bleData.bpm} ppm`
+                      ? `${text.realPulse}: ${bleData.bpm} ppm`
                       : text.waitingData
                   }
-                  time="EN VIVO"
+                  time={
+                    language === "qu"
+                      ? "KUNAN"
+                      : "EN VIVO"
+                  }
                   type="danger"
                 />
 
@@ -616,18 +961,28 @@ export default function DashboardPage() {
                   time="08:00 AM"
                   type="success"
                 />
+
               </div>
 
               <div
                 className="h-5"
-                style={{ backgroundImage: textilePattern }}
+                style={{
+                  backgroundImage:
+                    textilePattern,
+                }}
               />
+
             </section>
 
             {/* HUARAZ */}
+
             <section className="relative overflow-hidden rounded-[30px] border border-[#dfbf8e] bg-[#eaf0dc] shadow-[0_16px_40px_rgba(72,48,25,0.10)]">
+
               <div className="relative min-h-[300px] p-6">
-                <div className="absolute right-4 top-3 text-5xl">☀️</div>
+
+                <div className="absolute right-4 top-3 text-5xl">
+                  ☀️
+                </div>
 
                 <p className="text-xs font-black uppercase tracking-[0.18em] text-[#c1440c]">
                   {text.ourLand}
@@ -642,6 +997,7 @@ export default function DashboardPage() {
                 </p>
 
                 <div className="absolute bottom-5 left-4 right-4 h-40 overflow-hidden rounded-3xl shadow-lg">
+
                   <img
                     src="https://d36tnp772eyphs.cloudfront.net/blogs/1/2019/07/Plaza-De-Armas-in-Peruvian-city-of-Huaraz.jpg"
                     alt="Plaza de Armas de Huaraz"
@@ -651,6 +1007,7 @@ export default function DashboardPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
                   <div className="absolute bottom-3 left-3">
+
                     <p className="text-[10px] font-black uppercase tracking-[0.15em] text-white">
                       {text.ourLand}
                     </p>
@@ -658,20 +1015,26 @@ export default function DashboardPage() {
                     <p className="text-lg font-black text-white">
                       {text.huaraz}
                     </p>
+
                   </div>
                 </div>
               </div>
             </section>
 
             {/* CONECTADO CONTIGO */}
+
             <section className="overflow-hidden rounded-[27px] border border-[#dfbf8e] bg-[#fff9ed] shadow-[0_12px_30px_rgba(72,48,25,0.08)]">
+
               <div className="p-5">
+
                 <div className="mb-4 flex items-center gap-3">
+
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#087f83] text-2xl text-white">
                     🛡️
                   </div>
 
                   <div>
+
                     <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#087f83]">
                       NeuroWatch
                     </p>
@@ -679,66 +1042,110 @@ export default function DashboardPage() {
                     <h2 className="font-display text-xl font-black uppercase">
                       {text.connectedWithYou}
                     </h2>
+
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
+
                   <div className="rounded-2xl bg-[#087f83]/10 p-3">
+
                     <p className="text-[10px] font-bold text-[#6b5842]">
                       {text.status}
                     </p>
 
                     <p className="mt-1 text-sm font-black text-[#2f8f5b]">
-                      {bleData.connected ? text.active : text.ready}
+                      {bleData.connected
+                        ? text.active
+                        : text.ready}
                     </p>
+
                   </div>
 
                   <div className="rounded-2xl bg-[#c1440c]/10 p-3">
+
                     <p className="text-[10px] font-bold text-[#6b5842]">
                       {text.battery}
                     </p>
 
                     <p className="mt-1 text-sm font-black">
                       {bleData.connected
-                        ? `${Math.round(bleData.batteryPercent)}%`
+                        ? `${Math.round(
+                            bleData.batteryPercent
+                          )}%`
                         : "--"}
                     </p>
+
                   </div>
+
                 </div>
               </div>
 
               <div
                 className="h-5"
-                style={{ backgroundImage: textilePattern }}
+                style={{
+                  backgroundImage:
+                    textilePattern,
+                }}
               />
+
             </section>
+
           </aside>
         </div>
 
         {/* PIE CULTURAL */}
+
         <section className="mt-5 rounded-[28px] border border-[#dfbf8e] bg-[#fff9ed] p-5 shadow-[0_12px_30px_rgba(72,48,25,0.08)]">
+
           <div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-4">
-            <CultureItem icon="❤️" text={text.health} />
-            <CultureItem icon="🤝" text={text.trust} />
-            <CultureItem icon="💡" text={text.innovation} />
-            <CultureItem icon="👥" text={text.community} />
+
+            <CultureItem
+              icon="❤️"
+              text={text.health}
+            />
+
+            <CultureItem
+              icon="🤝"
+              text={text.trust}
+            />
+
+            <CultureItem
+              icon="💡"
+              text={text.innovation}
+            />
+
+            <CultureItem
+              icon="👥"
+              text={text.community}
+            />
+
           </div>
 
           <div
             className="h-5"
-            style={{ backgroundImage: textilePattern }}
+            style={{
+              backgroundImage:
+                textilePattern,
+            }}
           />
+
         </section>
+
       </main>
 
       {/* ALERTA ORIGINAL */}
+
       <AlertModal
         open={alertOpen}
         remainingSeconds={countdownSeconds}
         totalSeconds={settings.countdownSeconds}
-        contacts={contacts.map((c) => c.name)}
+        contacts={contacts.map(
+          (c) => c.name
+        )}
         onCancel={cancelAlert}
       />
+
     </div>
   );
 }
@@ -760,13 +1167,23 @@ function VitalCard({
 }) {
   return (
     <div className="rounded-[20px] border border-[#e6cfa9] bg-[#fffaf0] p-4 shadow-sm">
-      <div className="mb-2 text-2xl">{icon}</div>
 
-      <p className="text-[11px] font-bold text-[#6b5842]">{title}</p>
+      <div className="mb-2 text-2xl">
+        {icon}
+      </div>
 
-      <p className="mt-1 text-2xl font-black text-[#263a32]">{value}</p>
+      <p className="text-[11px] font-bold text-[#6b5842]">
+        {title}
+      </p>
 
-      <p className="text-[10px] font-black text-[#a9967d]">{unit}</p>
+      <p className="mt-1 text-2xl font-black text-[#263a32]">
+        {value}
+      </p>
+
+      <p className="text-[10px] font-black text-[#a9967d]">
+        {unit}
+      </p>
+
     </div>
   );
 }
@@ -789,9 +1206,12 @@ function AlertRow({
   type: "danger" | "warning" | "success";
 }) {
   const styles = {
-    danger: "bg-[#c1272d]/10",
-    warning: "bg-[#e8a33d]/15",
-    success: "bg-[#2f8f5b]/10",
+    danger:
+      "bg-[#c1272d]/10",
+    warning:
+      "bg-[#e8a33d]/15",
+    success:
+      "bg-[#2f8f5b]/10",
   };
 
   return (
@@ -803,17 +1223,23 @@ function AlertRow({
       </div>
 
       <div className="min-w-0 flex-1">
+
         <div className="flex items-start justify-between gap-2">
-          <p className="text-xs font-black uppercase">{title}</p>
+
+          <p className="text-xs font-black uppercase">
+            {title}
+          </p>
 
           <span className="shrink-0 text-[9px] font-bold text-[#8c7660]">
             {time}
           </span>
+
         </div>
 
         <p className="mt-1 text-[10px] leading-relaxed text-[#6b5842]">
           {description}
         </p>
+
       </div>
     </div>
   );
@@ -832,11 +1258,15 @@ function CultureItem({
 }) {
   return (
     <div className="flex flex-col items-center justify-center gap-1 rounded-2xl bg-[#f9f0df] p-3 text-center">
-      <span className="text-2xl">{icon}</span>
+
+      <span className="text-2xl">
+        {icon}
+      </span>
 
       <span className="text-[11px] font-black uppercase text-[#3b2a1a]">
         {text}
       </span>
+
     </div>
   );
 }
