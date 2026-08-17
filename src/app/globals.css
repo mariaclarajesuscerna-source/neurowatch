@@ -1,1302 +1,161 @@
-@import "tailwindcss";
-
-@theme {
-  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
-}
-
-:root {
-  --nw-red: #ef3e32;
-  --nw-orange: #f28c28;
-  --nw-yellow: #f5c542;
-  --nw-green: #2e9b62;
-  --nw-cyan: #19a9c7;
-  --nw-blue: #2877b8;
-  --nw-sky: #e9f8fb;
-  --nw-dark: #17324d;
-  --nw-text: #203447;
-  --nw-muted: #6f7f8d;
-  --nw-white: #ffffff;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  min-height: 100dvh;
-  font-family: var(--font-body);
-  color: var(--nw-text);
-  background:
-    linear-gradient(
-      180deg,
-      #f8fdff 0%,
-      #eef9f5 50%,
-      #fffaf0 100%
-    );
-}
-
-/* =========================================================
-   FONDO
-========================================================= */
-
-.nw-page {
-  position: relative;
-  min-height: 100vh;
-  overflow: hidden;
-  background:
-    radial-gradient(
-      circle at 10% 10%,
-      rgba(25, 169, 199, 0.16),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 90% 25%,
-      rgba(245, 197, 66, 0.16),
-      transparent 28%
-    ),
-    linear-gradient(
-      180deg,
-      #f9fdff 0%,
-      #edf8f6 55%,
-      #fff9ed 100%
-    );
-}
-
-.nw-background {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-/* Sol */
-
-.nw-sun {
-  position: absolute;
-  width: 260px;
-  height: 260px;
-  top: -120px;
-  right: -70px;
-  border-radius: 50%;
-  background:
-    radial-gradient(
-      circle,
-      rgba(245, 197, 66, 0.35),
-      rgba(242, 140, 40, 0.1) 55%,
-      transparent 70%
-    );
-}
-
-/* Nubes */
-
-.nw-cloud {
-  position: absolute;
-  width: 160px;
-  height: 38px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.7);
-  filter: blur(2px);
-}
-
-.nw-cloud::before,
-.nw-cloud::after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  background: inherit;
-}
-
-.nw-cloud::before {
-  width: 65px;
-  height: 65px;
-  left: 25px;
-  bottom: 4px;
-}
-
-.nw-cloud::after {
-  width: 80px;
-  height: 80px;
-  right: 25px;
-  bottom: 3px;
-}
-
-.nw-cloud-one {
-  top: 170px;
-  left: -30px;
-  opacity: 0.55;
-}
-
-.nw-cloud-two {
-  top: 420px;
-  right: -50px;
-  opacity: 0.35;
-}
-
-/* Montañas */
-
-.nw-mountains {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 330px;
-}
-
-.mountain-back {
-  fill: rgba(40, 119, 184, 0.12);
-}
-
-.mountain-front {
-  fill: rgba(46, 155, 98, 0.1);
-}
-
-.snow {
-  fill: rgba(255, 255, 255, 0.75);
-}
-
-/* =========================================================
-   PATRÓN ANDINO
-========================================================= */
-
-.nw-pattern {
-  position: absolute;
-  width: 220px;
-  height: 120px;
-  opacity: 0.12;
-  background-size: 40px 40px;
-
-  background-image:
-    linear-gradient(
-      45deg,
-      transparent 42%,
-      #ef3e32 43%,
-      #ef3e32 57%,
-      transparent 58%
-    ),
-    linear-gradient(
-      -45deg,
-      transparent 42%,
-      #f5c542 43%,
-      #f5c542 57%,
-      transparent 58%
-    );
-}
-
-.nw-pattern-top {
-  top: 110px;
-  right: -40px;
-  transform: rotate(8deg);
-}
-
-.nw-pattern-bottom {
-  bottom: 160px;
-  left: -50px;
-  transform: rotate(-8deg);
-}
-
-/* =========================================================
-   CONTENIDO
-========================================================= */
-
-.nw-main {
-  position: relative;
-  z-index: 2;
-
-  width: min(100% - 32px, 760px);
-
-  margin: 0 auto;
-
-  padding:
-    18px
-    0
-    60px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* =========================================================
-   TOPBAR
-========================================================= */
-
-.nw-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-}
-
-.nw-location {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  color: var(--nw-dark);
-
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-}
-
-.nw-mountain-icon {
-  font-size: 22px;
-}
-
-.nw-language {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.nw-language-label {
-  font-size: 9px;
-  font-weight: 900;
-  color: #80909b;
-}
-
-.nw-language-switch {
-  display: flex;
-  padding: 4px;
-
-  border: 1px solid #d6e5e8;
-  border-radius: 15px;
-
-  background: rgba(255, 255, 255, 0.9);
-
-  box-shadow:
-    0 5px 20px rgba(32, 52, 71, 0.08);
-}
-
-.nw-language-btn {
-  border: 0;
-  border-radius: 11px;
-
-  padding: 9px 12px;
-
-  background: transparent;
-
-  color: #71808b;
-
-  font-size: 10px;
-  font-weight: 900;
-
-  cursor: pointer;
-
-  transition:
-    0.2s ease;
-}
-
-.nw-language-btn:hover {
-  background: #edf7f8;
-}
-
-.nw-language-btn.active {
-  color: white;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--nw-red),
-      var(--nw-orange)
-    );
-
-  box-shadow:
-    0 4px 12px rgba(239, 62, 50, 0.25);
-}
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.nw-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.nw-brand {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-}
-
-.nw-logo {
-  position: relative;
-
-  width: 56px;
-  height: 56px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: white;
-
-  border-radius: 17px;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--nw-red),
-      var(--nw-orange) 48%,
-      var(--nw-yellow)
-    );
-
-  box-shadow:
-    0 10px 25px rgba(239, 62, 50, 0.25);
-}
-
-.nw-logo-dot {
-  position: absolute;
-
-  width: 13px;
-  height: 13px;
-
-  right: -3px;
-  top: -3px;
-
-  border: 3px solid white;
-  border-radius: 50%;
-
-  background: var(--nw-green);
-}
-
-.nw-brand h1 {
-  margin: 0;
-
-  color: var(--nw-dark);
-
-  font-size: 27px;
-  font-weight: 950;
-  letter-spacing: -0.04em;
-}
-
-.nw-brand p {
-  margin: 3px 0 0;
-
-  color: #7b8994;
-
-  font-size: 11px;
-  font-weight: 700;
-}
-
-/* =========================================================
-   BARRA ANDINA
-========================================================= */
-
-.nw-andean-bar {
-  display: flex;
-  height: 8px;
-
-  overflow: hidden;
-
-  border-radius: 999px;
-}
-
-.nw-andean-bar span {
-  flex: 1;
-}
-
-.nw-andean-bar span:nth-child(1) {
-  background: var(--nw-red);
-}
-
-.nw-andean-bar span:nth-child(2) {
-  background: var(--nw-orange);
-}
-
-.nw-andean-bar span:nth-child(3) {
-  background: var(--nw-yellow);
-}
-
-.nw-andean-bar span:nth-child(4) {
-  background: var(--nw-green);
-}
-
-.nw-andean-bar span:nth-child(5) {
-  background: var(--nw-cyan);
-}
-
-.nw-andean-bar span:nth-child(6) {
-  background: var(--nw-blue);
-}
-
-.nw-andean-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-
-  padding: 2px 0;
-
-  color: #607583;
-
-  font-size: 9px;
-  font-weight: 950;
-  letter-spacing: 0.18em;
-}
-
-.nw-andean-title span {
-  color: var(--nw-orange);
-}
-
-/* =========================================================
-   HERO
-========================================================= */
-
-.nw-hero {
-  position: relative;
-
-  overflow: hidden;
-
-  min-height: 260px;
-
-  border-radius: 32px;
-
-  color: white;
-
-  background:
-    linear-gradient(
-      135deg,
-      #174f72 0%,
-      #177c8f 48%,
-      #1c9b79 100%
-    );
-
-  box-shadow:
-    0 20px 45px rgba(23, 79, 114, 0.24);
-}
-
-.nw-hero::before {
-  content: "";
-
-  position: absolute;
-  inset: 0;
-
-  opacity: 0.15;
-
-  background:
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 20px,
-      white 21px,
-      transparent 22px
-    );
-}
-
-.nw-hero-decoration {
-  position: absolute;
-
-  width: 190px;
-  height: 190px;
-
-  border-radius: 50%;
-
-  filter: blur(3px);
-}
-
-.nw-hero-decoration.one {
-  top: -100px;
-  right: -70px;
-
-  background: rgba(245, 197, 66, 0.35);
-}
-
-.nw-hero-decoration.two {
-  bottom: -110px;
-  left: -80px;
-
-  background: rgba(239, 62, 50, 0.22);
-}
-
-.nw-hero-content {
-  position: relative;
-  z-index: 2;
-
-  padding: 25px;
-}
-
-.nw-hero-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 15px;
-}
-
-.nw-eyebrow {
-  display: block;
-
-  color: #bcecf0;
-
-  font-size: 10px;
-  font-weight: 950;
-  letter-spacing: 0.2em;
-}
-
-.nw-hero h2 {
-  max-width: 430px;
-
-  margin: 8px 0 0;
-
-  font-size: 29px;
-  line-height: 1.08;
-  font-weight: 950;
-  letter-spacing: -0.03em;
-}
-
-.nw-watch {
-  width: 62px;
-  height: 62px;
-
-  flex-shrink: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 18px;
-
-  background: rgba(255, 255, 255, 0.13);
-
-  font-size: 31px;
-
-  backdrop-filter: blur(10px);
-}
-
-.nw-hero-mountain {
-  margin: 25px 0 18px;
-
-  overflow: hidden;
-
-  height: 55px;
-
-  border-radius: 16px;
-
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.nw-hero-mountain svg {
-  width: 100%;
-  height: 100%;
-}
-
-.nw-hero-mountain path:first-child {
-  fill: rgba(255, 255, 255, 0.13);
-}
-
-.nw-hero-mountain path:last-child {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.75);
-  stroke-width: 2;
-}
-
-.nw-hero-status {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 15px;
-}
-
-.nw-hero-status span {
-  display: block;
-
-  color: rgba(255, 255, 255, 0.58);
-
-  font-size: 11px;
-}
-
-.nw-hero-status strong {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  margin-top: 5px;
-
-  font-size: 15px;
-}
-
-.nw-status-dot {
-  width: 11px;
-  height: 11px;
-
-  border-radius: 50%;
-
-  background: rgba(255, 255, 255, 0.4);
-}
-
-.nw-status-dot.connected {
-  background: #7df2b0;
-
-  animation: nw-pulse 1.5s infinite;
-}
-
-.nw-live {
-  padding: 8px 12px;
-
-  border-radius: 999px;
-
-  background: rgba(255, 255, 255, 0.14);
-
-  font-size: 9px;
-  font-weight: 950;
-}
-
-/* =========================================================
-   CONECTAR
-========================================================= */
-
-.nw-connect {
-  width: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-
-  padding: 15px 18px;
-
-  border: 0;
-  border-radius: 20px;
-
-  color: white;
-
-  background:
-    linear-gradient(
-      135deg,
-      #17324d,
-      #22668b
-    );
-
-  font-size: 14px;
-  font-weight: 950;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 12px 25px rgba(23, 50, 77, 0.2);
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.nw-connect:hover {
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 16px 30px rgba(23, 50, 77, 0.25);
-}
-
-.nw-connect:active {
-  transform: scale(0.98);
-}
-
-.nw-connect-icon {
-  width: 40px;
-  height: 40px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 12px;
-
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.nw-arrow {
-  margin-left: auto;
-
-  font-size: 22px;
-
-  opacity: 0.6;
-}
-
-/* =========================================================
-   ERROR
-========================================================= */
-
-.nw-error {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  padding: 14px 16px;
-
-  border: 1px solid #ffc9c5;
-  border-radius: 18px;
-
-  background: #fff4f2;
-}
-
-.nw-error p {
-  margin: 0;
-
-  color: #c7352c;
-
-  font-size: 12px;
-  font-weight: 750;
-}
-
-/* =========================================================
-   CARDS
-========================================================= */
-
-.nw-card {
-  border: 1px solid rgba(255, 255, 255, 0.95);
-  border-radius: 27px;
-
-  background: rgba(255, 255, 255, 0.86);
-
-  box-shadow:
-    0 10px 30px rgba(34, 60, 76, 0.09);
-
-  backdrop-filter: blur(12px);
-}
-
-.nw-current {
-  padding: 17px;
-}
-
-.nw-section-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  margin-bottom: 13px;
-}
-
-.nw-section-title span,
-.nw-section-heading span {
-  color: var(--nw-blue);
-
-  font-size: 10px;
-  font-weight: 950;
-  letter-spacing: 0.17em;
-}
-
-.nw-section-title h2,
-.nw-section-heading h2 {
-  margin: 4px 0 0;
-
-  color: var(--nw-dark);
-
-  font-size: 18px;
-  font-weight: 950;
-}
-
-.nw-heart {
-  width: 45px;
-  height: 45px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 14px;
-
-  background: #fff0ee;
-
-  font-size: 20px;
-}
-
-/* =========================================================
-   WAITING
-========================================================= */
-
-.nw-waiting {
-  padding: 30px 20px;
-
-  text-align: center;
-}
-
-.nw-heart-big {
-  width: 80px;
-  height: 80px;
-
-  margin: 0 auto 15px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background:
-    linear-gradient(
-      135deg,
-      #e2f8fb,
-      #fff1df
-    );
-
-  font-size: 36px;
-}
-
-.nw-waiting h2 {
-  margin: 0;
-
-  font-size: 17px;
-  font-weight: 950;
-}
-
-.nw-waiting p {
-  max-width: 390px;
-
-  margin: 8px auto 0;
-
-  color: #75838d;
-
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-.nw-loading {
-  width: 90px;
-  height: 5px;
-
-  margin: 20px auto 0;
-
-  border-radius: 999px;
-
-  background:
-    linear-gradient(
-      90deg,
-      var(--nw-cyan),
-      var(--nw-green),
-      var(--nw-yellow),
-      var(--nw-orange),
-      var(--nw-red)
-    );
-
-  animation: nw-loading 1.4s infinite;
-}
-
-/* =========================================================
-   SECCIONES
-========================================================= */
-
-.nw-section {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.nw-section-heading {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-
-  padding: 0 4px;
-}
-
-.nw-section-heading .cyan {
-  color: var(--nw-cyan);
-}
-
-.nw-live-pill {
-  padding: 7px 11px;
-
-  border-radius: 999px;
-
-  color: var(--nw-red);
-
-  background: #fff0ee;
-
-  font-size: 9px;
-  font-weight: 950;
-}
-
-.nw-pulse,
-.nw-device {
-  overflow: hidden;
-}
-
-.nw-mini-mountain {
-  font-size: 23px;
-}
-
-/* =========================================================
-   GRID
-========================================================= */
-
-.nw-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.nw-small-card {
-  min-height: 145px;
-
-  padding: 17px;
-
-  border-radius: 23px;
-
-  box-shadow:
-    0 9px 24px rgba(34, 60, 76, 0.08);
-}
-
-.nw-card-yellow {
-  background:
-    linear-gradient(
-      145deg,
-      #fff7d9,
-      #fff0c3
-    );
-
-  border: 1px solid #ffe59b;
-}
-
-.nw-card-cyan {
-  background:
-    linear-gradient(
-      145deg,
-      #e6f9fc,
-      #d9f2f8
-    );
-
-  border: 1px solid #b9e8ef;
-}
-
-.nw-small-icon {
-  width: 43px;
-  height: 43px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  margin-bottom: 13px;
-
-  border-radius: 13px;
-
-  background: white;
-
-  font-size: 20px;
-
-  box-shadow:
-    0 5px 12px rgba(30, 70, 80, 0.08);
-}
-
-.nw-small-card span {
-  display: block;
-
-  color: #84929a;
-
-  font-size: 9px;
-  font-weight: 800;
-}
-
-.nw-small-card strong {
-  display: block;
-
-  margin-top: 5px;
-
-  color: var(--nw-dark);
-
-  font-size: 13px;
-  font-weight: 950;
-  line-height: 1.3;
-}
-
-/* =========================================================
-   IDENTIDAD
-========================================================= */
-
-.nw-identity {
-  position: relative;
-
-  overflow: hidden;
-
-  padding: 21px;
-
-  border: 1px solid #f4d68c;
-  border-radius: 27px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #fff9e8,
-      #ffffff 50%,
-      #fff0e8
-    );
-
-  box-shadow:
-    0 10px 28px rgba(91, 71, 30, 0.08);
-}
-
-.nw-identity-mountain {
-  position: absolute;
-
-  right: -20px;
-  top: -25px;
-
-  font-size: 105px;
-
-  opacity: 0.09;
-}
-
-.nw-identity-content {
-  position: relative;
-  z-index: 2;
-
-  display: flex;
-  align-items: center;
-  gap: 13px;
-}
-
-.nw-identity-icon {
-  width: 50px;
-  height: 50px;
-
-  flex-shrink: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 15px;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--nw-orange),
-      var(--nw-yellow)
-    );
-
-  font-size: 24px;
-
-  box-shadow:
-    0 8px 18px rgba(242, 140, 40, 0.2);
-}
-
-.nw-identity-content span {
-  color: #c47c16;
-
-  font-size: 9px;
-  font-weight: 950;
-  letter-spacing: 0.17em;
-}
-
-.nw-identity-content h2 {
-  margin: 5px 0 0;
-
-  color: var(--nw-dark);
-
-  font-size: 16px;
-  font-weight: 950;
-}
-
-.nw-identity-content p {
-  margin: 5px 0 0;
-
-  color: #7c898f;
-
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.nw-rainbow {
-  position: relative;
-  z-index: 2;
-
-  display: flex;
-
-  height: 7px;
-
-  margin-top: 17px;
-
-  overflow: hidden;
-
-  border-radius: 999px;
-}
-
-.nw-rainbow i {
-  flex: 1;
-}
-
-.nw-rainbow i:nth-child(1) {
-  background: var(--nw-red);
-}
-
-.nw-rainbow i:nth-child(2) {
-  background: var(--nw-orange);
-}
-
-.nw-rainbow i:nth-child(3) {
-  background: var(--nw-yellow);
-}
-
-.nw-rainbow i:nth-child(4) {
-  background: var(--nw-green);
-}
-
-.nw-rainbow i:nth-child(5) {
-  background: var(--nw-cyan);
-}
-
-.nw-rainbow i:nth-child(6) {
-  background: var(--nw-blue);
-}
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.nw-footer {
-  padding: 5px 0 20px;
-
-  text-align: center;
-}
-
-.nw-footer-line {
-  width: 180px;
-  height: 2px;
-
-  margin: 0 auto 13px;
-
-  border-radius: 999px;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      var(--nw-orange),
-      var(--nw-cyan),
-      transparent
-    );
-}
-
-.nw-footer p {
-  margin: 0;
-
-  color: #89969d;
-
-  font-size: 9px;
-  font-weight: 650;
-}
-
-.nw-footer strong {
-  display: block;
-
-  margin-top: 8px;
-
-  color: #9ba8ae;
-
-  font-size: 9px;
-  font-weight: 950;
-  letter-spacing: 0.12em;
-}
-
-/* =========================================================
-   ANIMACIONES
-========================================================= */
-
-@keyframes nw-pulse {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  50% {
-    transform: scale(1.25);
-    opacity: 0.65;
-  }
-}
-
-@keyframes nw-loading {
-  0% {
-    transform: scaleX(0.65);
-    opacity: 0.45;
-  }
-
-  50% {
-    transform: scaleX(1);
-    opacity: 1;
-  }
-
-  100% {
-    transform: scaleX(0.65);
-    opacity: 0.45;
-  }
-}
-
-/* =========================================================
-   DESKTOP
-========================================================= */
-
-@media (min-width: 768px) {
-  .nw-main {
-    width: min(100% - 48px, 820px);
-
-    padding-top: 28px;
-  }
-
-  .nw-hero {
-    min-height: 290px;
-  }
-
-  .nw-hero-content {
-    padding: 32px;
-  }
-
-  .nw-hero h2 {
-    font-size: 34px;
-  }
-}
-
-/* =========================================================
-   CELULAR
-========================================================= */
-
-@media (max-width: 600px) {
-  .nw-main {
-    width: min(100% - 22px, 760px);
-
-    padding-top: 12px;
-  }
-
-  .nw-topbar {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .nw-language {
-    width: 100%;
-
-    justify-content: space-between;
-  }
-
-  .nw-language-switch {
-    flex: 1;
-
-    justify-content: stretch;
-  }
-
-  .nw-language-btn {
-    flex: 1;
-  }
-
-  .nw-brand h1 {
-    font-size: 24px;
-  }
-
-  .nw-hero h2 {
-    font-size: 26px;
-  }
-
-  .nw-grid {
-    gap: 9px;
-  }
-}
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import {
+  IconActivity,
+  IconSignal,
+  IconWifi,
+  IconBatteryFull,
+  IconBluetooth,
+} from "@/components/ui/icons";
+import StatusChip from "@/components/ui/StatusChip";
+import HeroStatus from "@/components/dashboard/HeroStatus";
+import PulseCard from "@/components/dashboard/PulseCard";
+import DeviceCard from "@/components/dashboard/DeviceCard";
+import AlertModal from "@/components/alert/AlertModal";
+import { useNeurowatch } from "@/components/NeurowatchProvider";
+
+export default function DashboardPage() {
+  const router = useRouter();
+
+  const {
+    bleData,
+    bleError,
+    connectBLE,
+    status,
+    pulseBars,
+    contacts,
+    alertOpen,
+    countdownSeconds,
+    settings,
+    cancelAlert,
+    disconnectedSince,
+  } = useNeurowatch();
+
+  useEffect(() => {
+    if (disconnectedSince) {
+      router.replace("/desconectado");
+    }
+  }, [router, disconnectedSince]);
+
+  const connStatus = bleData.connected
+    ? ("ok" as const)
+    : ("muted" as const);
+
+  const connLabel = bleData.connected
+    ? "Conectado"
+    : "Desconectado";
+
+  return (
+    <div className="flex flex-col gap-3.5 px-5 pt-3.5 md:pt-6 md:max-w-lg md:mx-auto">
+
+      {/* Barra de estado */}
+      <div className="flex items-center justify-between px-1 md:hidden">
+        <span className="text-[15px] font-semibold text-ink-900">
+          {new Date().toLocaleTimeString("es-ES", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </span>
+
+        <div className="flex items-center gap-1.5 text-ink-900">
+          <IconSignal size={16} />
+          <IconWifi size={16} />
+          <IconBatteryFull size={16} />
+        </div>
+      </div>
+
+      {/* Encabezado */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+
+          <div className="h-[34px] w-[34px] rounded-[11px] bg-brand-600 flex items-center justify-center shadow-[0_4px_12px_rgba(79,70,229,0.25)] text-white">
+            <IconActivity size={20} />
+          </div>
+
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[22px] font-bold text-ink-900 leading-tight">
+              Neurowatch
+            </span>
+
+            <span className="text-[13px] font-normal text-ink-600 leading-tight">
+              Monitoreo en vivo
+            </span>
+          </div>
+
+        </div>
+
+        <StatusChip
+          label={connLabel}
+          status={connStatus}
+        />
+      </div>
+
+      {/* Botón conectar reloj */}
+      {!bleData.connected && (
+        <button
+          onClick={connectBLE}
+          className="w-full flex items-center justify-center gap-2.5 py-4 rounded-[18px] bg-brand-600 text-white shadow-[0_8px_20px_rgba(79,70,229,0.25)] active:scale-[0.98] transition-transform"
+        >
+          <IconBluetooth size={22} />
+
+          <span className="text-base font-bold">
+            Conectar reloj
+          </span>
+        </button>
+      )}
+
+      {/* Error BLE */}
+      {bleError && (
+        <div className="rounded-[14px] bg-alert-fill border border-alert-border p-3.5">
+          <p className="text-[13px] font-medium text-alert">
+            {bleError}
+          </p>
+        </div>
+      )}
+
+      {/* Estado principal */}
+      {bleData.connected && bleData.bpm > 0 && (
+        <HeroStatus state={status} />
+      )}
+
+      {/* Esperando datos */}
+      {bleData.connected && bleData.bpm === 0 && (
+        <div className="rounded-[20px] bg-white/55 backdrop-blur-xl border border-white/70 p-6 text-center">
+          <p className="text-[15px] font-medium text-ink-600">
+            Conectado al reloj. Coloca el dedo en el sensor para ver tu pulso.
+          </p>
+        </div>
+      )}
+
+      {/* Pulso */}
+      <PulseCard
+        bpm={bleData.bpm}
+        bars={pulseBars}
+      />
+
+      {/* Dispositivo */}
+      <DeviceCard
+        connected={bleData.connected}
+        signalStatus={
+          bleData.connected
+            ? "Senal estable"
+            : "Sin conectar"
+        }
+        batteryPercent={Math.round(bleData.batteryPercent)}
+      />
+
+      {/* Alertas */}
+      <AlertModal
+        open={alertOpen}
+        remainingSeconds={countdownSeconds}
+        totalSeconds={settings.countdownSeconds}
+        contacts={contacts.map((c) => c.name)}
+        onCancel={cancelAlert}
+      />
+
+    </div>
+  );
+}
+                
