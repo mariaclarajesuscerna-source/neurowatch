@@ -821,10 +821,16 @@ export default function DashboardPage() {
             )}
 
             {/* ESTADO */}
+{/* ESTADO */}
+
 {bleData.connected &&
   bleData.bpm > 0 && (
     <HeroStatus state={status} />
   )}
+
+{/* SIGNOS EN VIVO */}
+
+<section className="rounded-[28px] border border-[#dfbf8e] bg-[#fff9ed] p-5 shadow-[0_12px_30px_rgba(72,48,25,0.08)]">
               )}
 
             {/* SIGNOS EN VIVO */}
