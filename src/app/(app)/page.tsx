@@ -496,36 +496,16 @@ const {
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+             <div className="grid grid-cols-1 gap-3">
 
-                <VitalCard
-                  icon="❤️"
-                  title="Frecuencia cardíaca"
-                  value={bleData.bpm > 0 ? String(bleData.bpm) : "--"}
-                  unit="ppm"
-                />
+  <VitalCard
+    icon="❤️"
+    title="Frecuencia cardíaca"
+    value={bleData.bpm > 0 ? String(bleData.bpm) : "--"}
+    unit="ppm"
+  />
 
-                <VitalCard
-                  icon="🫁"
-                  title="Respiración"
-                  value="--"
-                  unit="rpm"
-                />
-
-                <VitalCard
-                  icon="🩸"
-                  title="Oxígeno"
-                  value="--"
-                  unit="SpO₂"
-                />
-
-                <VitalCard
-                  icon="🌡️"
-                  title="Temperatura"
-                  value="--"
-                  unit="°C"
-                />
-              </div>
+</div>
             </section>
 
             {/* ESPERANDO DATOS */}
@@ -733,8 +713,7 @@ const {
             PIE CULTURAL
         =================================================== */}
 
-        <section className="mt-5 overflow-hidden rounded-[28px] border border-[#dfbf8e] bg-[#fff9ed] shadow-[0_12px_30px_rgba(72,48,25,0.08)]">
-
+       <section className="rounded-[28px] border border-[#dfbf8e] bg-[#fff9ed] p-5 shadow-[0_12px_30px_rgba(72,48,25,0.08)]">
           <div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-4">
 
             <CultureItem icon="❤️" text="Salud" />
