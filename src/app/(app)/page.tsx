@@ -92,7 +92,7 @@ export default function DashboardPage() {
         />
       </div>
 
-      {/* Botón conectar reloj */}
+      {/* BotÃģn conectar reloj */}
       {!bleData.connected && (
         <button
           onClick={connectBLE}
