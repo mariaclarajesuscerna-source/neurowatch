@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import "./globals.css";
 
 type Language = "es" | "qu";
 
