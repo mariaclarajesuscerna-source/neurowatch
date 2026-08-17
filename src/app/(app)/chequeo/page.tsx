@@ -74,21 +74,27 @@ export default function ChequeoPage() {
   const [countdown, setCountdown] = useState(0);
 
   const stopCamera = useCallback(() => {
-    streamRef.current?.getTracks().forEach((t) => t.stop());
+    streamRef.current?.getTracks().forEach((track) => track.stop());
     streamRef.current = null;
     setCameraReady(false);
   }, []);
 
   useEffect(() => {
-    return () => stopCamera();
+    return () => {
+      stopCamera();
+    };
   }, [stopCamera]);
 
   useEffect(() => {
-    if (!cameraReady || !streamRef.current || !videoRef.current) return;
+    if (!cameraReady || !streamRef.current || !videoRef.current) {
+      return;
+    }
 
-    videoRef.current.srcObject = streamRef.current;
+    const video = videoRef.current;
 
-    videoRef.current.play().catch(() => {});
+    video.srcObject = streamRef.current;
+
+    video.play().catch(() => {});
   }, [cameraReady]);
 
   const startCamera = async () => {
@@ -98,14 +104,22 @@ export default function ChequeoPage() {
       stopCamera();
 
       if (!navigator.mediaDevices?.getUserMedia) {
-        throw new Error("Este navegador no permite usar la camara.");
+        throw new Error(
+          "Este navegador no permite usar la camara."
+        );
       }
 
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
-          facingMode: { ideal: "user" },
-          width: { ideal: 720 },
-          height: { ideal: 960 },
+          facingMode: {
+            ideal: "user",
+          },
+          width: {
+            ideal: 720,
+          },
+          height: {
+            ideal: 960,
+          },
         },
         audio: false,
       });
@@ -129,13 +143,10 @@ export default function ChequeoPage() {
   const capture = async () => {
     const video = videoRef.current;
 
-    if (!video || !video.videoWidth || !video.videoHeight) return;
+    if (!video || !video.videoWidth || !video.videoHeight) {
+      return;
+    }
 
-    /*
-     * IMPORTANTE:
-     * La captura se hace directamente desde el video.
-     * No se aplica scaleX(-1), rotate ni ningún efecto espejo.
-     */
     const canvas = document.createElement("canvas");
 
     canvas.width = video.videoWidth;
@@ -143,8 +154,19 @@ export default function ChequeoPage() {
 
     const context = canvas.getContext("2d");
 
-    if (!context) return;
+    if (!context) {
+      return;
+    }
 
+    /*
+     * IMPORTANTE:
+     * No hacemos translate().
+     * No hacemos scale(-1, 1).
+     * No hacemos rotate().
+     *
+     * La fotografía se guarda exactamente
+     * en la orientación que entrega la cámara.
+     */
     context.drawImage(
       video,
       0,
@@ -153,7 +175,10 @@ export default function ChequeoPage() {
       canvas.height
     );
 
-    const image = canvas.toDataURL("image/jpeg", 0.9);
+    const image = canvas.toDataURL(
+      "image/jpeg",
+      0.9
+    );
 
     stopCamera();
 
@@ -165,13 +190,13 @@ export default function ChequeoPage() {
     setCountdown(3);
 
     const tick = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
+      setCountdown((previous) => {
+        if (previous <= 1) {
           clearInterval(tick);
           return 0;
         }
 
-        return prev - 1;
+        return previous - 1;
       });
     }, 1000);
 
@@ -188,9 +213,14 @@ export default function ChequeoPage() {
 
     const elapsed = Date.now() - startedAt;
 
-    const remaining = Math.max(0, 3000 - elapsed);
+    const remaining = Math.max(
+      0,
+      3000 - elapsed
+    );
 
-    await new Promise((r) => setTimeout(r, remaining));
+    await new Promise((resolve) =>
+      setTimeout(resolve, remaining)
+    );
 
     clearInterval(tick);
 
@@ -235,21 +265,25 @@ export default function ChequeoPage() {
 
       <GlassCard className="flex flex-col gap-3 p-4">
 
-        {/* Visor */}
         <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-ink-900">
 
+          {/* CAMARA SIN EFECTO ESPEJO */}
           <video
             ref={videoRef}
             playsInline
             muted
+            autoPlay
             className={`h-full w-full object-cover ${
-              state === "preview" ? "" : "hidden"
+              state === "preview"
+                ? ""
+                : "hidden"
             }`}
             style={{
               transform: "none",
             }}
           />
 
+          {/* FOTO SIN EFECTO ESPEJO */}
           {state === "result" && photo && (
             <img
               src={photo}
@@ -311,7 +345,6 @@ export default function ChequeoPage() {
           </p>
         )}
 
-        {/* Streak */}
         <div className="flex items-center justify-between px-2 py-1">
 
           <div className="flex items-center gap-2">
@@ -319,7 +352,9 @@ export default function ChequeoPage() {
 
             <span className="text-[14px] font-semibold text-ink-900">
               Racha de {streak.count}{" "}
-              {streak.count === 1 ? "dia" : "dias"}
+              {streak.count === 1
+                ? "dia"
+                : "dias"}
             </span>
           </div>
 
@@ -330,8 +365,6 @@ export default function ChequeoPage() {
           )}
 
         </div>
-
-        {/* Action buttons */}
 
         {state === "idle" && (
           <button
@@ -353,21 +386,20 @@ export default function ChequeoPage() {
           </button>
         )}
 
-        {/* Result */}
+        {state === "result" &&
+          index !== null && (
+            <>
+              <SymmetryBar value={index} />
 
-        {state === "result" && index !== null && (
-          <>
-            <SymmetryBar value={index} />
-
-            <button
-              onClick={reset}
-              className="flex h-12 items-center justify-center gap-2 rounded-xl border-[1.5px] border-brand-500 bg-white/80 font-semibold text-brand-600"
-            >
-              <IconRefreshCw size={18} />
-              Nuevo chequeo
-            </button>
-          </>
-        )}
+              <button
+                onClick={reset}
+                className="flex h-12 items-center justify-center gap-2 rounded-xl border-[1.5px] border-brand-500 bg-white/80 font-semibold text-brand-600"
+              >
+                <IconRefreshCw size={18} />
+                Nuevo chequeo
+              </button>
+            </>
+          )}
 
         {state === "analyzing" && (
           <div className="flex items-center justify-center py-2">
@@ -378,8 +410,6 @@ export default function ChequeoPage() {
         )}
 
       </GlassCard>
-
-      {/* Last check card */}
 
       {lastCheck && (
         <GlassCard className="flex items-center gap-3 p-4">
@@ -400,7 +430,8 @@ export default function ChequeoPage() {
             </b>
 
             <p className="text-sm text-ink-600">
-              Indice {lastCheck.index} — {lastCheck.date}
+              Indice {lastCheck.index} —{" "}
+              {lastCheck.date}
             </p>
           </div>
 
