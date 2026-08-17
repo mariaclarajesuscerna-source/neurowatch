@@ -34,13 +34,13 @@ const textilePattern = `
   )
 `;
 
-export default function DashboardPage(const {
+export default function DashboardPage() {
+  const router = useRouter();
+const {
   language,
   setLanguage,
   t,
-} = useLanguage();) {
-  const router = useRouter();
-
+} = useLanguage();
   const {
     bleData,
     bleError,
