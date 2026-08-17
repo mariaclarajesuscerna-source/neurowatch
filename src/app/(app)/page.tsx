@@ -824,10 +824,9 @@ export default function DashboardPage() {
 
             {bleData.connected &&
               bleData.bpm > 0 && (
-                <HeroStatus
-                  state={status}
-                  language={language}
-                />
+              <HeroStatus
+  state={status}
+/>
               )}
 
             {/* SIGNOS EN VIVO */}
