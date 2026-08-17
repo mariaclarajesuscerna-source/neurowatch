@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+
 import { NeurowatchProvider } from "@/components/NeurowatchProvider";
+import { LanguageProvider } from "@/components/LanguageProvider";
+
 import "./globals.css";
 
 const inter = Inter({
@@ -34,7 +37,11 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full">
-        <NeurowatchProvider>{children}</NeurowatchProvider>
+        <LanguageProvider>
+          <NeurowatchProvider>
+            {children}
+          </NeurowatchProvider>
+        </LanguageProvider>
       </body>
     </html>
   );
