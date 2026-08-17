@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   IconActivity,
   IconCamera,
@@ -15,11 +9,8 @@ import {
   IconRefreshCw,
   IconZap,
 } from "@/components/ui/icons";
-
 import GlassCard from "@/components/ui/GlassCard";
-
 import { useNeurowatch } from "@/components/NeurowatchProvider";
-
 import { evaluateFacialSymmetry } from "@/lib/detection";
 
 type ChequeoState =
@@ -27,38 +18,6 @@ type ChequeoState =
   | "preview"
   | "analyzing"
   | "result";
-
-/*
- * =========================================================
- * FACE DETECTOR
- * =========================================================
- *
- * FaceDetector existe en algunos navegadores modernos,
- * pero TypeScript no siempre incluye su definición.
- */
-
-declare global {
-  interface Window {
-    FaceDetector?: new (options?: {
-      fastMode?: boolean;
-      maxDetectedFaces?: number;
-    }) => {
-      detect(
-        source: HTMLVideoElement
-      ): Promise<
-        {
-          boundingBox: DOMRectReadOnly;
-        }[]
-      >;
-    };
-  }
-}
-
-/*
- * =========================================================
- * BARRA DE SIMETRÍA
- * =========================================================
- */
 
 function SymmetryBar({
   value,
@@ -74,16 +33,16 @@ function SymmetryBar({
 
   const label =
     value > 85
-      ? "Simetrico"
+      ? "Simétrico"
       : value >= 70
-        ? "Leve asimetria"
-        : "Asimetria marcada";
+        ? "Leve asimetría"
+        : "Asimetría marcada";
 
   return (
     <div className="flex w-full flex-col gap-2">
       <div className="flex items-center justify-between">
         <span className="text-[15px] font-semibold text-ink-900">
-          Indice de simetria
+          Índice de simetría
         </span>
 
         <span className="text-[28px] font-bold tabular-nums text-ink-900">
@@ -95,7 +54,7 @@ function SymmetryBar({
         <div
           className={`h-full rounded-full transition-all duration-700 ${color}`}
           style={{
-            width: `${value}%`,
+            width: `${Math.min(100, Math.max(0, value))}%`,
           }}
         />
       </div>
@@ -107,57 +66,22 @@ function SymmetryBar({
   );
 }
 
-/*
- * =========================================================
- * PÁGINA
- * =========================================================
- */
-
 export default function ChequeoPage() {
   const {
     facialHistory,
     addFacialCheck,
     baselineImage,
     saveBaselineImage,
-    lastCheckPhoto,
     saveLastCheckPhoto,
     streak,
   } = useNeurowatch();
 
-  const videoRef =
-    useRef<HTMLVideoElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
 
-  const streamRef =
-    useRef<MediaStream | null>(null);
-
-  /*
-   * Detector facial
-   */
-  const faceDetectorRef =
-    useRef<
-      InstanceType<
-        NonNullable<typeof window.FaceDetector>
-      > | null
-    >(null);
-
-  /*
-   * Animation frame para revisar rostro.
-   */
-  const detectionFrameRef =
-    useRef<number | null>(null);
-
-  /*
-   * Momento en que comenzó a estar
-   * correctamente colocado.
-   */
-  const faceStableSinceRef =
-    useRef<number | null>(null);
-
-  /*
-   * Evita tomar varias fotos.
-   */
-  const autoCaptureTriggeredRef =
-    useRef(false);
+  // Evita que capture() pueda ejecutarse más de una vez
+  // mientras se está realizando un chequeo.
+  const capturingRef = useRef(false);
 
   const [state, setState] =
     useState<ChequeoState>("idle");
@@ -165,10 +89,12 @@ export default function ChequeoPage() {
   const [cameraReady, setCameraReady] =
     useState(false);
 
+  // IMPORTANTE:
+  // No cargamos automáticamente la última foto.
+  // La foto solo aparece después de presionar
+  // "Capturar foto".
   const [photo, setPhoto] =
-    useState<string | null>(
-      lastCheckPhoto
-    );
+    useState<string | null>(null);
 
   const [index, setIndex] =
     useState<number | null>(null);
@@ -180,66 +106,34 @@ export default function ChequeoPage() {
     useState(0);
 
   /*
-   * Estado visual de detección.
-   */
-  const [faceDetected, setFaceDetected] =
-    useState(false);
-
-  const [faceCentered, setFaceCentered] =
-    useState(false);
-
-  const [autoCaptureProgress, setAutoCaptureProgress] =
-    useState(0);
-
-  /*
-   * =========================================================
-   * DETENER DETECCIÓN
-   * =========================================================
-   */
-
-  const stopFaceDetection =
-    useCallback(() => {
-      if (
-        detectionFrameRef.current !== null
-      ) {
-        cancelAnimationFrame(
-          detectionFrameRef.current
-        );
-
-        detectionFrameRef.current = null;
-      }
-
-      faceStableSinceRef.current =
-        null;
-
-      setFaceDetected(false);
-      setFaceCentered(false);
-      setAutoCaptureProgress(0);
-    }, []);
-
-  /*
-   * =========================================================
+   * ======================================================
    * DETENER CÁMARA
-   * =========================================================
+   * ======================================================
    */
 
-  const stopCamera =
-    useCallback(() => {
-      stopFaceDetection();
+  const stopCamera = useCallback(() => {
+    const stream = streamRef.current;
 
-      streamRef.current
-        ?.getTracks()
-        .forEach((track) => {
-          track.stop();
-        });
+    if (stream) {
+      stream.getTracks().forEach((track) => {
+        track.stop();
+      });
+    }
 
-      streamRef.current = null;
+    streamRef.current = null;
 
-      setCameraReady(false);
-    }, [stopFaceDetection]);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.srcObject = null;
+    }
+
+    setCameraReady(false);
+  }, []);
 
   /*
-   * Limpiar al salir.
+   * ======================================================
+   * LIMPIAR AL SALIR
+   * ======================================================
    */
 
   useEffect(() => {
@@ -249,9 +143,9 @@ export default function ChequeoPage() {
   }, [stopCamera]);
 
   /*
-   * =========================================================
+   * ======================================================
    * CONECTAR STREAM AL VIDEO
-   * =========================================================
+   * ======================================================
    */
 
   useEffect(() => {
@@ -263,551 +157,306 @@ export default function ChequeoPage() {
       return;
     }
 
-    videoRef.current.srcObject =
-      streamRef.current;
+    const video = videoRef.current;
 
-    videoRef.current
-      .play()
-      .catch(() => {});
+    video.srcObject = streamRef.current;
+    video.muted = true;
+    video.playsInline = true;
+
+    video.play().catch(() => {});
   }, [cameraReady]);
 
   /*
-   * =========================================================
-   * CAPTURAR FOTO
-   * =========================================================
+   * ======================================================
+   * ABRIR CÁMARA
+   *
+   * IMPORTANTE:
+   * Abrir la cámara NO captura ninguna fotografía.
+   * ======================================================
    */
 
-  const capture =
-    useCallback(async () => {
-      if (
-        autoCaptureTriggeredRef.current
-      ) {
-        return;
-      }
-
-      const video =
-        videoRef.current;
-
-      if (
-        !video ||
-        video.readyState < 2 ||
-        !video.videoWidth ||
-        !video.videoHeight
-      ) {
-        return;
-      }
-
-      autoCaptureTriggeredRef.current =
-        true;
-
-      stopFaceDetection();
-
-      /*
-       * Canvas con orientación REAL.
-       *
-       * NO usamos espejo aquí.
-       */
-      const canvas =
-        document.createElement(
-          "canvas"
-        );
-
-      canvas.width =
-        video.videoWidth;
-
-      canvas.height =
-        video.videoHeight;
-
-      const context =
-        canvas.getContext("2d");
-
-      if (!context) {
-        autoCaptureTriggeredRef.current =
-          false;
-
-        return;
-      }
-
-      /*
-       * Restablecer cualquier transformación.
-       */
-      context.setTransform(
-        1,
-        0,
-        0,
-        1,
-        0,
-        0
-      );
-
-      /*
-       * FOTO SIN ESPEJO.
-       */
-      context.drawImage(
-        video,
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
-
-      const image =
-        canvas.toDataURL(
-          "image/jpeg",
-          0.92
-        );
+  const startCamera = async () => {
+    try {
+      setError(null);
 
       stopCamera();
 
-      setPhoto(image);
-
-      setState("analyzing");
-
-      const startedAt =
-        Date.now();
-
-      setCountdown(3);
-
-      const tick =
-        setInterval(() => {
-          setCountdown(
-            (prev) => {
-              if (prev <= 1) {
-                clearInterval(tick);
-                return 0;
-              }
-
-              return prev - 1;
-            }
-          );
-        }, 1000);
-
-      /*
-       * ANALIZAR SIMETRÍA
-       */
-      let symmetryIndex = 95;
-
-      try {
-        symmetryIndex =
-          await evaluateFacialSymmetry(
-            baselineImage,
-            image
-          );
-      } catch {
-        symmetryIndex = 95;
-      }
-
-      /*
-       * Mantener la animación
-       * aproximadamente 3 segundos.
-       */
-      const elapsed =
-        Date.now() - startedAt;
-
-      const remaining =
-        Math.max(
-          0,
-          3000 - elapsed
-        );
-
-      await new Promise<void>(
-        (resolve) => {
-          setTimeout(
-            resolve,
-            remaining
-          );
-        }
-      );
-
-      clearInterval(tick);
-
-      setCountdown(0);
-
-      setIndex(symmetryIndex);
-
-      setState("result");
-
-      /*
-       * Primera foto = línea base.
-       */
-      if (!baselineImage) {
-        saveBaselineImage(image);
-      }
-
-      /*
-       * Última foto.
-       */
-      saveLastCheckPhoto(image);
-
-      /*
-       * Historial.
-       */
-      addFacialCheck(
-        symmetryIndex,
-        image
-      );
-
-      /*
-       * Permitir nuevo chequeo.
-       */
-      autoCaptureTriggeredRef.current =
-        false;
-    }, [
-      baselineImage,
-      saveBaselineImage,
-      saveLastCheckPhoto,
-      addFacialCheck,
-      stopCamera,
-      stopFaceDetection,
-    ]);
-
-  /*
-   * =========================================================
-   * DETECCIÓN AUTOMÁTICA DEL ROSTRO
-   * =========================================================
-   */
-
-  const detectFace =
-    useCallback(async () => {
-      const video =
-        videoRef.current;
+      // Reiniciar estado de captura.
+      capturingRef.current = false;
 
       if (
-        !video ||
-        state !== "preview" ||
-        !cameraReady
+        !navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia
       ) {
-        return;
-      }
-
-      /*
-       * Si el navegador no tiene FaceDetector,
-       * no intentamos inventar una detección.
-       */
-      if (!window.FaceDetector) {
-        setFaceDetected(false);
-        setFaceCentered(false);
-        setAutoCaptureProgress(0);
-
-        detectionFrameRef.current =
-          requestAnimationFrame(
-            () => {
-              void detectFace();
-            }
-          );
-
-        return;
-      }
-
-      try {
-        /*
-         * Crear detector una sola vez.
-         */
-        if (!faceDetectorRef.current) {
-          faceDetectorRef.current =
-            new window.FaceDetector({
-              fastMode: true,
-              maxDetectedFaces: 1,
-            });
-        }
-
-        const faces =
-          await faceDetectorRef.current.detect(
-            video
-          );
-
-        if (
-          faces.length === 0
-        ) {
-          faceStableSinceRef.current =
-            null;
-
-          setFaceDetected(false);
-          setFaceCentered(false);
-          setAutoCaptureProgress(0);
-
-          detectionFrameRef.current =
-            requestAnimationFrame(
-              () => {
-                void detectFace();
-              }
-            );
-
-          return;
-        }
-
-        const face =
-          faces[0].boundingBox;
-
-        setFaceDetected(true);
-
-        /*
-         * Centro del rostro.
-         */
-        const faceCenterX =
-          face.x +
-          face.width / 2;
-
-        const faceCenterY =
-          face.y +
-          face.height / 2;
-
-        const videoCenterX =
-          video.videoWidth / 2;
-
-        const videoCenterY =
-          video.videoHeight / 2;
-
-        /*
-         * Permitimos cierta tolerancia
-         * para que no tengas que estar
-         * perfectamente inmóvil.
-         */
-        const horizontalTolerance =
-          video.videoWidth * 0.14;
-
-        const verticalTolerance =
-          video.videoHeight * 0.14;
-
-        const centered =
-          Math.abs(
-            faceCenterX -
-              videoCenterX
-          ) <
-            horizontalTolerance &&
-          Math.abs(
-            faceCenterY -
-              videoCenterY
-          ) <
-            verticalTolerance;
-
-        /*
-         * También comprobamos que el rostro
-         * tenga un tamaño razonable.
-         */
-        const faceWidthRatio =
-          face.width /
-          video.videoWidth;
-
-        const faceHeightRatio =
-          face.height /
-          video.videoHeight;
-
-        const correctSize =
-          faceWidthRatio > 0.18 &&
-          faceWidthRatio < 0.75 &&
-          faceHeightRatio > 0.18 &&
-          faceHeightRatio < 0.85;
-
-        const ready =
-          centered &&
-          correctSize;
-
-        setFaceCentered(ready);
-
-        /*
-         * Si está bien colocado,
-         * comienza el contador de estabilidad.
-         */
-        if (ready) {
-          if (
-            faceStableSinceRef.current ===
-            null
-          ) {
-            faceStableSinceRef.current =
-              Date.now();
-          }
-
-          const stableTime =
-            Date.now() -
-            faceStableSinceRef.current;
-
-          /*
-           * 1000 ms correctamente colocado.
-           */
-          const progress =
-            Math.min(
-              100,
-              (stableTime / 1000) *
-                100
-            );
-
-          setAutoCaptureProgress(
-            progress
-          );
-
-          if (
-            stableTime >=
-              1000 &&
-            !autoCaptureTriggeredRef.current
-          ) {
-            await capture();
-
-            return;
-          }
-        } else {
-          faceStableSinceRef.current =
-            null;
-
-          setAutoCaptureProgress(0);
-        }
-      } catch {
-        /*
-         * Si ocurre algún error durante
-         * la detección, seguimos mostrando
-         * la cámara.
-         */
-        setFaceDetected(false);
-        setFaceCentered(false);
-        setAutoCaptureProgress(0);
-      }
-
-      detectionFrameRef.current =
-        requestAnimationFrame(
-          () => {
-            void detectFace();
-          }
+        throw new Error(
+          "Este navegador no permite usar la cámara."
         );
-    }, [
-      state,
-      cameraReady,
-      capture,
-    ]);
+      }
+
+      const stream =
+        await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: {
+              ideal: "user",
+            },
+            width: {
+              ideal: 720,
+            },
+            height: {
+              ideal: 960,
+            },
+          },
+          audio: false,
+        });
+
+      streamRef.current = stream;
+
+      // Al abrir la cámara empezamos solamente
+      // con la vista previa.
+      setPhoto(null);
+      setIndex(null);
+      setCountdown(0);
+
+      setState("preview");
+      setCameraReady(true);
+    } catch (cause) {
+      const message =
+        cause instanceof Error
+          ? cause.message
+          : "No se pudo abrir la cámara.";
+
+      setError(
+        `No se pudo abrir la cámara: ${message}. Verifica los permisos de cámara y utiliza HTTPS o localhost.`
+      );
+
+      setState("idle");
+      capturingRef.current = false;
+    }
+  };
 
   /*
-   * =========================================================
-   * INICIAR DETECCIÓN CUANDO SE ABRE LA CÁMARA
-   * =========================================================
+   * ======================================================
+   * CAPTURAR FOTO
+   *
+   * SOLO se ejecuta al pulsar:
+   * "Capturar foto"
+   *
+   * No existe captura automática.
+   * ======================================================
    */
 
-  useEffect(() => {
-    if (
-      state !== "preview" ||
-      !cameraReady
-    ) {
-      stopFaceDetection();
+  const capture = async () => {
+    // Evitar dobles capturas.
+    if (capturingRef.current) {
       return;
     }
 
-    autoCaptureTriggeredRef.current =
-      false;
+    capturingRef.current = true;
 
-    faceStableSinceRef.current =
-      null;
+    const video = videoRef.current;
 
-    detectionFrameRef.current =
-      requestAnimationFrame(
-        () => {
-          void detectFace();
-        }
+    if (
+      !video ||
+      !video.videoWidth ||
+      !video.videoHeight
+    ) {
+      capturingRef.current = false;
+
+      setError(
+        "La cámara todavía no está lista. Espera un momento e inténtalo nuevamente."
       );
 
-    return () => {
-      if (
-        detectionFrameRef.current !==
-        null
-      ) {
-        cancelAnimationFrame(
-          detectionFrameRef.current
-        );
+      return;
+    }
 
-        detectionFrameRef.current =
-          null;
+    const canvas =
+      document.createElement("canvas");
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const context =
+      canvas.getContext("2d");
+
+    if (!context) {
+      capturingRef.current = false;
+
+      setError(
+        "No se pudo procesar la fotografía."
+      );
+
+      return;
+    }
+
+    /*
+     * La imagen mantiene su orientación REAL.
+     *
+     * No usamos:
+     * scaleX(-1)
+     * rotate()
+     * translate()
+     */
+
+    context.setTransform(
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    );
+
+    context.drawImage(
+      video,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    /*
+     * AQUÍ se crea la foto.
+     *
+     * Esta función solamente puede llegar
+     * aquí después de pulsar el botón.
+     */
+
+    const image =
+      canvas.toDataURL(
+        "image/jpeg",
+        0.92
+      );
+
+    /*
+     * Detener cámara después de capturar.
+     */
+
+    stopCamera();
+
+    /*
+     * Mostrar foto capturada.
+     */
+
+    setPhoto(image);
+    setState("analyzing");
+
+    /*
+     * ==================================================
+     * ANIMACIÓN DE ANÁLISIS
+     * ==================================================
+     */
+
+    const startedAt = Date.now();
+
+    setCountdown(3);
+
+    const tick =
+      window.setInterval(() => {
+        setCountdown((previous) => {
+          if (previous <= 1) {
+            window.clearInterval(tick);
+            return 0;
+          }
+
+          return previous - 1;
+        });
+      }, 1000);
+
+    /*
+     * ==================================================
+     * ANALIZAR ROSTRO
+     * ==================================================
+     */
+
+    let symmetryIndex = 95;
+
+    try {
+      symmetryIndex =
+        await evaluateFacialSymmetry(
+          baselineImage,
+          image
+        );
+    } catch {
+      symmetryIndex = 95;
+    }
+
+    /*
+     * Mantener el análisis durante aproximadamente
+     * 3 segundos.
+     */
+
+    const elapsed =
+      Date.now() - startedAt;
+
+    const remaining =
+      Math.max(
+        0,
+        3000 - elapsed
+      );
+
+    await new Promise<void>(
+      (resolve) => {
+        window.setTimeout(
+          resolve,
+          remaining
+        );
       }
-    };
-  }, [
-    state,
-    cameraReady,
-    detectFace,
-    stopFaceDetection,
-  ]);
+    );
+
+    window.clearInterval(tick);
+
+    setCountdown(0);
+
+    setIndex(symmetryIndex);
+    setState("result");
+
+    /*
+     * ==================================================
+     * PRIMERA FOTO = LÍNEA BASE
+     * ==================================================
+     */
+
+    if (!baselineImage) {
+      saveBaselineImage(image);
+    }
+
+    /*
+     * ==================================================
+     * GUARDAR ÚLTIMA FOTO
+     * ==================================================
+     */
+
+    saveLastCheckPhoto(image);
+
+    /*
+     * ==================================================
+     * GUARDAR CHEQUEO EN HISTORIAL
+     * ==================================================
+     */
+
+    addFacialCheck(
+      symmetryIndex,
+      image
+    );
+
+    capturingRef.current = false;
+  };
 
   /*
-   * =========================================================
-   * ABRIR CÁMARA
-   * =========================================================
-   */
-
-  const startCamera =
-    async () => {
-      try {
-        setError(null);
-
-        autoCaptureTriggeredRef.current =
-          false;
-
-        stopCamera();
-
-        if (
-          !navigator.mediaDevices
-            ?.getUserMedia
-        ) {
-          throw new Error(
-            "Este navegador no permite usar la camara."
-          );
-        }
-
-        const stream =
-          await navigator.mediaDevices.getUserMedia(
-            {
-              video: {
-                facingMode: {
-                  ideal: "user",
-                },
-                width: {
-                  ideal: 720,
-                },
-                height: {
-                  ideal: 960,
-                },
-              },
-              audio: false,
-            }
-          );
-
-        streamRef.current =
-          stream;
-
-        setState("preview");
-
-        setCameraReady(true);
-      } catch (cause) {
-        const message =
-          cause instanceof Error
-            ? cause.message
-            : "No se pudo abrir la camara.";
-
-        setError(
-          `No se pudo abrir la camara: ${message}. Usa HTTPS o localhost y permite el acceso.`
-        );
-      }
-    };
-
-  /*
-   * =========================================================
+   * ======================================================
    * NUEVO CHEQUEO
-   * =========================================================
+   * ======================================================
    */
 
   const reset = () => {
     stopCamera();
 
+    capturingRef.current = false;
+
     setPhoto(null);
-
     setIndex(null);
-
     setCountdown(0);
-
     setError(null);
-
-    setFaceDetected(false);
-
-    setFaceCentered(false);
-
-    setAutoCaptureProgress(0);
-
-    autoCaptureTriggeredRef.current =
-      false;
 
     setState("idle");
   };
@@ -816,15 +465,18 @@ export default function ChequeoPage() {
     facialHistory[0];
 
   /*
-   * =========================================================
-   * RENDER
-   * =========================================================
+   * ======================================================
+   * INTERFAZ
+   * ======================================================
    */
 
   return (
     <div className="flex flex-col gap-4 px-5 pt-4 md:mx-auto md:max-w-lg">
 
-      {/* ENCABEZADO */}
+      {/* ==================================================
+          ENCABEZADO
+      ================================================== */}
+
       <div className="flex items-center gap-2">
         <div className="rounded-lg bg-brand-600 p-2 text-white">
           <IconActivity />
@@ -836,17 +488,23 @@ export default function ChequeoPage() {
           </h1>
 
           <p className="text-xs text-ink-600">
-            Coloca tu rostro dentro del cuadro
+            Evalúa la simetría de tu rostro con la cámara frontal
           </p>
         </div>
       </div>
 
       <GlassCard className="flex flex-col gap-3 p-4">
 
-        {/* VISOR */}
+        {/* ==================================================
+            VISOR
+        ================================================== */}
+
         <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-ink-900">
 
-          {/* CÁMARA */}
+          {/* ==============================
+              CÁMARA EN VIVO
+          ============================== */}
+
           <video
             ref={videoRef}
             playsInline
@@ -857,101 +515,64 @@ export default function ChequeoPage() {
                 ? ""
                 : "hidden"
             }`}
-            style={{
-              /*
-               * Vista previa natural.
-               */
-              transform:
-                "scaleX(-1)",
-            }}
           />
 
-          {/* FOTO CAPTURADA */}
+          {/* ==============================
+              FOTO CAPTURADA
+          ============================== */}
+
           {state === "result" &&
             photo && (
               <img
                 src={photo}
-                alt="Foto capturada"
+                alt="Foto capturada del chequeo facial"
                 className="absolute inset-0 h-full w-full object-cover"
               />
             )}
 
-          {/* ANALIZANDO */}
+          {/* ==============================
+              ANÁLISIS
+          ============================== */}
+
           {state === "analyzing" && (
-            <div className="absolute inset-0 flex h-full flex-col items-center justify-center gap-4 bg-ink-900/80 text-white">
-
-              <div className="h-12 w-12 animate-spin rounded-full border-[3px] border-white/30 border-t-white" />
-
-              <div className="text-center">
-                <p className="text-[17px] font-semibold">
-                  Analizando...
-                </p>
-
-                <p className="text-[13px] text-white/60">
-                  {countdown > 0
-                    ? `${countdown}s`
-                    : "Procesando"}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* GUÍA FACIAL */}
-          {state === "preview" && (
             <>
-              <div
-                className={`pointer-events-none absolute inset-8 rounded-[45%] border-[3px] transition-all duration-300 ${
-                  faceCentered
-                    ? "border-ok shadow-[0_0_25px_rgba(16,185,129,0.45)]"
-                    : faceDetected
-                      ? "border-warn"
-                      : "border-brand-500"
-                }`}
-              />
+              {photo && (
+                <img
+                  src={photo}
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              )}
 
-              {/* MENSAJE */}
-              <div className="pointer-events-none absolute bottom-5 left-1/2 w-[85%] -translate-x-1/2 rounded-xl bg-black/45 px-4 py-3 text-center text-white backdrop-blur-sm">
+              <div className="absolute inset-0 flex h-full flex-col items-center justify-center gap-4 bg-black/35 text-white">
 
-                {!faceDetected && (
-                  <p className="text-sm font-medium">
-                    Coloca tu rostro dentro del cuadro
+                <div className="h-12 w-12 animate-spin rounded-full border-[3px] border-white/30 border-t-white" />
+
+                <div className="text-center">
+                  <p className="text-[17px] font-semibold">
+                    Analizando...
                   </p>
-                )}
 
-                {faceDetected &&
-                  !faceCentered && (
-                    <p className="text-sm font-medium">
-                      Centra tu rostro
-                    </p>
-                  )}
+                  <p className="text-[13px] text-white/70">
+                    {countdown > 0
+                      ? `${countdown}s`
+                      : "Procesando"}
+                  </p>
+                </div>
 
-                {faceCentered && (
-                  <>
-                    <p className="text-sm font-semibold text-white">
-                      ¡Perfecto! No te muevas
-                    </p>
-
-                    <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/20">
-                      <div
-                        className="h-full rounded-full bg-ok transition-all duration-100"
-                        style={{
-                          width: `${autoCaptureProgress}%`,
-                        }}
-                      />
-                    </div>
-                  </>
-                )}
               </div>
             </>
           )}
 
-          {/* ABRIR CÁMARA */}
-          {state !== "preview" &&
-            state !== "analyzing" &&
-            state !== "result" &&
+          {/* ==============================
+              BOTÓN INICIAL
+          ============================== */}
+
+          {state === "idle" &&
             !photo && (
               <button
                 onClick={startCamera}
+                type="button"
                 className="absolute inset-0 flex h-full w-full flex-col items-center justify-center gap-3 text-white/80 transition-colors hover:text-white"
               >
                 <div className="flex h-[52px] w-[52px] items-center justify-center rounded-full bg-white/15">
@@ -959,30 +580,58 @@ export default function ChequeoPage() {
                 </div>
 
                 <span className="text-[15px] font-medium">
-                  Pulsa para abrir camara
+                  Pulsa para abrir cámara
                 </span>
               </button>
             )}
+
+          {/* ==============================
+              GUÍA FACIAL
+          ============================== */}
+
+          {state === "preview" && (
+            <div className="pointer-events-none absolute inset-8 rounded-[45%] border-[3px] border-brand-500" />
+          )}
+
         </div>
 
-        {/* ERROR */}
+        {/* ==================================================
+            MENSAJE
+        ================================================== */}
+
+        {state === "preview" && (
+          <div className="rounded-xl bg-brand-500/10 px-3 py-2 text-center">
+            <p className="text-xs font-medium text-ink-700">
+              Coloca tu rostro dentro de la guía y mantén la cabeza recta.
+            </p>
+          </div>
+        )}
+
+        {/* ==================================================
+            ERROR
+        ================================================== */}
+
         {error && (
           <p className="rounded-lg bg-alert-fill p-3 text-sm text-alert">
             {error}
           </p>
         )}
 
-        {/* RACHA */}
+        {/* ==================================================
+            RACHA
+        ================================================== */}
+
         <div className="flex items-center justify-between px-2 py-1">
 
           <div className="flex items-center gap-2">
             <IconZap size={20} />
 
             <span className="text-[14px] font-semibold text-ink-900">
-              Racha de {streak.count}{" "}
+              Racha de{" "}
+              {streak.count}{" "}
               {streak.count === 1
-                ? "dia"
-                : "dias"}
+                ? "día"
+                : "días"}
             </span>
           </div>
 
@@ -991,34 +640,44 @@ export default function ChequeoPage() {
               Chequeo diario completado
             </span>
           )}
+
         </div>
 
-        {/* BOTÓN ABRIR */}
+        {/* ==================================================
+            ABRIR CÁMARA
+        ================================================== */}
+
         {state === "idle" && (
           <button
             onClick={startCamera}
-            className="flex h-12 items-center justify-center gap-2 rounded-xl bg-brand-600 font-semibold text-white"
+            type="button"
+            className="flex h-12 items-center justify-center gap-2 rounded-xl bg-brand-600 font-semibold text-white transition-all hover:opacity-90 active:scale-[0.98]"
           >
             <IconCamera />
-            Abrir camara
+            Abrir cámara
           </button>
         )}
 
-        {/* INFORMACIÓN DURANTE PREVIEW */}
-        {state === "preview" && (
-          <div className="rounded-xl bg-brand-100 px-4 py-3 text-center">
-            <p className="text-sm font-semibold text-brand-600">
-              Captura automática activada
-            </p>
+        {/* ==================================================
+            CAPTURAR
+        ================================================== */}
 
-            <p className="mt-1 text-xs text-ink-600">
-              Cuando tu rostro esté centrado,
-              la foto se tomará automáticamente.
-            </p>
-          </div>
+        {state === "preview" && (
+          <button
+            onClick={capture}
+            type="button"
+            disabled={!cameraReady}
+            className="flex h-12 items-center justify-center gap-2 rounded-xl bg-brand-600 font-semibold text-white transition-all hover:opacity-90 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <IconCamera />
+            Capturar foto
+          </button>
         )}
 
-        {/* RESULTADO */}
+        {/* ==================================================
+            RESULTADO
+        ================================================== */}
+
         {state === "result" &&
           index !== null && (
             <>
@@ -1028,7 +687,8 @@ export default function ChequeoPage() {
 
               <button
                 onClick={reset}
-                className="flex h-12 items-center justify-center gap-2 rounded-xl border-[1.5px] border-brand-500 bg-white/80 font-semibold text-brand-600"
+                type="button"
+                className="flex h-12 items-center justify-center gap-2 rounded-xl border-[1.5px] border-brand-500 bg-white/80 font-semibold text-brand-600 transition-all hover:bg-brand-500/5 active:scale-[0.98]"
               >
                 <IconRefreshCw size={18} />
                 Nuevo chequeo
@@ -1036,43 +696,46 @@ export default function ChequeoPage() {
             </>
           )}
 
-        {/* ANALIZANDO */}
+        {/* ==================================================
+            ANALIZANDO
+        ================================================== */}
+
         {state === "analyzing" && (
           <div className="flex items-center justify-center py-2">
             <p className="text-sm text-ink-500">
-              Comparando simetria facial...
+              Comparando simetría facial...
             </p>
           </div>
         )}
 
       </GlassCard>
 
-      {/* ÚLTIMO CHEQUEO */}
+      {/* ==================================================
+          ÚLTIMO CHEQUEO
+      ================================================== */}
+
       {lastCheck && (
         <GlassCard className="flex items-center gap-3 p-4">
 
           {lastCheck.index > 85 ? (
-            <IconCircleCheck
-              size={24}
-            />
+            <IconCircleCheck size={24} />
           ) : (
-            <IconTriangleAlert
-              size={24}
-            />
+            <IconTriangleAlert size={24} />
           )}
 
           <div>
             <b>
               {lastCheck.index > 85
-                ? "Simetrico"
+                ? "Simétrico"
                 : lastCheck.index >= 70
-                  ? "Leve asimetria"
-                  : "Asimetria marcada"}
+                  ? "Leve asimetría"
+                  : "Asimetría marcada"}
             </b>
 
             <p className="text-sm text-ink-600">
-              Indice{" "}
-              {lastCheck.index} —{" "}
+              Índice{" "}
+              {lastCheck.index}{" "}
+              —{" "}
               {lastCheck.date}
             </p>
           </div>
