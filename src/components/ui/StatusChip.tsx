@@ -3,13 +3,13 @@ type Status = "ok" | "warn" | "alert" | "muted";
 const colorMap: Record<Status, { fill: string; border: string; dot: string; text: string }> = {
   ok: {
     fill: "bg-ok-fill",
-    border: "border-[#10B98159]",
+    border: "border-[#2F8F5B59]",
     dot: "bg-ok",
     text: "text-ink-900",
   },
   warn: {
-    fill: "bg-[#F59E0B1A]",
-    border: "border-[#F59E0B59]",
+    fill: "bg-[#E8A33D1A]",
+    border: "border-[#E8A33D59]",
     dot: "bg-warn",
     text: "text-ink-900",
   },
@@ -20,7 +20,7 @@ const colorMap: Record<Status, { fill: string; border: string; dot: string; text
     text: "text-alert",
   },
   muted: {
-    fill: "bg-[#94A3B826]",
+    fill: "bg-[#A9967D26]",
     border: "border-muted/35",
     dot: "bg-muted",
     text: "text-ink-600",
