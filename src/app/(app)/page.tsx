@@ -21,6 +21,7 @@ export default function DashboardPage() {
 
   const {
     language,
+    setLanguage,
     bleData,
     bleError,
     connectBLE,
@@ -34,9 +35,9 @@ export default function DashboardPage() {
     disconnectedSince,
   } = useNeurowatch();
 
-  /* =========================================================
+  /* =====================================================
      DESCONEXIÓN
-  ========================================================= */
+  ===================================================== */
 
   useEffect(() => {
     if (disconnectedSince) {
@@ -44,14 +45,14 @@ export default function DashboardPage() {
     }
   }, [router, disconnectedSince]);
 
-  /* =========================================================
+  /* =====================================================
      TEXTOS
-  ========================================================= */
+  ===================================================== */
 
   const text =
     language === "es"
       ? {
-          location: "ÁNCASH · PERÚ",
+          place: "ÁNCASH · PERÚ",
           subtitle: "Monitoreo inteligente en tiempo real",
 
           monitoring: "TU MONITOREO",
@@ -70,6 +71,7 @@ export default function DashboardPage() {
           monitoringActive: "Monitoreo activo",
 
           connected: "Reloj conectado",
+
           putFinger:
             "Coloca el dedo sobre el sensor para comenzar a recibir tu pulso.",
 
@@ -77,8 +79,9 @@ export default function DashboardPage() {
           heart: "Frecuencia cardíaca",
 
           device: "DISPOSITIVO",
+
           stable: "Señal estable",
-          noConnection: "Sin conexión",
+          noConnection: "Sin conectar",
 
           intelligent: "Detección inteligente",
 
@@ -86,27 +89,28 @@ export default function DashboardPage() {
           bluetooth: "Bluetooth activo",
           pending: "Pendiente",
 
-          made: "HECHO DESDE ÁNCASH",
+          made: "HECHO EN ÁNCASH",
           identity: "Tecnología con identidad andina",
 
           assistive:
             "Herramienta asistiva · No diagnostica ni sustituye la atención profesional.",
 
-          connectedStatus: "Conectado",
-          disconnectedStatus: "Desconectado",
+          languageTitle: "IDIOMA",
+          quechua: "QUECHUA",
+          spanish: "ESPAÑOL",
         }
       : {
-          location: "ANQASH · PIRUW",
-          subtitle: "Kawsayta pacha-pachapi rikapay",
+          place: "ANQASH · PIRUW",
+          subtitle: "Kawsayta pacha-pachapi qhawariy",
 
-          monitoring: "QAMPA RIKAYNIKI",
-          welcome: "Kawsayniki aswan qayllapi.",
+          monitoring: "QAMPA RIKAYNIN",
+          welcome: "Allin kawsayniki aswan qayllapi.",
 
           deviceStatus: "Dispositivopa kaynin",
           active: "Sistema llamk'achkan",
           waiting: "Tinkiyta suyarichkan",
 
-          live: "KAWASHAQ",
+          live: "KAWSACHKAN",
           offline: "MANA TINKISQA",
 
           connect: "NeuroWatch relojwan tinkiy",
@@ -115,6 +119,7 @@ export default function DashboardPage() {
           monitoringActive: "Rikapaykuy llamk'achkan",
 
           connected: "Reloj tinkisqa",
+
           putFinger:
             "Ruk'aykita sensorpa hawanman churay, puywaykita chaskinapaq.",
 
@@ -122,7 +127,8 @@ export default function DashboardPage() {
           heart: "Shunqupa puywaynin",
 
           device: "DISPOSITIVO",
-          stable: "Willakuy allinmi",
+
+          stable: "Señal allinmi",
           noConnection: "Mana tinkisqa",
 
           intelligent: "Yachaywan rikay",
@@ -131,14 +137,15 @@ export default function DashboardPage() {
           bluetooth: "Bluetooth llamk'achkan",
           pending: "Suyarichkan",
 
-          made: "ANQASHMANTA RURASQA",
-          identity: "Andino yachaywan rurasqa tecnología",
+          made: "ANQASHPI RURASQA",
+          identity: "Andino yachaywan tecnología",
 
           assistive:
-            "Yanapakuq sistema · Mana hampinchu, hampiqpa yanaynintaqa mana rantinchu.",
+            "Yanapakuq sistema · Mana hampiqmi, hampiqpa yanayninta mana rantinchu.",
 
-          connectedStatus: "Tinkisqa",
-          disconnectedStatus: "Mana tinkisqa",
+          languageTitle: "SIMI",
+          quechua: "RUNASIMI",
+          spanish: "ESPAÑOL",
         };
 
   const connected = bleData.connected;
@@ -148,42 +155,57 @@ export default function DashboardPage() {
     : ("muted" as const);
 
   const connLabel = connected
-    ? text.connectedStatus
-    : text.disconnectedStatus;
+    ? language === "es"
+      ? "Conectado"
+      : "Tinkisqa"
+    : language === "es"
+      ? "Desconectado"
+      : "Mana tinkisqa";
 
   return (
-    <div className="min-h-screen overflow-hidden bg-slate-50 text-slate-900">
+    <div className="nw-page">
 
       {/* =====================================================
-          FONDO
+          DECORACIÓN DE FONDO
       ===================================================== */}
 
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+      <div className="nw-background">
 
-        <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-cyan-300/25 blur-3xl" />
+        <div className="nw-sun" />
 
-        <div className="absolute right-[-120px] top-32 h-96 w-96 rounded-full bg-fuchsia-300/20 blur-3xl" />
+        <div className="nw-cloud nw-cloud-one" />
+        <div className="nw-cloud nw-cloud-two" />
 
-        <div className="absolute bottom-[-180px] left-1/3 h-96 w-96 rounded-full bg-amber-300/20 blur-3xl" />
+        {/* Montañas */}
+        <svg
+          className="nw-mountains"
+          viewBox="0 0 1440 400"
+          preserveAspectRatio="none"
+        >
+          <path
+            className="mountain-back"
+            d="M0 300L180 135L310 250L470 90L620 255L790 120L940 255L1120 80L1280 230L1440 120V400H0Z"
+          />
 
-        {/* Cordillera */}
+          <path
+            className="mountain-front"
+            d="M0 350L170 210L300 310L480 150L640 315L820 180L980 315L1140 145L1300 290L1440 210V400H0Z"
+          />
 
-        <div className="absolute bottom-0 left-0 w-full opacity-[0.08]">
+          <path
+            className="snow"
+            d="M470 90L430 130L470 118L495 145L520 120L545 145L505 95Z"
+          />
 
-          <svg
-            viewBox="0 0 1440 300"
-            className="w-full"
-            preserveAspectRatio="none"
-          >
+          <path
+            className="snow"
+            d="M1120 80L1075 125L1110 112L1140 145L1170 115L1200 145L1155 90Z"
+          />
+        </svg>
 
-            <path
-              fill="#312e81"
-              d="M0 250L180 100L300 215L470 45L650 225L820 80L990 205L1170 35L1440 235V300H0Z"
-            />
-
-          </svg>
-
-        </div>
+        {/* Patrón andino */}
+        <div className="nw-pattern nw-pattern-top" />
+        <div className="nw-pattern nw-pattern-bottom" />
 
       </div>
 
@@ -191,25 +213,56 @@ export default function DashboardPage() {
           CONTENIDO
       ===================================================== */}
 
-      <main className="relative mx-auto flex max-w-lg flex-col gap-4 px-5 pb-28 pt-5 md:ml-[270px] md:max-w-3xl md:px-8 md:pb-10 md:pt-8">
+      <main className="nw-main">
 
         {/* =====================================================
-            UBICACIÓN
+            BARRA SUPERIOR
         ===================================================== */}
 
-        <div className="flex items-center justify-center gap-2">
+        <div className="nw-topbar">
 
-          <span className="text-lg">
-            🏔️
-          </span>
+          <div className="nw-location">
+            <span className="nw-mountain-icon">🏔️</span>
 
-          <span className="text-[10px] font-black tracking-[0.22em] text-indigo-600">
-            {text.location}
-          </span>
+            <span>{text.place}</span>
+          </div>
 
-          <span className="text-lg">
-            🇵🇪
-          </span>
+          {/* IDIOMA */}
+          <div className="nw-language">
+
+            <span className="nw-language-label">
+              {text.languageTitle}
+            </span>
+
+            <div className="nw-language-switch">
+
+              <button
+                type="button"
+                onClick={() => setLanguage("qch")}
+                className={
+                  language === "qch"
+                    ? "nw-language-btn active"
+                    : "nw-language-btn"
+                }
+              >
+                🌄 {text.quechua}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setLanguage("es")}
+                className={
+                  language === "es"
+                    ? "nw-language-btn active"
+                    : "nw-language-btn"
+                }
+              >
+                🇵🇪 {text.spanish}
+              </button>
+
+            </div>
+
+          </div>
 
         </div>
 
@@ -217,28 +270,22 @@ export default function DashboardPage() {
             HEADER
         ===================================================== */}
 
-        <div className="flex items-center justify-between">
+        <header className="nw-header">
 
-          <div className="flex items-center gap-3">
+          <div className="nw-brand">
 
-            <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 via-indigo-600 to-fuchsia-600 text-white shadow-xl">
+            <div className="nw-logo">
 
-              <IconActivity size={27} />
+              <IconActivity size={29} />
 
-              <span className="absolute -right-1 -top-1 h-4 w-4 rounded-full border-2 border-white bg-emerald-400" />
+              <span className="nw-logo-dot" />
 
             </div>
 
             <div>
+              <h1>NeuroWatch</h1>
 
-              <h1 className="text-[26px] font-black tracking-tight">
-                NeuroWatch
-              </h1>
-
-              <p className="text-[11px] font-semibold text-slate-500">
-                {text.subtitle}
-              </p>
-
+              <p>{text.subtitle}</p>
             </div>
 
           </div>
@@ -248,40 +295,32 @@ export default function DashboardPage() {
             status={connStatus}
           />
 
-        </div>
+        </header>
 
         {/* =====================================================
-            BANNER ANDINO
+            FRANJA ANDINA
         ===================================================== */}
 
-        <div className="overflow-hidden rounded-2xl border border-amber-200 bg-white shadow-sm">
+        <div className="nw-andean-bar">
 
-          <div className="flex items-center gap-1">
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
 
-            <span className="h-1.5 flex-1 bg-red-500" />
-            <span className="h-1.5 flex-1 bg-orange-400" />
-            <span className="h-1.5 flex-1 bg-yellow-400" />
-            <span className="h-1.5 flex-1 bg-green-500" />
-            <span className="h-1.5 flex-1 bg-cyan-500" />
-            <span className="h-1.5 flex-1 bg-purple-600" />
+        </div>
 
-          </div>
+        <div className="nw-andean-title">
 
-          <div className="flex items-center justify-center gap-3 px-4 py-3">
+          <span>✦</span>
 
-            <span className="text-xl">
-              🏔️
-            </span>
+          <strong>
+            {text.place}
+          </strong>
 
-            <span className="text-[10px] font-black tracking-[0.15em] text-slate-500">
-              {text.location}
-            </span>
-
-            <span className="text-xl">
-              💧
-            </span>
-
-          </div>
+          <span>✦</span>
 
         </div>
 
@@ -289,93 +328,87 @@ export default function DashboardPage() {
             HERO
         ===================================================== */}
 
-        <section className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-indigo-950 via-purple-800 to-fuchsia-600 p-6 text-white shadow-2xl shadow-purple-300/40">
+        <section className="nw-hero">
 
-          <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-cyan-300/20 blur-3xl" />
+          <div className="nw-hero-decoration one" />
+          <div className="nw-hero-decoration two" />
 
-          <div className="absolute -bottom-20 -left-16 h-48 w-48 rounded-full bg-amber-300/20 blur-3xl" />
+          <div className="nw-hero-content">
 
-          <div className="relative">
-
-            <div className="flex items-start justify-between">
+            <div className="nw-hero-top">
 
               <div>
 
-                <p className="text-[10px] font-black tracking-[0.2em] text-cyan-200">
+                <span className="nw-eyebrow">
                   {text.monitoring}
-                </p>
+                </span>
 
-                <h2 className="mt-2 max-w-xs text-[26px] font-black leading-tight">
+                <h2>
                   {text.welcome}
                 </h2>
 
               </div>
 
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/20 bg-white/10 text-4xl backdrop-blur">
+              <div className="nw-watch">
                 ⌚
               </div>
 
             </div>
 
-            {/* Montañas */}
+            {/* Montaña decorativa */}
 
-            <div className="my-5 overflow-hidden rounded-2xl bg-white/10 px-3 py-1">
+            <div className="nw-hero-mountain">
 
               <svg
-                viewBox="0 0 500 70"
-                className="h-12 w-full"
+                viewBox="0 0 600 100"
                 preserveAspectRatio="none"
               >
 
                 <path
-                  d="M0 65L70 25L115 55L180 8L250 55L315 18L380 55L440 5L500 48V70H0Z"
-                  fill="rgba(255,255,255,.16)"
+                  d="M0 90L80 40L130 70L220 15L310 70L390 30L470 70L550 10L600 45V100H0Z"
                 />
 
                 <path
-                  d="M0 65L70 25L115 55L180 8L250 55L315 18L380 55L440 5L500 48"
-                  fill="none"
-                  stroke="rgba(255,255,255,.8)"
-                  strokeWidth="2"
+                  d="M0 90L80 40L130 70L220 15L310 70L390 30L470 70L550 10L600 45"
                 />
 
               </svg>
 
             </div>
 
-            <div className="flex items-end justify-between">
+            <div className="nw-hero-status">
 
               <div>
 
-                <p className="text-[11px] text-white/60">
+                <span>
                   {text.deviceStatus}
-                </p>
+                </span>
 
-                <div className="mt-1 flex items-center gap-2">
+                <strong>
 
-                  <span
-                    className={`h-3 w-3 rounded-full ${
+                  <i
+                    className={
                       connected
-                        ? "animate-pulse bg-emerald-300"
-                        : "bg-white/40"
-                    }`}
+                        ? "nw-status-dot connected"
+                        : "nw-status-dot"
+                    }
                   />
 
-                  <span className="text-[15px] font-bold">
-                    {connected
-                      ? text.active
-                      : text.waiting}
-                  </span>
+                  {connected
+                    ? text.active
+                    : text.waiting}
 
-                </div>
+                </strong>
 
               </div>
 
-              <span className="rounded-full bg-white/15 px-3 py-1.5 text-[9px] font-black backdrop-blur">
+              <div className="nw-live">
+
                 {connected
                   ? `● ${text.live}`
                   : text.offline}
-              </span>
+
+              </div>
 
             </div>
 
@@ -384,24 +417,27 @@ export default function DashboardPage() {
         </section>
 
         {/* =====================================================
-            CONECTAR
+            BOTÓN CONECTAR
         ===================================================== */}
 
         {!connected && (
 
           <button
+            type="button"
             onClick={connectBLE}
-            className="flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-900 py-4 text-white shadow-xl transition hover:-translate-y-0.5 active:scale-[0.98]"
+            className="nw-connect"
           >
 
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
-
-              <IconBluetooth size={21} />
-
+            <span className="nw-connect-icon">
+              <IconBluetooth size={23} />
             </span>
 
-            <span className="text-[14px] font-black">
+            <span>
               {text.connect}
+            </span>
+
+            <span className="nw-arrow">
+              →
             </span>
 
           </button>
@@ -414,19 +450,13 @@ export default function DashboardPage() {
 
         {bleError && (
 
-          <div className="rounded-2xl border border-red-200 bg-red-50 p-4">
+          <div className="nw-error">
 
-            <div className="flex items-center gap-3">
+            <span>⚠️</span>
 
-              <span className="text-xl">
-                ⚠️
-              </span>
-
-              <p className="text-[12px] font-bold text-red-600">
-                {bleError}
-              </p>
-
-            </div>
+            <p>
+              {bleError}
+            </p>
 
           </div>
 
@@ -438,23 +468,21 @@ export default function DashboardPage() {
 
         {connected && bleData.bpm > 0 && (
 
-          <div className="rounded-[28px] border border-white bg-white/85 p-4 shadow-xl backdrop-blur">
+          <section className="nw-card nw-current">
 
-            <div className="mb-3 flex items-center justify-between">
+            <div className="nw-section-title">
 
               <div>
-
-                <p className="text-[10px] font-black uppercase tracking-wider text-indigo-400">
+                <span>
                   {text.current}
-                </p>
+                </span>
 
-                <p className="text-[15px] font-black">
+                <h2>
                   {text.monitoringActive}
-                </p>
-
+                </h2>
               </div>
 
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-rose-50 text-xl">
+              <div className="nw-heart">
                 ❤️
               </div>
 
@@ -462,7 +490,7 @@ export default function DashboardPage() {
 
             <HeroStatus state={status} />
 
-          </div>
+          </section>
 
         )}
 
@@ -472,23 +500,23 @@ export default function DashboardPage() {
 
         {connected && bleData.bpm === 0 && (
 
-          <div className="rounded-[28px] border border-white bg-white/85 p-7 text-center shadow-xl">
+          <section className="nw-card nw-waiting">
 
-            <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-cyan-100 to-fuchsia-100 text-4xl">
+            <div className="nw-heart-big">
               ❤️
             </div>
 
-            <p className="text-[17px] font-black">
+            <h2>
               {text.connected}
-            </p>
+            </h2>
 
-            <p className="mx-auto mt-2 max-w-xs text-[13px] leading-relaxed text-slate-500">
+            <p>
               {text.putFinger}
             </p>
 
-            <div className="mx-auto mt-5 h-1.5 w-24 animate-pulse rounded-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-fuchsia-500" />
+            <div className="nw-loading" />
 
-          </div>
+          </section>
 
         )}
 
@@ -496,31 +524,29 @@ export default function DashboardPage() {
             PULSO EN VIVO
         ===================================================== */}
 
-        <section>
+        <section className="nw-section">
 
-          <div className="mb-2 flex items-end justify-between px-1">
+          <div className="nw-section-heading">
 
             <div>
 
-              <p className="text-[10px] font-black tracking-[0.18em] text-indigo-400">
+              <span>
                 {text.signs}
-              </p>
+              </span>
 
-              <h2 className="text-[18px] font-black">
+              <h2>
                 {text.heart}
               </h2>
 
             </div>
 
-            <span className="rounded-full bg-rose-50 px-3 py-1.5 text-[9px] font-black text-rose-500">
-
-              ❤️ {text.live}
-
-            </span>
+            <div className="nw-live-pill">
+              ❤️ {language === "es" ? "EN VIVO" : "KAWSACHKAN"}
+            </div>
 
           </div>
 
-          <div className="overflow-hidden rounded-[28px] border border-white bg-white/85 shadow-xl">
+          <div className="nw-card nw-pulse">
 
             <PulseCard
               bpm={bleData.bpm}
@@ -535,29 +561,29 @@ export default function DashboardPage() {
             DISPOSITIVO
         ===================================================== */}
 
-        <section>
+        <section className="nw-section">
 
-          <div className="mb-2 flex items-center justify-between px-1">
+          <div className="nw-section-heading">
 
             <div>
 
-              <p className="text-[10px] font-black tracking-[0.18em] text-cyan-500">
+              <span className="cyan">
                 {text.device}
-              </p>
+              </span>
 
-              <h2 className="text-[18px] font-black">
+              <h2>
                 NeuroWatch
               </h2>
 
             </div>
 
-            <span className="text-xl">
+            <span className="nw-mini-mountain">
               🏔️
             </span>
 
           </div>
 
-          <div className="overflow-hidden rounded-[28px] border border-white bg-white/85 shadow-xl">
+          <div className="nw-card nw-device">
 
             <DeviceCard
               connected={connected}
@@ -576,109 +602,112 @@ export default function DashboardPage() {
         </section>
 
         {/* =====================================================
-            TARJETAS
+            DOS TARJETAS
         ===================================================== */}
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="nw-grid">
 
-          <div className="rounded-[24px] border border-white bg-gradient-to-br from-violet-50 to-fuchsia-50 p-4 shadow-lg">
+          <div className="nw-small-card nw-card-yellow">
 
-            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 text-lg">
+            <div className="nw-small-icon">
               🧠
             </div>
 
-            <p className="text-[10px] font-bold text-slate-400">
+            <span>
               NeuroWatch
-            </p>
+            </span>
 
-            <p className="mt-1 text-[13px] font-black">
+            <strong>
               {text.intelligent}
-            </p>
+            </strong>
 
           </div>
 
-          <div className="rounded-[24px] border border-white bg-gradient-to-br from-cyan-50 to-blue-50 p-4 shadow-lg">
+          <div className="nw-small-card nw-card-cyan">
 
-            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 text-lg">
+            <div className="nw-small-icon">
               📡
             </div>
 
-            <p className="text-[10px] font-bold text-slate-400">
+            <span>
               {text.connection}
-            </p>
+            </span>
 
-            <p className="mt-1 text-[13px] font-black">
+            <strong>
               {connected
                 ? text.bluetooth
                 : text.pending}
-            </p>
+            </strong>
 
           </div>
 
         </div>
 
         {/* =====================================================
-            IDENTIDAD ANDINA
+            IDENTIDAD HUARACINA
         ===================================================== */}
 
-        <div className="relative overflow-hidden rounded-[28px] border border-amber-200 bg-gradient-to-r from-amber-50 via-white to-rose-50 p-5 shadow-lg">
+        <section className="nw-identity">
 
-          <div className="absolute -right-4 -top-6 text-7xl opacity-10">
+          <div className="nw-identity-mountain">
             🏔️
           </div>
 
-          <div className="relative">
+          <div className="nw-identity-content">
 
-            <div className="flex items-center gap-3">
-
-              <span className="text-3xl">
-                🏔️
-              </span>
-
-              <div>
-
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-600">
-                  {text.made}
-                </p>
-
-                <p className="mt-1 text-[15px] font-black">
-                  {text.identity}
-                </p>
-
-              </div>
-
+            <div className="nw-identity-icon">
+              🌄
             </div>
 
-            <div className="mt-4 flex gap-1">
+            <div>
 
-              <span className="h-1.5 flex-1 rounded-full bg-red-500" />
-              <span className="h-1.5 flex-1 rounded-full bg-orange-400" />
-              <span className="h-1.5 flex-1 rounded-full bg-yellow-400" />
-              <span className="h-1.5 flex-1 rounded-full bg-green-500" />
-              <span className="h-1.5 flex-1 rounded-full bg-cyan-500" />
-              <span className="h-1.5 flex-1 rounded-full bg-purple-600" />
+              <span>
+                {text.made}
+              </span>
+
+              <h2>
+                {text.identity}
+              </h2>
+
+              <p>
+                {language === "es"
+                  ? "Inspirado en nuestras montañas, colores y cultura."
+                  : "Orqokunawan, llimpikunawan, kawsayniykunawan kusisqa."}
+              </p>
 
             </div>
 
           </div>
 
-        </div>
+          {/* Barra multicolor */}
+          <div className="nw-rainbow">
+
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+
+          </div>
+
+        </section>
 
         {/* =====================================================
             FOOTER
         ===================================================== */}
 
-        <footer className="pb-5 pt-2 text-center">
+        <footer className="nw-footer">
 
-          <div className="mx-auto mb-3 h-px max-w-xs bg-gradient-to-r from-transparent via-indigo-300 to-transparent" />
+          <div className="nw-footer-line" />
 
-          <p className="text-[9px] font-semibold text-slate-400">
+          <p>
             {text.assistive}
           </p>
 
-          <p className="mt-2 text-[9px] font-black text-indigo-300">
-            🏔️ {text.location} 🇵🇪
-          </p>
+          <strong>
+            🏔️ ANQASH · PIRUW 🇵🇪
+          </strong>
 
         </footer>
 
@@ -695,7 +724,6 @@ export default function DashboardPage() {
         />
 
       </main>
-
     </div>
   );
 }
