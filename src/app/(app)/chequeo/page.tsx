@@ -207,25 +207,21 @@ export default function ChequeoPage() {
           );
         }
 
-        const stream =
-          await navigator.mediaDevices.getUserMedia(
-            {
-              video: {
-                facingMode: "user",
-
-                width: {
-                  ideal: 720,
-                },
-
-                height: {
-                  ideal: 960,
-                },
-              },
-
-              audio: false,
-            }
-          );
-
+      const stream =
+  await navigator.mediaDevices.getUserMedia({
+    video: {
+      facingMode: {
+        ideal: "user",
+      },
+      width: {
+        ideal: 720,
+      },
+      height: {
+        ideal: 960,
+      },
+    },
+    audio: false,
+  });
         streamRef.current =
           stream;
 
@@ -327,13 +323,22 @@ export default function ChequeoPage() {
         0
       );
 
-      context.drawImage(
-        video,
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
+      context.setTransform(
+  1,
+  0,
+  0,
+  1,
+  0,
+  0
+);
+
+context.drawImage(
+  video,
+  0,
+  0,
+  canvas.width,
+  canvas.height
+);
 
       const image =
         canvas.toDataURL(
@@ -538,28 +543,19 @@ export default function ChequeoPage() {
               CÁMARA REAL
           ============================== */}
 
-          <video
-            ref={videoRef}
-            playsInline
-            muted
-            autoPlay
-            aria-label="Vista previa de la cámara"
-            className={`h-full w-full object-cover ${
-              state === "preview"
-                ? "block"
-                : "hidden"
-            }`}
-            style={{
-              /*
-               * NADA DE ESPEJO.
-               *
-               * Esto es lo importante.
-               */
-              transform:
-                "none",
-            }}
-          />
-
+         <video
+  ref={videoRef}
+  playsInline
+  muted
+  autoPlay
+  className={`h-full w-full object-cover ${
+    state === "preview" ? "" : "hidden"
+  }`}
+  style={{
+    WebkitTransform: "none",
+    transform: "none",
+  }}
+/>
           {/* ==============================
               FOTO CAPTURADA
           ============================== */}
