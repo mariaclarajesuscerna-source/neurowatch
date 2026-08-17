@@ -224,19 +224,6 @@ const pageText = {
   },
 } as const;
 
-const textilePattern = `
-  repeating-linear-gradient(
-    45deg,
-    #c94a20 0px,
-    #c94a20 8px,
-    #e8a33d 8px,
-    #e8a33d 16px,
-    #2f8f5b 16px,
-    #2f8f5b 24px,
-    #087f83 24px,
-    #087f83 32px
-  )
-`;
 const pageText = {
   es: {
     tagline: "Tecnología que cuida tu vida, con raíces que nos unen.",
