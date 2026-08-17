@@ -121,19 +121,7 @@ const pageText = {
   },
 } as const;
 
-const textilePattern = `
-  repeating-linear-gradient(
-    45deg,
-    #c94a20 0px,
-    #c94a20 8px,
-    #e8a33d 8px,
-    #e8a33d 16px,
-    #2f8f5b 16px,
-    #2f8f5b 24px,
-    #087f83 24px,
-    #087f83 32px
-  )
-`;const pageText = {
+const pageText = {
   es: {
     tagline: "Tecnología que cuida tu vida, con raíces que nos unen.",
     technology: "Tecnología que cuida tu vida",
@@ -196,7 +184,8 @@ const textilePattern = `
     realtimeDesc:
       "Sunquykita waqaychay, kawsayniykipa señalkunata qhawariy.",
     purpose: "Tecnología munaywan",
-    purposeDesc: "Huarazpi runakunapa kawsayninta allinchayta munan.",
+    purposeDesc:
+      "Huarazpi runakunapa kawsayninta allinchayta munan.",
     connected: "Qamwan tinkisqa",
     connectedDesc: "Datoskunata qhawariy, qanpa qayllaykipi.",
     people: "Ñuqanchispaq ruwasqa",
@@ -247,7 +236,8 @@ const textilePattern = `
     #087f83 24px,
     #087f83 32px
   )
-`;const pageText = {
+`;
+const pageText = {
   es: {
     tagline: "Tecnología que cuida tu vida, con raíces que nos unen.",
     technology: "Tecnología que cuida tu vida",
@@ -365,10 +355,12 @@ const textilePattern = `
 export default function DashboardPage() {
   const router = useRouter();
 
-  const {
-    language,
-    setLanguage,
-  } = useLanguage();
+const {
+  language,
+  setLanguage,
+  t,
+} = useLanguage();
+
 const text = pageText[language];
   const {
     bleData,
@@ -474,9 +466,9 @@ const text = pageText[language];
                 NeuroWatch
               </h1>
 
-              <p className="mt-1 text-xs font-black uppercase tracking-[0.22em] text-[#c1440c]">
-                {t("huarazPeru")}
-              </p>
+           <p className="mt-1 text-xs font-black uppercase tracking-[0.22em] text-[#c1440c]">
+  Huaraz · Áncash
+</p>
 
              <p className="mt-1 text-xs font-semibold text-[#79634d]">
   {text.tagline}
