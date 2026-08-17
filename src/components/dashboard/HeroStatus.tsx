@@ -36,6 +36,7 @@ const stateConfig: Record<HeroState, StateConfig> = {
     desc: "Se detectó una anomalía en tu pulso. Revisa tu estado.",
   },
 };
+
 export default function HeroStatus({
   state = "ok",
   name,
@@ -55,14 +56,19 @@ export default function HeroStatus({
       className={`${c.bg} ${c.border} flex flex-col gap-2.5 p-6`}
     >
       <div className="flex items-center gap-3">
-        <span className={`h-[18px] w-[18px] rounded-full shrink-0 ${c.dot}`} />
+        <span
+          className={`h-[18px] w-[18px] rounded-full shrink-0 ${c.dot}`}
+        />
+
         <span className="text-[40px] font-bold text-ink-900 leading-none">
           {c.label}
         </span>
       </div>
+
       <p className="text-[15px] font-normal text-ink-600 leading-[1.4]">
         {c.desc}
       </p>
+
       {children}
     </GlassCard>
   );
