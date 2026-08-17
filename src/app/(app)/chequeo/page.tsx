@@ -552,8 +552,9 @@ context.drawImage(
     state === "preview" ? "" : "hidden"
   }`}
   style={{
-    WebkitTransform: "none",
     transform: "none",
+    WebkitTransform: "none",
+    direction: "ltr",
   }}
 />
           {/* ==============================
