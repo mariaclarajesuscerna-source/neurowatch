@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect } from "react";
@@ -36,11 +35,13 @@ const textilePattern = `
 
 export default function DashboardPage() {
   const router = useRouter();
-const {
-  language,
-  setLanguage,
-  t,
-} = useLanguage();
+
+  const {
+    language,
+    setLanguage,
+    t,
+  } = useLanguage();
+
   const {
     bleData,
     bleError,
@@ -55,12 +56,6 @@ const {
     disconnectedSince,
   } = useNeurowatch();
 
-  /*
-   * =========================================================
-   * LÓGICA ORIGINAL — NO TOCAR
-   * =========================================================
-   */
-
   useEffect(() => {
     if (disconnectedSince) {
       router.replace("/desconectado");
@@ -69,12 +64,12 @@ const {
 
   return (
     <div className="relative min-h-dvh overflow-hidden bg-[#f7efe0] text-[#263a32]">
-      {/* =====================================================
-          FONDO
-      ===================================================== */}
+
+      {/* FONDO */}
 
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute -left-40 top-20 h-96 w-96 rounded-full bg-[#e8a33d]/15 blur-3xl" />
+
         <div className="absolute -right-40 top-96 h-[500px] w-[500px] rounded-full bg-[#087f83]/10 blur-3xl" />
 
         <div className="absolute bottom-0 left-0 right-0 h-72 opacity-[0.08]">
@@ -87,6 +82,7 @@ const {
               d="M0 300V205L130 95l95 100L355 60l130 155L625 85l120 120L890 45l140 150 90-95 80 60v140Z"
               fill="#087f83"
             />
+
             <path
               d="M0 300V245l170-110 100 70 145-105 130 105 130-85 120 75 145-110 160 95 120-70v190Z"
               fill="#c94a20"
@@ -95,15 +91,9 @@ const {
         </div>
       </div>
 
-      {/* =====================================================
-          CONTENEDOR
-      ===================================================== */}
-
       <main className="mx-auto w-full max-w-[1500px] px-3 pb-28 pt-3 sm:px-5 lg:px-8 lg:pb-12 lg:pt-6">
 
-        {/* ===================================================
-            BARRA SUPERIOR
-        =================================================== */}
+        {/* BARRA SUPERIOR */}
 
         <div className="mb-3 flex items-center justify-between lg:hidden">
           <span className="text-sm font-black text-[#3b2a1a]">
@@ -120,22 +110,19 @@ const {
           </div>
         </div>
 
-        {/* ===================================================
-            PATRÓN TEXTIL SUPERIOR
-        =================================================== */}
+        {/* PATRÓN TEXTIL */}
 
         <div
           className="mb-4 h-7 w-full overflow-hidden rounded-b-2xl border border-[#b86b31]/30 shadow-sm"
           style={{ backgroundImage: textilePattern }}
         />
 
-        {/* ===================================================
-            HEADER
-        =================================================== */}
+        {/* HEADER */}
 
         <header className="mb-5 flex flex-col gap-4 rounded-[28px] border border-[#e4c99e] bg-[#fff9ed]/90 p-4 shadow-[0_12px_35px_rgba(72,48,25,0.08)] backdrop-blur-xl sm:p-5 lg:flex-row lg:items-center lg:justify-between">
 
           <div className="flex items-center gap-4">
+
             <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#087f83] text-3xl text-white shadow-[0_8px_20px_rgba(8,127,131,0.25)]">
               ❤️
             </div>
@@ -145,17 +132,19 @@ const {
                 NeuroWatch
               </h1>
 
-             <p className="mt-1 text-xs font-black uppercase tracking-[0.22em] text-[#c1440c]">
-  {t("huarazPeru")}
-</p>
+              <p className="mt-1 text-xs font-black uppercase tracking-[0.22em] text-[#c1440c]">
+                {t("huarazPeru")}
+              </p>
 
               <p className="mt-1 text-xs font-semibold text-[#79634d]">
                 Tecnología que cuida tu vida, con raíces que nos unen.
               </p>
             </div>
+
           </div>
 
           <div className="flex items-center gap-2">
+
             <button
               type="button"
               className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#e3c89f] bg-white/80 text-xl shadow-sm"
@@ -172,58 +161,58 @@ const {
               🔔
               <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-[#c1272d]" />
             </button>
+
           </div>
         </header>
 
-        {/* ===================================================
-            IDIOMAS
-        =================================================== */}
+        {/* IDIOMAS */}
 
-      <div className="mb-5 flex justify-center">
-  <div className="flex w-full max-w-sm rounded-2xl border border-[#e3c89f] bg-[#fffaf0] p-1 shadow-sm">
+        <div className="mb-5 flex justify-center">
 
-    <button
-      type="button"
-      onClick={() => setLanguage("es")}
-      className={`flex-1 rounded-xl py-2.5 text-xs font-black transition-all ${
-        language === "es"
-          ? "bg-[#087f83] text-white shadow-md"
-          : "text-[#704a2d] hover:bg-[#087f83]/10"
-      }`}
-    >
-      ESPAÑOL
-    </button>
+          <div className="flex w-full max-w-sm rounded-2xl border border-[#e3c89f] bg-[#fffaf0] p-1 shadow-sm">
 
-    <button
-      type="button"
-      onClick={() => setLanguage("qu")}
-      className={`flex-1 rounded-xl py-2.5 text-xs font-black transition-all ${
-        language === "qu"
-          ? "bg-[#c1440c] text-white shadow-md"
-          : "text-[#704a2d] hover:bg-[#c1440c]/10"
-      }`}
-    >
-      QUECHUA
-    </button>
+            <button
+              type="button"
+              onClick={() => setLanguage("es")}
+              className={`flex-1 rounded-xl py-2.5 text-xs font-black transition-all ${
+                language === "es"
+                  ? "bg-[#087f83] text-white shadow-md"
+                  : "text-[#704a2d] hover:bg-[#087f83]/10"
+              }`}
+            >
+              ESPAÑOL
+            </button>
 
-  </div>
-</div>
+            <button
+              type="button"
+              onClick={() => setLanguage("qu")}
+              className={`flex-1 rounded-xl py-2.5 text-xs font-black transition-all ${
+                language === "qu"
+                  ? "bg-[#c1440c] text-white shadow-md"
+                  : "text-[#704a2d] hover:bg-[#c1440c]/10"
+              }`}
+            >
+              QUECHUA
+            </button>
 
-        {/* ===================================================
-            GRID PRINCIPAL
-        =================================================== */}
+          </div>
+
+        </div>
+
+        {/* GRID PRINCIPAL */}
 
         <div className="grid gap-5 lg:grid-cols-[0.8fr_1.35fr_0.8fr]">
 
-          {/* =================================================
+          {/* =========================
               COLUMNA IZQUIERDA
-          ================================================= */}
+          ========================== */}
 
           <aside className="space-y-5">
 
             {/* HERO HUARAZ */}
 
             <section className="relative overflow-hidden rounded-[30px] border border-[#dfbf8e] bg-[#fff7e8] shadow-[0_16px_40px_rgba(72,48,25,0.12)]">
+
               <div
                 className="h-7"
                 style={{ backgroundImage: textilePattern }}
@@ -249,47 +238,57 @@ const {
                   Monitorea tus signos vitales en tiempo real con tecnología
                   creada pensando en nuestra gente.
                 </p>
-{/* PAISAJE REAL DE HUARAZ */}
 
-<div className="absolute bottom-5 left-0 right-0 px-5">
-  <div className="relative h-48 overflow-hidden rounded-3xl shadow-lg">
+                {/* FOTO REAL: CORDILLERA BLANCA */}
 
-    <img
-      src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Huascaran_Huandoy_Chopicalqui_seen_from_Huaraz.JPG"
-      alt="Cordillera Blanca y Huaraz"
-      className="absolute inset-0 h-full w-full object-cover"
-    />
+                <div className="absolute bottom-5 left-0 right-0 px-5">
 
-    <div className="absolute inset-0 bg-gradient-to-t from-[#173c3a]/45 via-transparent to-transparent" />
+                  <div className="relative h-48 overflow-hidden rounded-3xl shadow-lg">
 
-    <div className="absolute bottom-3 left-4 right-4">
-      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-white">
-        Huaraz · Áncash
-      </p>
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Huascaran_Huandoy_Chopicalqui_seen_from_Huaraz.JPG"
+                      alt="Cordillera Blanca vista desde Huaraz"
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
 
-      <p className="mt-1 text-lg font-black text-white">
-        Cordillera Blanca
-      </p>
-    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#173c3a]/60 via-transparent to-transparent" />
 
-  </div>
-</div>
+                    <div className="absolute bottom-3 left-4">
+                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-white">
+                        Huaraz · Áncash
+                      </p>
+
+                      <p className="mt-1 text-lg font-black text-white">
+                        Cordillera Blanca
+                      </p>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
             </section>
 
-            {/* POR QUÉ */}
+            {/* POR QUÉ NEUROWATCH */}
 
             <section className="overflow-hidden rounded-[27px] border border-[#dfbf8e] bg-[#fff9ed] shadow-[0_12px_30px_rgba(72,48,25,0.09)]">
+
               <div className="flex items-center justify-between bg-[#c1440c] px-5 py-4 text-white">
+
                 <h2 className="font-display text-xl font-black uppercase">
                   ¿Por qué NeuroWatch?
                 </h2>
 
                 <span>✦</span>
+
               </div>
 
               <div className="space-y-5 p-5">
 
                 <div className="flex gap-3">
+
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#c1440c]/10 text-2xl">
                     ❤️
                   </div>
@@ -303,9 +302,11 @@ const {
                       Cuida tu corazón y vigila tus signos vitales.
                     </p>
                   </div>
+
                 </div>
 
                 <div className="flex gap-3">
+
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#087f83]/10 text-2xl">
                     💡
                   </div>
@@ -319,9 +320,11 @@ const {
                       Innovación que busca mejorar vidas en Huaraz.
                     </p>
                   </div>
+
                 </div>
 
                 <div className="flex gap-3">
+
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#2f8f5b]/10 text-2xl">
                     🛡️
                   </div>
@@ -335,9 +338,11 @@ const {
                       Datos y monitoreo siempre cerca de ti.
                     </p>
                   </div>
+
                 </div>
 
                 <div className="flex gap-3">
+
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e8a33d]/15 text-2xl">
                     👥
                   </div>
@@ -351,23 +356,27 @@ const {
                       Diseñado pensando en nuestra tierra.
                     </p>
                   </div>
+
                 </div>
+
               </div>
 
               <div
                 className="h-5"
                 style={{ backgroundImage: textilePattern }}
               />
+
             </section>
+
           </aside>
 
-          {/* =================================================
+          {/* =========================
               COLUMNA CENTRAL
-          ================================================= */}
+          ========================== */}
 
           <section className="space-y-5">
 
-            {/* FRECUENCIA */}
+            {/* FRECUENCIA CARDÍACA */}
 
             <section className="relative overflow-hidden rounded-[32px] border border-[#dfbf8e] bg-[#fff9ed] p-5 shadow-[0_16px_40px_rgba(72,48,25,0.11)] sm:p-7">
 
@@ -385,9 +394,8 @@ const {
                 cardíaca
               </h2>
 
-              {/* Corazón */}
-
               <div className="my-6 flex justify-center">
+
                 <div className="relative flex h-48 w-52 items-center justify-center">
 
                   <div className="absolute text-[170px] leading-none drop-shadow-[0_12px_18px_rgba(193,68,12,0.25)]">
@@ -395,6 +403,7 @@ const {
                   </div>
 
                   <div className="relative z-10 mt-2 text-center text-white">
+
                     <div className="text-5xl font-black leading-none">
                       {bleData.bpm > 0 ? bleData.bpm : "--"}
                     </div>
@@ -402,13 +411,15 @@ const {
                     <div className="mt-1 text-sm font-black">
                       ppm
                     </div>
+
                   </div>
+
                 </div>
+
               </div>
 
-              {/* ECG */}
-
               <div className="flex items-center gap-2">
+
                 <div className="h-0.5 flex-1 bg-[#2f8f5b]/40" />
 
                 <div className="text-3xl font-bold tracking-tight text-[#2f8f5b]">
@@ -416,12 +427,13 @@ const {
                 </div>
 
                 <div className="h-0.5 flex-1 bg-[#2f8f5b]/40" />
+
               </div>
 
-              {/* Estado */}
-
               <div className="mt-5 flex items-center justify-between rounded-2xl border border-[#e5cba3] bg-white/75 p-4">
+
                 <div>
+
                   <p className="text-xs font-black uppercase text-[#3b2a1a]">
                     Estado actual
                   </p>
@@ -431,6 +443,7 @@ const {
                       ? "Monitoreo activo"
                       : "Esperando conexión"}
                   </p>
+
                 </div>
 
                 <span
@@ -440,10 +453,12 @@ const {
                       : "bg-[#a9967d]"
                   }`}
                 />
+
               </div>
+
             </section>
 
-            {/* BOTÓN BLE */}
+            {/* BOTÓN BLUETOOTH */}
 
             {!bleData.connected && (
               <button
@@ -463,9 +478,11 @@ const {
 
             {bleError && (
               <div className="rounded-2xl border border-[#c1272d]/30 bg-[#c1272d]/10 p-4">
+
                 <p className="text-sm font-semibold text-[#c1272d]">
                   {bleError}
                 </p>
+
               </div>
             )}
 
@@ -475,11 +492,12 @@ const {
               <HeroStatus state={status} />
             )}
 
-            {/* SIGNOS */}
+            {/* SIGNOS EN VIVO */}
 
             <section className="rounded-[28px] border border-[#dfbf8e] bg-[#fff9ed] p-5 shadow-[0_12px_30px_rgba(72,48,25,0.08)]">
 
               <div className="mb-4 flex items-center justify-between">
+
                 <h2 className="font-display text-2xl font-black uppercase text-[#075d63]">
                   Signos en vivo
                 </h2>
@@ -487,24 +505,27 @@ const {
                 <span className="text-xs font-black text-[#2f8f5b]">
                   ● EN VIVO
                 </span>
+
               </div>
 
-             <div className="grid grid-cols-1 gap-3">
+              <div className="grid grid-cols-1 gap-3">
 
-  <VitalCard
-    icon="❤️"
-    title="Frecuencia cardíaca"
-    value={bleData.bpm > 0 ? String(bleData.bpm) : "--"}
-    unit="ppm"
-  />
+                <VitalCard
+                  icon="❤️"
+                  title="Frecuencia cardíaca"
+                  value={bleData.bpm > 0 ? String(bleData.bpm) : "--"}
+                  unit="ppm"
+                />
 
-</div>
+              </div>
+
             </section>
 
             {/* ESPERANDO DATOS */}
 
             {bleData.connected && bleData.bpm === 0 && (
               <div className="rounded-[24px] border border-[#dfbf8e] bg-white/70 p-6 text-center shadow-sm">
+
                 <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-[#087f83]/10 text-2xl">
                   ❤️
                 </div>
@@ -517,6 +538,7 @@ const {
                   Coloca el dedo en el sensor para comenzar a recibir tus
                   datos de pulso.
                 </p>
+
               </div>
             )}
 
@@ -540,11 +562,12 @@ const {
                 bleData.batteryPercent
               )}
             />
+
           </section>
 
-          {/* =================================================
+          {/* =========================
               COLUMNA DERECHA
-          ================================================= */}
+          ========================== */}
 
           <aside className="space-y-5">
 
@@ -553,6 +576,7 @@ const {
             <section className="overflow-hidden rounded-[30px] border border-[#dfbf8e] bg-[#fff9ed] shadow-[0_16px_40px_rgba(72,48,25,0.10)]">
 
               <div className="flex items-center justify-between bg-[#e85a20] px-5 py-4 text-white">
+
                 <h2 className="font-display text-2xl font-black uppercase">
                   Alertas
                 </h2>
@@ -560,6 +584,7 @@ const {
                 <span className="text-2xl">
                   🔔
                 </span>
+
               </div>
 
               <div className="space-y-3 p-5">
@@ -591,12 +616,14 @@ const {
                   time="08:00 AM"
                   type="success"
                 />
+
               </div>
 
               <div
                 className="h-5"
                 style={{ backgroundImage: textilePattern }}
               />
+
             </section>
 
             {/* HUARAZ */}
@@ -623,27 +650,34 @@ const {
                   nuestra fuerza.
                 </p>
 
-               <div className="absolute bottom-5 left-4 right-4 h-40 overflow-hidden rounded-3xl shadow-lg">
+                {/* FOTO REAL PLAZA DE ARMAS */}
 
-  <img
-    src="https://d36tnp772eyphs.cloudfront.net/blogs/1/2019/07/Plaza-De-Armas-in-Peruvian-city-of-Huaraz.jpg"
-    alt="Plaza de Armas de Huaraz"
-    className="h-full w-full object-cover"
-  />
+                <div className="absolute bottom-5 left-4 right-4 h-40 overflow-hidden rounded-3xl shadow-lg">
 
-  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                  <img
+                    src="https://d36tnp772eyphs.cloudfront.net/blogs/1/2019/07/Plaza-De-Armas-in-Peruvian-city-of-Huaraz.jpg"
+                    alt="Plaza de Armas de Huaraz"
+                    className="h-full w-full object-cover"
+                  />
 
-  <div className="absolute bottom-3 left-3">
-    <p className="text-[10px] font-black uppercase tracking-[0.15em] text-white">
-      Nuestra tierra
-    </p>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
-    <p className="text-lg font-black text-white">
-      Huaraz
-    </p>
-  </div>
+                  <div className="absolute bottom-3 left-3">
 
-</div>
+                    <p className="text-[10px] font-black uppercase tracking-[0.15em] text-white">
+                      Nuestra tierra
+                    </p>
+
+                    <p className="text-lg font-black text-white">
+                      Huaraz
+                    </p>
+
+                  </div>
+
+                </div>
+
+              </div>
+
             </section>
 
             {/* CONECTADO CONTIGO */}
@@ -653,11 +687,13 @@ const {
               <div className="p-5">
 
                 <div className="mb-4 flex items-center gap-3">
+
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#087f83] text-2xl text-white">
                     🛡️
                   </div>
 
                   <div>
+
                     <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#087f83]">
                       NeuroWatch
                     </p>
@@ -665,12 +701,15 @@ const {
                     <h2 className="font-display text-xl font-black uppercase">
                       Conectado contigo
                     </h2>
+
                   </div>
+
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
 
                   <div className="rounded-2xl bg-[#087f83]/10 p-3">
+
                     <p className="text-[10px] font-bold text-[#6b5842]">
                       Estado
                     </p>
@@ -678,9 +717,11 @@ const {
                     <p className="mt-1 text-sm font-black text-[#2f8f5b]">
                       {bleData.connected ? "ACTIVO" : "LISTO"}
                     </p>
+
                   </div>
 
                   <div className="rounded-2xl bg-[#c1440c]/10 p-3">
+
                     <p className="text-[10px] font-bold text-[#6b5842]">
                       Batería
                     </p>
@@ -692,41 +733,47 @@ const {
                           )}%`
                         : "--"}
                     </p>
+
                   </div>
+
                 </div>
+
               </div>
 
               <div
                 className="h-5"
                 style={{ backgroundImage: textilePattern }}
               />
+
             </section>
+
           </aside>
+
         </div>
 
-        {/* ===================================================
-            PIE CULTURAL
-        =================================================== */}
+        {/* PIE CULTURAL */}
 
-       <section className="rounded-[28px] border border-[#dfbf8e] bg-[#fff9ed] p-5 shadow-[0_12px_30px_rgba(72,48,25,0.08)]">
+        <section className="mt-5 rounded-[28px] border border-[#dfbf8e] bg-[#fff9ed] p-5 shadow-[0_12px_30px_rgba(72,48,25,0.08)]">
+
           <div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-4">
 
             <CultureItem icon="❤️" text="Salud" />
             <CultureItem icon="🤝" text="Confianza" />
             <CultureItem icon="💡" text="Innovación" />
             <CultureItem icon="👥" text="Comunidad" />
+
           </div>
 
           <div
             className="h-5"
             style={{ backgroundImage: textilePattern }}
           />
+
         </section>
+
       </main>
 
-      {/* =====================================================
-          ALERT MODAL — FUNCIÓN ORIGINAL
-      ===================================================== */}
+      {/* ALERTA ORIGINAL */}
 
       <AlertModal
         open={alertOpen}
@@ -735,13 +782,14 @@ const {
         contacts={contacts.map((c) => c.name)}
         onCancel={cancelAlert}
       />
+
     </div>
   );
 }
 
-/* =========================================================
-   COMPONENTES VISUALES
-========================================================= */
+/* =========================
+   VITAL CARD
+========================= */
 
 function VitalCard({
   icon,
@@ -756,6 +804,7 @@ function VitalCard({
 }) {
   return (
     <div className="rounded-[20px] border border-[#e6cfa9] bg-[#fffaf0] p-4 shadow-sm">
+
       <div className="mb-2 text-2xl">
         {icon}
       </div>
@@ -771,9 +820,14 @@ function VitalCard({
       <p className="text-[10px] font-black text-[#a9967d]">
         {unit}
       </p>
+
     </div>
   );
 }
+
+/* =========================
+   ALERT ROW
+========================= */
 
 function AlertRow({
   icon,
@@ -798,12 +852,15 @@ function AlertRow({
     <div
       className={`flex items-start gap-3 rounded-2xl p-3 ${styles[type]}`}
     >
+
       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/80 text-xl">
         {icon}
       </div>
 
       <div className="min-w-0 flex-1">
+
         <div className="flex items-start justify-between gap-2">
+
           <p className="text-xs font-black uppercase">
             {title}
           </p>
@@ -811,15 +868,22 @@ function AlertRow({
           <span className="shrink-0 text-[9px] font-bold text-[#8c7660]">
             {time}
           </span>
+
         </div>
 
         <p className="mt-1 text-[10px] leading-relaxed text-[#6b5842]">
           {description}
         </p>
+
       </div>
+
     </div>
   );
 }
+
+/* =========================
+   CULTURE ITEM
+========================= */
 
 function CultureItem({
   icon,
@@ -830,6 +894,7 @@ function CultureItem({
 }) {
   return (
     <div className="flex flex-col items-center justify-center gap-1 rounded-2xl bg-[#f9f0df] p-3 text-center">
+
       <span className="text-2xl">
         {icon}
       </span>
@@ -837,6 +902,7 @@ function CultureItem({
       <span className="text-[11px] font-black uppercase text-[#3b2a1a]">
         {text}
       </span>
+
     </div>
   );
 }
