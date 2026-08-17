@@ -19,7 +19,6 @@ import AlertModal from "@/components/alert/AlertModal";
 
 import { useNeurowatch } from "@/components/NeurowatchProvider";
 
-const textilePattern = `
 const pageText = {
   es: {
     tagline: "Tecnología que cuida tu vida, con raíces que nos unen.",
@@ -71,7 +70,8 @@ const pageText = {
   },
 
   qu: {
-    tagline: "Kawsayniykita waqaychanapaq tecnología, ñawpa yachayninchiswan.",
+    tagline:
+      "Kawsayniykita waqaychanapaq tecnología, ñawpa yachayninchiswan.",
     technology: "Kawsayniykita waqaychay",
     wellbeing: "Allin kawsayniyki,",
     mission: "llank'ayninchis.",
@@ -79,7 +79,8 @@ const pageText = {
       "Kawsayniykipa señalkunata pachan pachan qhawariy, runakunapaq ruwasqa tecnologíawan.",
     why: "¿Imaraykutaq NeuroWatch?",
     realtime: "Pachanmanta qhawariy",
-    realtimeDesc: "Sunquykita waqaychay, kawsayniykipa señalkunata qhawariy.",
+    realtimeDesc:
+      "Sunquykita waqaychay, kawsayniykipa señalkunata qhawariy.",
     purpose: "Tecnología munaywan",
     purposeDesc: "Huarazpi runakunapa kawsayninta allinchayta munan.",
     connected: "Qamwan tinkisqa",
@@ -119,6 +120,236 @@ const pageText = {
     huaraz: "Huaraz",
   },
 } as const;
+
+const textilePattern = `
+  repeating-linear-gradient(
+    45deg,
+    #c94a20 0px,
+    #c94a20 8px,
+    #e8a33d 8px,
+    #e8a33d 16px,
+    #2f8f5b 16px,
+    #2f8f5b 24px,
+    #087f83 24px,
+    #087f83 32px
+  )
+`;const pageText = {
+  es: {
+    tagline: "Tecnología que cuida tu vida, con raíces que nos unen.",
+    technology: "Tecnología que cuida tu vida",
+    wellbeing: "Tu bienestar,",
+    mission: "nuestra misión.",
+    monitor:
+      "Monitorea tus signos vitales en tiempo real con tecnología creada pensando en nuestra gente.",
+    why: "¿Por qué NeuroWatch?",
+    realtime: "Monitoreo en tiempo real",
+    realtimeDesc: "Cuida tu corazón y vigila tus signos vitales.",
+    purpose: "Tecnología con propósito",
+    purposeDesc: "Innovación que busca mejorar vidas en Huaraz.",
+    connected: "Conectado contigo",
+    connectedDesc: "Datos y monitoreo siempre cerca de ti.",
+    people: "Hecho para nuestra gente",
+    peopleDesc: "Diseñado pensando en nuestra tierra.",
+    liveMonitoring: "Monitoreo en vivo",
+    heartRate: "Frecuencia cardíaca",
+    currentStatus: "Estado actual",
+    activeMonitoring: "Monitoreo activo",
+    waitingConnection: "Esperando conexión",
+    connectWatch: "Conectar reloj NeuroWatch",
+    liveSigns: "Signos en vivo",
+    live: "● EN VIVO",
+    connectedWatch: "Conectado al reloj.",
+    finger:
+      "Coloca el dedo en el sensor para comenzar a recibir tus datos de pulso.",
+    alerts: "Alertas",
+    highRate: "Frecuencia alta",
+    waitingData: "Esperando datos del reloj.",
+    rest: "Recuerda descansar",
+    restDesc: "Tómate un momento para relajarte.",
+    allGood: "¡Todo bien!",
+    monitoring: "Tus signos vitales están siendo monitoreados.",
+    ourLand: "Nuestra tierra",
+    ourStrength: "Nuestra tierra, nuestra fuerza.",
+    connectedWithYou: "Conectado contigo",
+    status: "Estado",
+    battery: "Batería",
+    active: "ACTIVO",
+    ready: "LISTO",
+    health: "Salud",
+    trust: "Confianza",
+    innovation: "Innovación",
+    community: "Comunidad",
+    mountain: "Cordillera Blanca",
+    huaraz: "Huaraz",
+  },
+
+  qu: {
+    tagline:
+      "Kawsayniykita waqaychanapaq tecnología, ñawpa yachayninchiswan.",
+    technology: "Kawsayniykita waqaychay",
+    wellbeing: "Allin kawsayniyki,",
+    mission: "llank'ayninchis.",
+    monitor:
+      "Kawsayniykipa señalkunata pachan pachan qhawariy, runakunapaq ruwasqa tecnologíawan.",
+    why: "¿Imaraykutaq NeuroWatch?",
+    realtime: "Pachanmanta qhawariy",
+    realtimeDesc:
+      "Sunquykita waqaychay, kawsayniykipa señalkunata qhawariy.",
+    purpose: "Tecnología munaywan",
+    purposeDesc: "Huarazpi runakunapa kawsayninta allinchayta munan.",
+    connected: "Qamwan tinkisqa",
+    connectedDesc: "Datoskunata qhawariy, qanpa qayllaykipi.",
+    people: "Ñuqanchispaq ruwasqa",
+    peopleDesc: "Allpa suyunchispa yuyayninwan ruwasqa.",
+    liveMonitoring: "Kawsay qhawariy",
+    heartRate: "Sunqupa pisiqnin",
+    currentStatus: "Kunan kawsay",
+    activeMonitoring: "Qhawariy kachkan",
+    waitingConnection: "Tinkiyta suyachkan",
+    connectWatch: "NeuroWatch relojwan tinkiy",
+    liveSigns: "Kawsay señalkuna",
+    live: "● KAWSACHKAN",
+    connectedWatch: "Relojwan tinkisqa.",
+    finger:
+      "Ruk'aykita sensorpi churay, sunqupa pisiqninpa datonkuna chayamunanpaq.",
+    alerts: "Willakuykuna",
+    highRate: "Sunqupa pisiqnin hatun",
+    waitingData: "Relojpa datonta suyachkan.",
+    rest: "Samayta yuyariy",
+    restDesc: "Pisi pachata samakuy.",
+    allGood: "¡Allinmi!",
+    monitoring: "Kawsayniykipa señalkunata qhawarichkan.",
+    ourLand: "Llaqtanchis",
+    ourStrength: "Llaqtanchis, kallpanchis.",
+    connectedWithYou: "Qamwan tinkisqa",
+    status: "Kawsay",
+    battery: "Batería",
+    active: "KACHKAN",
+    ready: "LISTO",
+    health: "Kawsay",
+    trust: "Kuska yuyay",
+    innovation: "Musuq yachay",
+    community: "Ayllu",
+    mountain: "Cordillera Blanca",
+    huaraz: "Huaraz",
+  },
+} as const;
+
+const textilePattern = `
+  repeating-linear-gradient(
+    45deg,
+    #c94a20 0px,
+    #c94a20 8px,
+    #e8a33d 8px,
+    #e8a33d 16px,
+    #2f8f5b 16px,
+    #2f8f5b 24px,
+    #087f83 24px,
+    #087f83 32px
+  )
+`;const pageText = {
+  es: {
+    tagline: "Tecnología que cuida tu vida, con raíces que nos unen.",
+    technology: "Tecnología que cuida tu vida",
+    wellbeing: "Tu bienestar,",
+    mission: "nuestra misión.",
+    monitor:
+      "Monitorea tus signos vitales en tiempo real con tecnología creada pensando en nuestra gente.",
+    why: "¿Por qué NeuroWatch?",
+    realtime: "Monitoreo en tiempo real",
+    realtimeDesc: "Cuida tu corazón y vigila tus signos vitales.",
+    purpose: "Tecnología con propósito",
+    purposeDesc: "Innovación que busca mejorar vidas en Huaraz.",
+    connected: "Conectado contigo",
+    connectedDesc: "Datos y monitoreo siempre cerca de ti.",
+    people: "Hecho para nuestra gente",
+    peopleDesc: "Diseñado pensando en nuestra tierra.",
+    liveMonitoring: "Monitoreo en vivo",
+    heartRate: "Frecuencia cardíaca",
+    currentStatus: "Estado actual",
+    activeMonitoring: "Monitoreo activo",
+    waitingConnection: "Esperando conexión",
+    connectWatch: "Conectar reloj NeuroWatch",
+    liveSigns: "Signos en vivo",
+    live: "● EN VIVO",
+    connectedWatch: "Conectado al reloj.",
+    finger:
+      "Coloca el dedo en el sensor para comenzar a recibir tus datos de pulso.",
+    alerts: "Alertas",
+    highRate: "Frecuencia alta",
+    waitingData: "Esperando datos del reloj.",
+    rest: "Recuerda descansar",
+    restDesc: "Tómate un momento para relajarte.",
+    allGood: "¡Todo bien!",
+    monitoring: "Tus signos vitales están siendo monitoreados.",
+    ourLand: "Nuestra tierra",
+    ourStrength: "Nuestra tierra, nuestra fuerza.",
+    connectedWithYou: "Conectado contigo",
+    status: "Estado",
+    battery: "Batería",
+    active: "ACTIVO",
+    ready: "LISTO",
+    health: "Salud",
+    trust: "Confianza",
+    innovation: "Innovación",
+    community: "Comunidad",
+    mountain: "Cordillera Blanca",
+    huaraz: "Huaraz",
+  },
+
+  qu: {
+    tagline:
+      "Kawsayniykita waqaychanapaq tecnología, ñawpa yachayninchiswan.",
+    technology: "Kawsayniykita waqaychay",
+    wellbeing: "Allin kawsayniyki,",
+    mission: "llank'ayninchis.",
+    monitor:
+      "Kawsayniykipa señalkunata pachan pachan qhawariy, runakunapaq ruwasqa tecnologíawan.",
+    why: "¿Imaraykutaq NeuroWatch?",
+    realtime: "Pachanmanta qhawariy",
+    realtimeDesc:
+      "Sunquykita waqaychay, kawsayniykipa señalkunata qhawariy.",
+    purpose: "Tecnología munaywan",
+    purposeDesc: "Huarazpi runakunapa kawsayninta allinchayta munan.",
+    connected: "Qamwan tinkisqa",
+    connectedDesc: "Datoskunata qhawariy, qanpa qayllaykipi.",
+    people: "Ñuqanchispaq ruwasqa",
+    peopleDesc: "Allpa suyunchispa yuyayninwan ruwasqa.",
+    liveMonitoring: "Kawsay qhawariy",
+    heartRate: "Sunqupa pisiqnin",
+    currentStatus: "Kunan kawsay",
+    activeMonitoring: "Qhawariy kachkan",
+    waitingConnection: "Tinkiyta suyachkan",
+    connectWatch: "NeuroWatch relojwan tinkiy",
+    liveSigns: "Kawsay señalkuna",
+    live: "● KAWSACHKAN",
+    connectedWatch: "Relojwan tinkisqa.",
+    finger:
+      "Ruk'aykita sensorpi churay, sunqupa pisiqninpa datonkuna chayamunanpaq.",
+    alerts: "Willakuykuna",
+    highRate: "Sunqupa pisiqnin hatun",
+    waitingData: "Relojpa datonta suyachkan.",
+    rest: "Samayta yuyariy",
+    restDesc: "Pisi pachata samakuy.",
+    allGood: "¡Allinmi!",
+    monitoring: "Kawsayniykipa señalkunata qhawarichkan.",
+    ourLand: "Llaqtanchis",
+    ourStrength: "Llaqtanchis, kallpanchis.",
+    connectedWithYou: "Qamwan tinkisqa",
+    status: "Kawsay",
+    battery: "Batería",
+    active: "KACHKAN",
+    ready: "LISTO",
+    health: "Kawsay",
+    trust: "Kuska yuyay",
+    innovation: "Musuq yachay",
+    community: "Ayllu",
+    mountain: "Cordillera Blanca",
+    huaraz: "Huaraz",
+  },
+} as const;
+
+const textilePattern = `
   repeating-linear-gradient(
     45deg,
     #c94a20 0px,
@@ -131,14 +362,12 @@ const pageText = {
     #087f83 32px
   )
 `;
-
 export default function DashboardPage() {
   const router = useRouter();
 
   const {
     language,
     setLanguage,
-    t,
   } = useLanguage();
 const text = pageText[language];
   const {
@@ -249,9 +478,9 @@ const text = pageText[language];
                 {t("huarazPeru")}
               </p>
 
-              <p className="mt-1 text-xs font-semibold text-[#79634d]">
-                Tecnología que cuida tu vida, con raíces que nos unen.
-              </p>
+             <p className="mt-1 text-xs font-semibold text-[#79634d]">
+  {text.tagline}
+</p>
             </div>
 
           </div>
@@ -331,7 +560,7 @@ const text = pageText[language];
                 style={{ backgroundImage: textilePattern }}
               />
 
-              <div className="relative min-h-[430px] p-6">
+           <div className="relative p-6">
 
                 <div className="absolute right-4 top-5 text-5xl opacity-80">
                   ☀️
@@ -352,35 +581,37 @@ const text = pageText[language];
                   creada pensando en nuestra gente.
                 </p>
 
-                {/* FOTO REAL: CORDILLERA BLANCA */}
+              {/* FOTO REAL: CORDILLERA BLANCA */}
 
-                <div className="absolute bottom-5 left-0 right-0 px-5">
+<div className="mt-8">
 
-                  <div className="relative h-48 overflow-hidden rounded-3xl shadow-lg">
+  <div className="relative h-48 overflow-hidden rounded-3xl shadow-lg">
 
-                    <img
-                      src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Huascaran_Huandoy_Chopicalqui_seen_from_Huaraz.JPG"
-                      alt="Cordillera Blanca vista desde Huaraz"
-                      className="absolute inset-0 h-full w-full object-cover"
-                    />
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Huascaran_Huandoy_Chopicalqui_seen_from_Huaraz.JPG"
+      alt="Cordillera Blanca vista desde Huaraz"
+      className="h-full w-full object-cover"
+    />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#173c3a]/60 via-transparent to-transparent" />
+    <div className="absolute inset-0 bg-gradient-to-t from-[#173c3a]/70 via-transparent to-transparent" />
 
-                    <div className="absolute bottom-3 left-4 right-4">
-                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-white">
-                        Huaraz · Áncash
-                      </p>
+    {/* TEXTO SOBRE LA IMAGEN */}
 
-                      <p className="mt-1 text-lg font-black text-white">
-                        Cordillera Blanca
-                      </p>
-                    </div>
+    <div className="absolute bottom-3 left-4 right-4">
 
-                  </div>
+      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-white">
+        Huaraz · Áncash
+      </p>
 
-                </div>
+      <p className="mt-1 text-lg font-black text-white">
+        {text.mountain}
+      </p>
 
-              </div>
+    </div>
+
+  </div>
+
+</div>
 
             </section>
 
