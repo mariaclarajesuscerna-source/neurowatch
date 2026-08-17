@@ -32,7 +32,11 @@ const textilePattern = `
   )
 `;
 
-export default function DashboardPage() {
+export default function DashboardPage(const {
+  language,
+  setLanguage,
+  t,
+} = useLanguage();) {
   const router = useRouter();
 
   const {
