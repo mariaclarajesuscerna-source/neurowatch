@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+
 import {
   IconActivity,
   IconSignal,
@@ -11,19 +12,23 @@ import {
   IconTriangleAlert,
   IconRefreshCw,
 } from "@/components/ui/icons";
+
 import GlassCard from "@/components/ui/GlassCard";
 import StatusChip from "@/components/ui/StatusChip";
+
 import { useNeurowatch } from "@/components/NeurowatchProvider";
-import { useLanguage } from "@/components/LanguageProvider";
+
 import {
   getFacialChecks,
   type StoredFacialCheck,
 } from "@/lib/storage";
 
+import { useLanguage } from "@/components/LanguageProvider";
+
 const days = [
   "Lun",
   "Mar",
-  "Miq",
+  "Mie",
   "Jue",
   "Vie",
   "Sab",
@@ -38,6 +43,10 @@ export default function HistorialPage() {
 
   const { language } = useLanguage();
 
+  /* =====================================================
+     ESTADOS
+  ====================================================== */
+
   const [facialChecks, setFacialChecks] =
     useState<StoredFacialCheck[]>([]);
 
@@ -49,6 +58,10 @@ export default function HistorialPage() {
       "Semana"
     );
 
+  /* =====================================================
+     CARGAR CHEQUEOS CON FOTOS
+  ====================================================== */
+
   useEffect(() => {
     const loadChecks = () => {
       const checks = getFacialChecks();
@@ -57,6 +70,10 @@ export default function HistorialPage() {
 
     loadChecks();
   }, [facialHistory]);
+
+  /* =====================================================
+     TENDENCIA DE PULSO
+  ====================================================== */
 
   const trendBPMs: number[] = [];
 
@@ -80,6 +97,10 @@ export default function HistorialPage() {
         ? "bg-warn"
         : "bg-brand-600"
   );
+
+  /* =====================================================
+     ESTADÍSTICAS FACIALES
+  ====================================================== */
 
   const facialStats = useMemo(() => {
     if (facialChecks.length === 0) {
@@ -109,6 +130,10 @@ export default function HistorialPage() {
       latest: values[0],
     };
   }, [facialChecks]);
+
+  /* =====================================================
+     RESULTADO
+  ====================================================== */
 
   const getResult = (index: number) => {
     if (index < 70) {
@@ -143,18 +168,41 @@ export default function HistorialPage() {
     };
   };
 
+  /* =====================================================
+     TEXTOS
+  ====================================================== */
+
+  const title =
+    language === "qu"
+      ? "Kawsaypa ñawpaq qhawariyninkuna"
+      : "Historial de salud";
+
+  const subtitle =
+    language === "qu"
+      ? "Qhawariykuna hinallataq wiñaynin"
+      : "Tus registros y evolucion";
+
+  /* =====================================================
+     RENDER
+  ====================================================== */
+
   return (
     <>
       <div className="flex flex-col gap-4 px-5 pt-3.5 md:pt-6 md:max-w-lg md:mx-auto">
 
-        {/* STATUS BAR */}
+        {/* =================================================
+            STATUS BAR
+        ================================================= */}
 
         <div className="flex items-center justify-between px-1 md:hidden">
           <span className="text-[15px] font-semibold text-ink-900">
-            {new Date().toLocaleTimeString("es-ES", {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
+            {new Date().toLocaleTimeString(
+              "es-ES",
+              {
+                hour: "2-digit",
+                minute: "2-digit",
+              }
+            )}
           </span>
 
           <div className="flex items-center gap-1.5 text-ink-900">
@@ -164,29 +212,35 @@ export default function HistorialPage() {
           </div>
         </div>
 
-        {/* ENCABEZADO */}
+        {/* =================================================
+            ENCABEZADO
+        ================================================= */}
 
         <div className="flex items-center gap-2.5">
+
           <div className="h-[34px] w-[34px] rounded-[11px] bg-brand-600 flex items-center justify-center shadow-[0_4px_12px_rgba(79,70,229,0.25)] text-white">
             <IconActivity size={20} />
           </div>
 
           <div className="flex flex-col gap-0.5">
+
             <span className="text-[22px] font-bold text-ink-900 leading-tight">
               Neurowatch
             </span>
 
             <span className="text-[13px] font-normal text-ink-600 leading-tight">
-              {language === "qu"
-                ? "Qhawariykuna hinallataq ñawpaq kawsay"
-                : "Tendencias y bitacora"}
+              {subtitle}
             </span>
+
           </div>
         </div>
 
-        {/* FILTROS */}
+        {/* =================================================
+            FILTROS
+        ================================================= */}
 
         <div className="flex bg-brand-100 rounded-full p-1 gap-1">
+
           {[
             {
               key: "Dia" as const,
@@ -224,14 +278,19 @@ export default function HistorialPage() {
               {item.label}
             </button>
           ))}
+
         </div>
 
-        {/* RESUMEN FACIAL */}
+        {/* =================================================
+            RESUMEN FACIAL
+        ================================================= */}
 
         <GlassCard className="p-4">
 
           <div className="flex items-center justify-between mb-4">
+
             <div>
+
               <h2 className="text-sm font-bold text-ink-900">
                 {language === "qu"
                   ? "Uya qhawariypa pisiyachiy"
@@ -243,16 +302,21 @@ export default function HistorialPage() {
                   ? "Qhawariykikunapa wiñaynin"
                   : "Evolucion de tus chequeos"}
               </p>
+
             </div>
 
             <div className="h-10 w-10 rounded-xl bg-brand-100 flex items-center justify-center text-brand-600">
               <IconUserRound size={22} />
             </div>
+
           </div>
 
           <div className="grid grid-cols-3 gap-2">
 
+            {/* CHEQUEOS */}
+
             <div className="rounded-xl bg-brand-100/70 p-3 text-center">
+
               <p className="text-[11px] text-ink-500">
                 {language === "qu"
                   ? "Qhawariykuna"
@@ -262,9 +326,13 @@ export default function HistorialPage() {
               <p className="mt-1 text-xl font-bold text-ink-900">
                 {facialChecks.length}
               </p>
+
             </div>
 
+            {/* PROMEDIO */}
+
             <div className="rounded-xl bg-brand-100/70 p-3 text-center">
+
               <p className="text-[11px] text-ink-500">
                 {language === "qu"
                   ? "Chawpi"
@@ -274,9 +342,13 @@ export default function HistorialPage() {
               <p className="mt-1 text-xl font-bold text-ink-900">
                 {facialStats.average || "--"}
               </p>
+
             </div>
 
+            {/* ULTIMO */}
+
             <div className="rounded-xl bg-brand-100/70 p-3 text-center">
+
               <p className="text-[11px] text-ink-500">
                 {language === "qu"
                   ? "Qhipa"
@@ -286,14 +358,20 @@ export default function HistorialPage() {
               <p className="mt-1 text-xl font-bold text-ink-900">
                 {facialStats.latest || "--"}
               </p>
+
             </div>
+
           </div>
+
+          {/* ESTADO ACTUAL */}
 
           {facialStats.latest > 0 && (
             <div className="mt-3 flex items-center gap-2 rounded-xl bg-ok-fill px-3 py-2.5">
+
               <IconCircleCheck size={19} />
 
               <span className="text-xs font-medium text-ink-700">
+
                 {facialStats.latest >= 86
                   ? language === "qu"
                     ? "Qhipa qhawariyqa allin kaypi kachkan."
@@ -305,18 +383,26 @@ export default function HistorialPage() {
                     : language === "qu"
                       ? "Qhipa qhawariyqa hatun tikrayta rikuchin."
                       : "Tu ultimo resultado presenta una variacion marcada."}
+
               </span>
+
             </div>
           )}
+
         </GlassCard>
 
-        {/* EVOLUCION */}
+        {/* =================================================
+            EVOLUCION DE SIMETRIA
+        ================================================= */}
 
         {facialChecks.length > 0 && (
+
           <GlassCard className="p-4">
 
             <div className="flex items-center justify-between mb-4">
+
               <div>
+
                 <h2 className="text-sm font-bold text-ink-900">
                   {language === "qu"
                     ? "Ch'iqiy wiñaynin"
@@ -328,6 +414,7 @@ export default function HistorialPage() {
                     ? "Qhipa qhawariykuna"
                     : "Ultimos chequeos"}
                 </p>
+
               </div>
 
               <span className="text-xs font-semibold text-brand-600">
@@ -336,15 +423,20 @@ export default function HistorialPage() {
                   ? "allin"
                   : "mejor"}
               </span>
+
             </div>
 
             <div className="relative h-[150px]">
+
+              {/* LINEAS */}
 
               <div className="absolute left-0 right-0 top-0 border-t border-ink-900/10" />
 
               <div className="absolute left-0 right-0 top-1/2 border-t border-ink-900/10" />
 
               <div className="absolute left-0 right-0 bottom-0 border-t border-ink-900/10" />
+
+              {/* VALORES */}
 
               <div className="absolute inset-0 flex items-end gap-2 px-1">
 
@@ -358,6 +450,7 @@ export default function HistorialPage() {
                   )
                   .reverse()
                   .map((check, i) => {
+
                     const height =
                       Math.max(
                         8,
@@ -376,6 +469,7 @@ export default function HistorialPage() {
                         }
                         className="flex-1 h-full flex flex-col justify-end items-center gap-1"
                       >
+
                         <span className="text-[10px] font-bold text-ink-600">
                           {check.index}
                         </span>
@@ -389,14 +483,17 @@ export default function HistorialPage() {
                               "8px",
                           }}
                         />
+
                       </div>
                     );
                   })}
 
               </div>
+
             </div>
 
             <div className="mt-2 flex justify-between text-[10px] text-ink-400">
+
               <span>
                 {language === "qu"
                   ? "Ñawpaq"
@@ -408,16 +505,20 @@ export default function HistorialPage() {
                   ? "Kunan"
                   : "Actual"}
               </span>
+
             </div>
 
           </GlassCard>
         )}
 
-        {/* TENDENCIA DE PULSO */}
+        {/* =================================================
+            TENDENCIA DE PULSO
+        ================================================= */}
 
         <GlassCard className="flex flex-col gap-3 p-4">
 
           <div className="flex items-center justify-between">
+
             <span className="text-sm font-semibold text-ink-900">
               {language === "qu"
                 ? "Sunqupa muyuriyninpa wiñaynin"
@@ -425,6 +526,7 @@ export default function HistorialPage() {
             </span>
 
             <span className="text-xs font-normal text-ink-600">
+
               {range === "Dia"
                 ? language === "qu"
                   ? "Kunan"
@@ -436,10 +538,13 @@ export default function HistorialPage() {
                   : language === "qu"
                     ? "Qhipa 7 p'unchay"
                     : "Ultimos 7 dias"}
+
             </span>
+
           </div>
 
           <div className="h-[120px] flex items-end gap-2">
+
             {trendBPMs.map(
               (bpm, i) => (
                 <div
@@ -455,9 +560,11 @@ export default function HistorialPage() {
                 />
               )
             )}
+
           </div>
 
           <div className="flex gap-2">
+
             {days.map((day) => (
               <span
                 key={day}
@@ -466,14 +573,19 @@ export default function HistorialPage() {
                 {day}
               </span>
             ))}
+
           </div>
+
         </GlassCard>
 
-        {/* BITACORA */}
+        {/* =================================================
+            BITACORA
+        ================================================= */}
 
         <GlassCard className="flex flex-col gap-3.5 p-4">
 
           <div className="flex items-center justify-between">
+
             <span className="text-sm font-semibold text-ink-900">
               {language === "qu"
                 ? "Uya qhawariykunapa qillqana"
@@ -481,8 +593,11 @@ export default function HistorialPage() {
             </span>
 
             {facialChecks.length > 0 && (
+
               <span className="text-[11px] text-ink-400">
+
                 {facialChecks.length}{" "}
+
                 {facialChecks.length === 1
                   ? language === "qu"
                     ? "qillqasqa"
@@ -490,13 +605,17 @@ export default function HistorialPage() {
                   : language === "qu"
                     ? "qillqakuna"
                     : "registros"}
+
               </span>
+
             )}
+
           </div>
 
           <div className="flex flex-col">
 
             {facialChecks.length === 0 && (
+
               <div className="py-7 text-center">
 
                 <div className="mx-auto mb-3 h-12 w-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-600">
@@ -516,10 +635,12 @@ export default function HistorialPage() {
                 </p>
 
               </div>
+
             )}
 
             {facialChecks.map(
               (entry, i) => {
+
                 const isLast =
                   i ===
                   facialChecks.length - 1;
@@ -530,15 +651,20 @@ export default function HistorialPage() {
                   );
 
                 return (
+
                   <div
                     key={
                       entry.id ??
                       entry.date + i
                     }
                     className={`flex gap-3 ${
-                      isLast ? "" : "pb-4"
+                      isLast
+                        ? ""
+                        : "pb-4"
                     }`}
                   >
+
+                    {/* LINEA */}
 
                     <div className="w-5 flex flex-col items-center gap-1">
 
@@ -552,15 +678,19 @@ export default function HistorialPage() {
 
                     </div>
 
+                    {/* FOTO */}
+
                     <button
                       type="button"
                       disabled={!entry.image}
                       onClick={() => {
+
                         if (entry.image) {
                           setSelectedPhoto(
                             entry
                           );
                         }
+
                       }}
                       className={`h-16 w-16 rounded-[12px] overflow-hidden shrink-0 bg-brand-100 flex items-center justify-center text-brand-600 ${
                         entry.image
@@ -568,6 +698,7 @@ export default function HistorialPage() {
                           : ""
                       }`}
                     >
+
                       {entry.image ? (
                         <img
                           src={entry.image}
@@ -581,7 +712,10 @@ export default function HistorialPage() {
                       ) : (
                         <IconUserRound size={27} />
                       )}
+
                     </button>
+
+                    {/* INFORMACION */}
 
                     <div className="flex flex-1 min-w-0 flex-col gap-1.5">
 
@@ -614,28 +748,37 @@ export default function HistorialPage() {
                         />
 
                         <span className="text-xs text-ink-500 tabular-nums">
+
                           {language === "qu"
                             ? "Yupay"
                             : "Indice"}{" "}
+
                           {entry.index}
+
                         </span>
 
                       </div>
 
                     </div>
+
                   </div>
+
                 );
               }
             )}
 
           </div>
+
         </GlassCard>
 
       </div>
 
-      {/* MODAL DE FOTO */}
+      {/* ===================================================
+          MODAL DE FOTO
+      =================================================== */}
 
       {selectedPhoto && (
+
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 p-5 backdrop-blur-sm"
           onClick={() =>
@@ -650,6 +793,8 @@ export default function HistorialPage() {
             }
           >
 
+            {/* FOTO */}
+
             <img
               src={
                 selectedPhoto.image
@@ -662,9 +807,12 @@ export default function HistorialPage() {
               className="max-h-[78vh] max-w-[90vw] rounded-xl object-contain"
             />
 
+            {/* INFORMACION */}
+
             <div className="flex items-center justify-between gap-3 px-2 py-3">
 
               <div>
+
                 <p className="text-sm font-bold text-ink-900">
                   {language === "qu"
                     ? "Uya qhawariy"
@@ -674,6 +822,7 @@ export default function HistorialPage() {
                 <p className="text-xs text-ink-500">
                   {selectedPhoto.date}
                 </p>
+
               </div>
 
               <div className="text-right">
@@ -689,7 +838,10 @@ export default function HistorialPage() {
                 </p>
 
               </div>
+
             </div>
+
+            {/* CERRAR */}
 
             <button
               type="button"
@@ -707,8 +859,10 @@ export default function HistorialPage() {
             </button>
 
           </div>
+
         </div>
       )}
+
     </>
   );
 }
