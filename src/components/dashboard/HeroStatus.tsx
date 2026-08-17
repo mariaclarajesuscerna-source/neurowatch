@@ -3,7 +3,7 @@ import GlassCard from "../ui/GlassCard";
 
 type HeroState = "ok" | "warn" | "alert";
 
-const stateConfig: Record<
+const stateConfig: Record
   HeroState,
   {
     dot: string;
@@ -15,15 +15,15 @@ const stateConfig: Record<
 > = {
   ok: {
     dot: "bg-ok",
-    border: "border-[#10B98159]",
+    border: "border-[#2F8F5B59]",
     bg: "bg-ok-fill",
     label: "Estable",
     desc: "Todo en orden. Tu pulso se mantiene dentro del rango habitual.",
   },
   warn: {
     dot: "bg-warn",
-    border: "border-[#F59E0B59]",
-    bg: "bg-[#F59E0B1A]",
+    border: "border-[#E8A33D59]",
+    bg: "bg-[#E8A33D1A]",
     label: "Atencion",
     desc: "El pulso muestra variaciones. No es una emergencia, pero conviene revisar.",
   },
@@ -51,6 +51,7 @@ export default function HeroStatus({
 
   return (
     <GlassCard
+      accent
       className={`${c.bg} ${c.border} flex flex-col gap-2.5 p-6`}
     >
       <div className="flex items-center gap-3">
