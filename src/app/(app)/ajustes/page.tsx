@@ -50,14 +50,21 @@ export default function AjustesPage() {
 
     setSaved(true);
 
-    window.setTimeout(
-      () => setSaved(false),
-      1800
-    );
+    window.setTimeout(() => {
+      setSaved(false);
+    }, 1800);
   };
 
   const input =
     "mt-1 h-10 w-full rounded-xl border border-[#dfc49a] bg-white px-3 text-[#263a32] outline-none focus:border-[#087f83]";
+
+  const watchButtonText = bleData.connected
+    ? language === "qu"
+      ? "Relojta rakiy"
+      : "Desconectar"
+    : language === "qu"
+      ? "Relojta tinkichiy"
+      : "Conectar";
 
   return (
     <div className="relative min-h-dvh overflow-hidden bg-[#f7efe0] px-4 pb-28 pt-5 md:px-8 md:pb-10">
@@ -87,13 +94,11 @@ export default function AjustesPage() {
       </div>
 
       <div className="relative mx-auto w-full max-w-5xl">
-
         {/* ===================================================
             ENCABEZADO
         ==================================================== */}
 
         <div className="mb-5 overflow-hidden rounded-[28px] border border-[#dfc49a] bg-[#fff9ed] shadow-[0_14px_35px_rgba(72,48,25,0.10)]">
-
           <div
             className="h-2"
             style={{
@@ -112,18 +117,17 @@ export default function AjustesPage() {
           />
 
           <div className="flex items-center gap-4 p-5">
-
             <div className="flex h-14 w-14 items-center justify-center rounded-[18px] bg-[#eee8f3] text-[#73518e]">
-
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/80">
                 <IconActivity size={22} />
               </div>
-
             </div>
 
             <div>
               <h1 className="text-2xl font-black uppercase text-[#075d63]">
-                {t("settings")}
+                {language === "qu"
+                  ? "Rurayninkuna"
+                  : "Ajustes"}
               </h1>
 
               <p className="mt-1 text-xs text-[#79634d]">
@@ -132,7 +136,6 @@ export default function AjustesPage() {
                   : "Perfil, reloj y configuración"}
               </p>
             </div>
-
           </div>
         </div>
 
@@ -141,7 +144,6 @@ export default function AjustesPage() {
         ==================================================== */}
 
         <GlassCard className="mb-4 flex flex-col gap-4 rounded-[26px] border border-[#dfc49a] bg-[#fff9ed] p-5">
-
           <b className="text-base font-black text-[#263a32]">
             {language === "qu"
               ? "Datosniy"
@@ -154,9 +156,7 @@ export default function AjustesPage() {
             <input
               className={input}
               value={name}
-              onChange={(e) =>
-                setName(e.target.value)
-              }
+              onChange={(e) => setName(e.target.value)}
               placeholder={
                 language === "qu"
                   ? "Sutiyki"
@@ -172,9 +172,7 @@ export default function AjustesPage() {
               className={input}
               inputMode="numeric"
               value={age}
-              onChange={(e) =>
-                setAge(e.target.value)
-              }
+              onChange={(e) => setAge(e.target.value)}
             />
           </label>
 
@@ -185,9 +183,7 @@ export default function AjustesPage() {
               className={input}
               inputMode="numeric"
               value={rest}
-              onChange={(e) =>
-                setRest(e.target.value)
-              }
+              onChange={(e) => setRest(e.target.value)}
             />
           </label>
 
@@ -197,15 +193,13 @@ export default function AjustesPage() {
             className="h-11 rounded-xl bg-[#087f83] font-black text-white transition-transform active:scale-[0.98]"
           >
             {saved
-              ? t("save")
-              : t("saveMyData")}
+              ? language === "qu"
+                ? "Datos waqaychasqa"
+                : "Datos guardados"
+              : language === "qu"
+                ? "Datosniyta waqaychay"
+                : "Guardar mis datos"}
           </button>
-
-          {saved && (
-            <p className="text-center text-xs font-bold text-[#2f8f5b]">
-              {t("dataSaved")}
-            </p>
-          )}
         </GlassCard>
 
         {/* ===================================================
@@ -213,11 +207,11 @@ export default function AjustesPage() {
         ==================================================== */}
 
         <GlassCard className="mb-4 flex flex-col gap-3 rounded-[26px] border border-[#dfc49a] bg-[#fff9ed] p-5">
-
           <div className="flex items-center justify-between">
-
             <b className="text-base font-black text-[#263a32]">
-              {t("watch")}
+              {language === "qu"
+                ? "Reloj"
+                : "Reloj"}
             </b>
 
             <span
@@ -228,10 +222,13 @@ export default function AjustesPage() {
               }
             >
               {bleData.connected
-                ? t("connected")
-                : t("disconnected")}
+                ? language === "qu"
+                  ? "Tinkisqa"
+                  : "Conectado"
+                : language === "qu"
+                  ? "Rakisqa"
+                  : "Desconectado"}
             </span>
-
           </div>
 
           <p className="text-sm leading-relaxed text-[#6b5842]">
@@ -255,9 +252,7 @@ export default function AjustesPage() {
           >
             <IconBluetooth size={19} />
 
-            {bleData.connected
-              ? t("disconnect")
-              : t("connect")}
+            {watchButtonText}
           </button>
 
           {bleError && (
@@ -265,7 +260,6 @@ export default function AjustesPage() {
               {bleError}
             </p>
           )}
-
         </GlassCard>
 
         {/* ===================================================
@@ -273,14 +267,17 @@ export default function AjustesPage() {
         ==================================================== */}
 
         <GlassCard className="mb-4 flex flex-col gap-2 rounded-[26px] border border-[#dfc49a] bg-[#fff9ed] p-5">
-
           <b className="text-base font-black text-[#263a32]">
-            {t("bleLiveLog")}
+            {language === "qu"
+              ? "BLEpa kawsaypa qillqaynin"
+              : "Registro BLE en vivo"}
           </b>
 
           <p className="text-xs text-[#6b5842]">
-            {t("lastFrame")}: BPM{" "}
-            {bleData.bpm || 0} · IR{" "}
+            {language === "qu"
+              ? "Qhipa trama"
+              : "Última trama"}{" "}
+            : BPM {bleData.bpm || 0} · IR{" "}
             {bleData.ir || 0}
           </p>
 
@@ -291,23 +288,21 @@ export default function AjustesPage() {
                 .reverse()
                 .map((b, i) => (
                   <p key={i}>
-                    RX BLE bpm={b} ir=
-                    {bleData.ir || 0}
+                    RX BLE bpm={b} ir={bleData.ir || 0}
                   </p>
                 ))
             ) : (
               <p>
-                {t("waitingWatch")}
+                {language === "qu"
+                  ? "Relojmanta datokunata suyarichkan…"
+                  : "Esperando datos del reloj…"}
               </p>
             )}
           </div>
 
           <small className="text-[#8c7660]">
-            {language === "qu"
-              ? "Monitor Serie ESP32: 115200 baudios."
-              : "Monitor Serie ESP32: 115200 baudios."}
+            Monitor Serie ESP32: 115200 baudios.
           </small>
-
         </GlassCard>
 
         {/* ===================================================
@@ -315,14 +310,17 @@ export default function AjustesPage() {
         ==================================================== */}
 
         <GlassCard className="flex flex-col gap-4 rounded-[26px] border border-[#dfc49a] bg-[#fff9ed] p-5">
-
           <b className="text-base font-black text-[#263a32]">
-            {t("monitoring")}
+            {language === "qu"
+              ? "Qhawariy"
+              : "Monitoreo"}
           </b>
 
           <label className="font-medium text-[#6b5842]">
-            {t("tolerance")}: ±
-            {settings.toleranceBPM} BPM
+            {language === "qu"
+              ? "Tolerancia"
+              : "Tolerancia"}{" "}
+            : ±{settings.toleranceBPM} BPM
 
             <input
               type="range"
@@ -332,10 +330,9 @@ export default function AjustesPage() {
               onChange={(e) =>
                 saveSettings({
                   ...settings,
-                  toleranceBPM:
-                    Number(
-                      e.target.value
-                    ),
+                  toleranceBPM: Number(
+                    e.target.value
+                  ),
                 })
               }
               className="mt-2 w-full"
@@ -343,30 +340,28 @@ export default function AjustesPage() {
           </label>
 
           <label className="font-medium text-[#6b5842]">
-            {t("countdown")}:{" "}
-            {settings.countdownSeconds} s
+            {language === "qu"
+              ? "Suyaypa yupaynin"
+              : "Cuenta regresiva"}{" "}
+            : {settings.countdownSeconds} s
 
             <input
               type="range"
               min={30}
               max={60}
               step={5}
-              value={
-                settings.countdownSeconds
-              }
+              value={settings.countdownSeconds}
               onChange={(e) =>
                 saveSettings({
                   ...settings,
-                  countdownSeconds:
-                    Number(
-                      e.target.value
-                    ),
+                  countdownSeconds: Number(
+                    e.target.value
+                  ),
                 })
               }
               className="mt-2 w-full"
             />
           </label>
-
         </GlassCard>
       </div>
     </div>
