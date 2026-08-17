@@ -101,7 +101,7 @@ export default function ChequeoPage() {
   }, [stopCamera]);
 
   /*
-   * Conectar el stream al video
+   * Conectar stream al video
    */
   useEffect(() => {
     if (
@@ -124,8 +124,8 @@ export default function ChequeoPage() {
    * Abrir cámara
    *
    * IMPORTANTE:
-   * No aplicamos scaleX(-1).
-   * La cámara se muestra en orientación real.
+   * NO usamos scaleX(-1).
+   * NO usamos transform para invertir.
    */
   const startCamera = async () => {
     try {
@@ -176,12 +176,12 @@ export default function ChequeoPage() {
   /*
    * Capturar foto
    *
-   * La foto utiliza exactamente el mismo frame
-   * y orientación que se muestra en el video.
+   * IMPORTANTE:
+   * La foto NO se voltea.
    *
    * NO usamos:
-   * scale(-1, 1)
    * translate()
+   * scale(-1, 1)
    * rotate()
    */
   const capture = async () => {
@@ -194,33 +194,37 @@ export default function ChequeoPage() {
     ) {
       return;
     }
-    const canvas = document.createElement("canvas");
 
-canvas.width = video.videoWidth;
-canvas.height = video.videoHeight;
+    const canvas =
+      document.createElement("canvas");
 
-const context = canvas.getContext("2d");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
 
-if (!context) {
-  return;
-}
+    const context =
+      canvas.getContext("2d");
 
-/*
- * ORIENTACIÓN REAL
- * No hacemos espejo.
- * No hacemos translate().
- * No hacemos scale(-1, 1).
- * No hacemos rotate().
- */
-context.drawImage(
-  video,
-  0,
-  0,
-  canvas.width,
-  canvas.height
-);
+    if (!context) {
+      return;
+    }
 
-const image = canvas.toDataURL("image/jpeg", 0.9);
+    /*
+     * Orientación real.
+     * Sin efecto espejo.
+     */
+    context.drawImage(
+      video,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    const image =
+      canvas.toDataURL(
+        "image/jpeg",
+        0.9
+      );
 
     stopCamera();
 
@@ -258,8 +262,7 @@ const image = canvas.toDataURL("image/jpeg", 0.9);
     }
 
     /*
-     * Mantener animación de análisis
-     * durante aproximadamente 3 segundos.
+     * Mantener animación durante 3 segundos
      */
     const elapsed =
       Date.now() - startedAt;
@@ -280,26 +283,26 @@ const image = canvas.toDataURL("image/jpeg", 0.9);
     clearInterval(tick);
 
     setCountdown(0);
-
     setIndex(symmetryIndex);
     setState("result");
 
     /*
-     * Primera foto:
-     * se utiliza como línea base.
+     * Primera foto = línea base
      */
     if (!baselineImage) {
       saveBaselineImage(image);
     }
 
     /*
-     * Mantener última foto.
+     * Guardar última foto
      */
     saveLastCheckPhoto(image);
 
     /*
-     * Guardar foto + índice
-     * en el historial persistente.
+     * Guardar en historial.
+     *
+     * IMPORTANTE:
+     * Se pasa también la imagen.
      */
     addFacialCheck(
       symmetryIndex,
@@ -359,16 +362,16 @@ const image = canvas.toDataURL("image/jpeg", 0.9);
             }}
           />
 
-          {/* Foto capturada */}
+          {/* FOTO CAPTURADA */}
           {state === "result" && photo && (
-              <img
-                src={photo}
-                alt="Foto capturada"
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-            )}
+            <img
+              src={photo}
+              alt="Foto capturada"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          )}
 
-          {/* Analizando */}
+          {/* ANALIZANDO */}
           {state === "analyzing" && (
             <div className="absolute inset-0 flex h-full flex-col items-center justify-center gap-4 text-white">
 
@@ -385,10 +388,11 @@ const image = canvas.toDataURL("image/jpeg", 0.9);
                     : "Procesando"}
                 </p>
               </div>
+
             </div>
           )}
 
-          {/* Abrir cámara */}
+          {/* ABRIR CÁMARA */}
           {state !== "preview" &&
             state !== "analyzing" &&
             state !== "result" &&
@@ -407,20 +411,21 @@ const image = canvas.toDataURL("image/jpeg", 0.9);
               </button>
             )}
 
-          {/* Guía facial */}
+          {/* GUÍA FACIAL */}
           {state === "preview" && (
             <div className="pointer-events-none absolute inset-8 rounded-[45%] border-[3px] border-brand-500" />
           )}
+
         </div>
 
-        {/* Error */}
+        {/* ERROR */}
         {error && (
           <p className="rounded-lg bg-alert-fill p-3 text-sm text-alert">
             {error}
           </p>
         )}
 
-        {/* Racha */}
+        {/* RACHA */}
         <div className="flex items-center justify-between px-2 py-1">
 
           <div className="flex items-center gap-2">
@@ -439,9 +444,10 @@ const image = canvas.toDataURL("image/jpeg", 0.9);
               Chequeo diario completado
             </span>
           )}
+
         </div>
 
-        {/* Botón abrir cámara */}
+        {/* BOTÓN ABRIR CÁMARA */}
         {state === "idle" && (
           <button
             onClick={startCamera}
@@ -452,7 +458,7 @@ const image = canvas.toDataURL("image/jpeg", 0.9);
           </button>
         )}
 
-        {/* Botón capturar */}
+        {/* BOTÓN CAPTURAR */}
         {state === "preview" && (
           <button
             onClick={capture}
@@ -463,7 +469,7 @@ const image = canvas.toDataURL("image/jpeg", 0.9);
           </button>
         )}
 
-        {/* Resultado */}
+        {/* RESULTADO */}
         {state === "result" &&
           index !== null && (
             <>
@@ -484,7 +490,7 @@ const image = canvas.toDataURL("image/jpeg", 0.9);
             </>
           )}
 
-        {/* Analizando */}
+        {/* ANALIZANDO */}
         {state === "analyzing" && (
           <div className="flex items-center justify-center py-2">
             <p className="text-sm text-ink-500">
@@ -492,9 +498,10 @@ const image = canvas.toDataURL("image/jpeg", 0.9);
             </p>
           </div>
         )}
+
       </GlassCard>
 
-      {/* Último chequeo */}
+      {/* ÚLTIMO CHEQUEO */}
       {lastCheck && (
         <GlassCard className="flex items-center gap-3 p-4">
 
@@ -526,6 +533,7 @@ const image = canvas.toDataURL("image/jpeg", 0.9);
 
         </GlassCard>
       )}
+
     </div>
   );
 }
