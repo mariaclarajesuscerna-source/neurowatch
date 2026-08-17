@@ -491,16 +491,19 @@ export function NeurowatchProvider({
       );
     }, []);
 
-    /*
+  /*
    * Historial facial persistente
    */
   const addFacialCheck = useCallback(
     (index: number, image?: string) => {
-      const date = new Date().toLocaleDateString("es-ES", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      });
+      const date = new Date().toLocaleDateString(
+        "es-ES",
+        {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        }
+      );
 
       const check: StoredFacialCheck = {
         id: `${Date.now()}-${Math.random()
@@ -508,7 +511,7 @@ export function NeurowatchProvider({
           .slice(2)}`,
         date,
         index,
-        photo: image ?? "",
+        image: image ?? "",
       };
 
       /*
@@ -517,7 +520,7 @@ export function NeurowatchProvider({
       persistFacialCheck(check);
 
       /*
-       * Actualizar historial completo
+       * Actualizar lista de chequeos
        */
       setFacialChecks((prev) => [
         check,
@@ -525,8 +528,7 @@ export function NeurowatchProvider({
       ]);
 
       /*
-       * Actualizar historial utilizado
-       * por la página Historial.
+       * Actualizar historial resumido
        */
       setFacialHistory((prev) => [
         {
