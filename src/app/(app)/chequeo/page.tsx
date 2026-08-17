@@ -27,18 +27,18 @@ function SymmetryBar({ value }: { value: number }) {
         : "Asimetria marcada";
 
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className="flex w-full flex-col gap-2">
       <div className="flex items-center justify-between">
         <span className="text-[15px] font-semibold text-ink-900">
           Indice de simetria
         </span>
 
-        <span className="text-[28px] font-bold text-ink-900 tabular-nums">
+        <span className="text-[28px] font-bold tabular-nums text-ink-900">
           {value}
         </span>
       </div>
 
-      <div className="h-3 w-full rounded-full bg-ink-900/10 overflow-hidden">
+      <div className="h-3 w-full overflow-hidden rounded-full bg-ink-900/10">
         <div
           className={`h-full rounded-full transition-all duration-700 ${color}`}
           style={{ width: `${value}%` }}
@@ -66,42 +66,33 @@ export default function ChequeoPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
-  const [state, setState] =
-    useState<ChequeoState>("idle");
-
-  const [cameraReady, setCameraReady] =
-    useState(false);
-
-  const [photo, setPhoto] =
-    useState<string | null>(lastCheckPhoto);
-
-  const [index, setIndex] =
-    useState<number | null>(null);
-
-  const [error, setError] =
-    useState<string | null>(null);
-
-  const [countdown, setCountdown] =
-    useState(0);
+  const [state, setState] = useState<ChequeoState>("idle");
+  const [cameraReady, setCameraReady] = useState(false);
+  const [photo, setPhoto] = useState<string | null>(lastCheckPhoto);
+  const [index, setIndex] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [countdown, setCountdown] = useState(0);
 
   /*
    * Detener cámara
    */
   const stopCamera = useCallback(() => {
-    streamRef.current
-      ?.getTracks()
-      .forEach((track) => track.stop());
+    streamRef.current?.getTracks().forEach((track) => {
+      track.stop();
+    });
 
     streamRef.current = null;
     setCameraReady(false);
   }, []);
 
   useEffect(() => {
-    return () => stopCamera();
+    return () => {
+      stopCamera();
+    };
   }, [stopCamera]);
 
   /*
-   * Conectar stream al video
+   * Conectar el stream al video
    */
   useEffect(() => {
     if (
@@ -112,20 +103,15 @@ export default function ChequeoPage() {
       return;
     }
 
-    videoRef.current.srcObject =
-      streamRef.current;
+    videoRef.current.srcObject = streamRef.current;
 
-    videoRef.current
-      .play()
-      .catch(() => {});
+    videoRef.current.play().catch(() => {});
   }, [cameraReady]);
 
   /*
    * Abrir cámara
    *
-   * IMPORTANTE:
-   * NO usamos scaleX(-1).
-   * NO usamos transform para invertir.
+   * La cámara NO se muestra en espejo.
    */
   const startCamera = async () => {
     try {
@@ -133,9 +119,7 @@ export default function ChequeoPage() {
 
       stopCamera();
 
-      if (
-        !navigator.mediaDevices?.getUserMedia
-      ) {
+      if (!navigator.mediaDevices?.getUserMedia) {
         throw new Error(
           "Este navegador no permite usar la camara."
         );
@@ -177,12 +161,10 @@ export default function ChequeoPage() {
    * Capturar foto
    *
    * IMPORTANTE:
-   * La foto NO se voltea.
-   *
-   * NO usamos:
-   * translate()
-   * scale(-1, 1)
-   * rotate()
+   * No hacemos espejo.
+   * No usamos translate().
+   * No usamos scale(-1, 1).
+   * No usamos rotate().
    */
   const capture = async () => {
     const video = videoRef.current;
@@ -195,22 +177,20 @@ export default function ChequeoPage() {
       return;
     }
 
-    const canvas =
-      document.createElement("canvas");
+    const canvas = document.createElement("canvas");
 
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
-    const context =
-      canvas.getContext("2d");
+    const context = canvas.getContext("2d");
 
     if (!context) {
       return;
     }
 
     /*
-     * Orientación real.
-     * Sin efecto espejo.
+     * Dibujar exactamente la orientación real
+     * del video.
      */
     context.drawImage(
       video,
@@ -220,11 +200,10 @@ export default function ChequeoPage() {
       canvas.height
     );
 
-    const image =
-      canvas.toDataURL(
-        "image/jpeg",
-        0.9
-      );
+    const image = canvas.toDataURL(
+      "image/jpeg",
+      0.9
+    );
 
     stopCamera();
 
@@ -262,23 +241,19 @@ export default function ChequeoPage() {
     }
 
     /*
-     * Mantener animación durante 3 segundos
+     * Mantener animación durante aproximadamente
+     * 3 segundos.
      */
-    const elapsed =
-      Date.now() - startedAt;
+    const elapsed = Date.now() - startedAt;
 
-    const remaining =
-      Math.max(
-        0,
-        3000 - elapsed
-      );
-
-    await new Promise((resolve) =>
-      setTimeout(
-        resolve,
-        remaining
-      )
+    const remaining = Math.max(
+      0,
+      3000 - elapsed
     );
+
+    await new Promise<void>((resolve) => {
+      setTimeout(resolve, remaining);
+    });
 
     clearInterval(tick);
 
@@ -299,10 +274,7 @@ export default function ChequeoPage() {
     saveLastCheckPhoto(image);
 
     /*
-     * Guardar en historial.
-     *
-     * IMPORTANTE:
-     * Se pasa también la imagen.
+     * Guardar foto + índice en historial.
      */
     addFacialCheck(
       symmetryIndex,
@@ -319,13 +291,12 @@ export default function ChequeoPage() {
     setState("idle");
   };
 
-  const lastCheck =
-    facialHistory[0];
+  const lastCheck = facialHistory[0];
 
   return (
-    <div className="flex flex-col gap-4 px-5 pt-4 md:max-w-lg md:mx-auto">
+    <div className="flex flex-col gap-4 px-5 pt-4 md:mx-auto md:max-w-lg">
 
-      {/* Encabezado */}
+      {/* ENCABEZADO */}
       <div className="flex items-center gap-2">
         <div className="rounded-lg bg-brand-600 p-2 text-white">
           <IconActivity />
@@ -347,6 +318,7 @@ export default function ChequeoPage() {
         {/* VISOR */}
         <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-ink-900">
 
+          {/* CÁMARA */}
           <video
             ref={videoRef}
             playsInline
@@ -473,17 +445,13 @@ export default function ChequeoPage() {
         {state === "result" &&
           index !== null && (
             <>
-              <SymmetryBar
-                value={index}
-              />
+              <SymmetryBar value={index} />
 
               <button
                 onClick={reset}
                 className="flex h-12 items-center justify-center gap-2 rounded-xl border-[1.5px] border-brand-500 bg-white/80 font-semibold text-brand-600"
               >
-                <IconRefreshCw
-                  size={18}
-                />
+                <IconRefreshCw size={18} />
 
                 Nuevo chequeo
               </button>
@@ -506,13 +474,9 @@ export default function ChequeoPage() {
         <GlassCard className="flex items-center gap-3 p-4">
 
           {lastCheck.index > 85 ? (
-            <IconCircleCheck
-              size={24}
-            />
+            <IconCircleCheck size={24} />
           ) : (
-            <IconTriangleAlert
-              size={24}
-            />
+            <IconTriangleAlert size={24} />
           )}
 
           <div>
@@ -525,8 +489,7 @@ export default function ChequeoPage() {
             </b>
 
             <p className="text-sm text-ink-600">
-              Indice{" "}
-              {lastCheck.index} —{" "}
+              Indice {lastCheck.index} —{" "}
               {lastCheck.date}
             </p>
           </div>
