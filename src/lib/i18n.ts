@@ -1,214 +1,479 @@
 export type Language = "es" | "qu";
 
 export const translations = {
-  es: {  
+  es: {
+    /* =====================================================
+       IDIOMA
+    ====================================================== */
+
     spanish: "ESPAÑOL",
     quechua: "QUECHUA",
+
+    /* =====================================================
+       NAVEGACIÓN
+    ====================================================== */
+
     navHome: "Inicio",
-navCheck: "Chequeo",
-navHistory: "Historial",
-navContacts: "Contactos",
-navSettings: "Ajustes",
+    navCheck: "Chequeo",
+    navHistory: "Historial",
+    navContacts: "Contactos",
+    navSettings: "Ajustes",
 
-historyTitle: "Historial de salud",
-historySubtitle: "Tus registros y evolución",
-
-checkTitle: "Chequeo facial",
-checkSubtitle: "Evalúa la simetría de tu rostro",
-
-contactsTitle: "Contactos de emergencia",
-contactsSubtitle: "Personas que recibirán tus alertas",
-
-settingsTitle: "Ajustes",
-settingsSubtitle: "Perfil, reloj y configuración",
-
-addContact: "Agregar contacto",
-newContact: "Nuevo contacto",
-name: "Nombre",
-relation: "Relación",
-phoneNumber: "Número de celular",
-sendSMS: "Enviar mensaje SMS",
-
-myData: "Mis datos",
-age: "Edad",
-restingHeartRate: "Frecuencia en reposo",
-saveMyData: "Guardar mis datos",
-
-watch: "Reloj",
-connected: "Conectado",
-disconnected: "Desconectado",
-connect: "Conectar",
-disconnect: "Desconectar",
-
-facialSummary: "Resumen facial",
-checks: "Chequeos",
-average: "Promedio",
-latest: "Último",
-symmetryEvolution: "Evolución de simetría",
-lastChecks: "Últimos chequeos",
-pulseTrend: "Tendencia de pulso",
-
-noFacialChecks:
-  "Todavía no hay chequeos faciales registrados.",
-startFirstCheck:
-  "Realiza tu primer chequeo para comenzar.",
+    /* =====================================================
+       GENERAL
+    ====================================================== */
 
     neuroWatch: "NeuroWatch",
     huarazPeru: "HUARAZ · PERÚ",
-    tagline: "Tecnología que cuida tu vida, con raíces que nos unen.",
+
+    tagline:
+      "Tecnología que cuida tu vida, con raíces que nos unen.",
 
     menu: "Menú",
     notifications: "Notificaciones",
 
-    technology: "Tecnología que cuida tu vida",
-    wellbeing: "Tu bienestar,",
-    ourMission: "nuestra misión.",
+    /* =====================================================
+       INICIO
+    ====================================================== */
+
+    technology:
+      "Tecnología que cuida tu vida",
+
+    wellbeing:
+      "Tu bienestar,",
+
+    ourMission:
+      "nuestra misión.",
 
     monitorDescription:
       "Monitorea tus signos vitales en tiempo real con tecnología creada pensando en nuestra gente.",
 
-    whyNeurowatch: "¿Por qué NeuroWatch?",
+    whyNeurowatch:
+      "¿Por qué NeuroWatch?",
 
-    realtime: "Monitoreo en tiempo real",
+    realtime:
+      "Monitoreo en tiempo real",
+
     realtimeDescription:
       "Cuida tu corazón y vigila tus signos vitales.",
 
-    purposefulTechnology: "Tecnología con propósito",
+    purposefulTechnology:
+      "Tecnología con propósito",
+
     purposefulDescription:
       "Innovación que busca mejorar vidas en Huaraz.",
 
-    connected: "Conectado contigo",
+    connected:
+      "Conectado contigo",
+
     connectedDescription:
       "Datos y monitoreo siempre cerca de ti.",
 
-    madeForPeople: "Hecho para nuestra gente",
+    madeForPeople:
+      "Hecho para nuestra gente",
+
     madeForPeopleDescription:
       "Diseñado pensando en nuestra tierra.",
 
-    liveMonitoring: "Monitoreo en vivo",
-    heartRate: "Frecuencia",
-    cardiac: "cardíaca",
-    bpm: "ppm",
+    liveMonitoring:
+      "Monitoreo en vivo",
 
-    currentStatus: "Estado actual",
-    activeMonitoring: "Monitoreo activo",
-    waitingConnection: "Esperando conexión",
+    heartRate:
+      "Frecuencia cardíaca",
 
-    connect: "Conectar",
-    connectedDevice: "Dispositivo conectado",
-    disconnected: "Dispositivo desconectado",
+    cardiac:
+      "cardíaca",
 
-    vitalSigns: "Signos en vivo",
-    live: "EN VIVO",
-    respiration: "Respiración",
-    oxygen: "Oxígeno",
-    temperature: "Temperatura",
+    bpm:
+      "ppm",
 
-    connectedToClock: "Conectado al reloj.",
-    waitingClockData: "Esperando datos del reloj.",
+    currentStatus:
+      "Estado actual",
+
+    activeMonitoring:
+      "Monitoreo activo",
+
+    waitingConnection:
+      "Esperando conexión",
+
+    connect:
+      "Conectar",
+
+    connectedDevice:
+      "Dispositivo conectado",
+
+    disconnected:
+      "Dispositivo desconectado",
+
+    vitalSigns:
+      "Signos en vivo",
+
+    live:
+      "EN VIVO",
+
+    respiration:
+      "Respiración",
+
+    oxygen:
+      "Oxígeno",
+
+    temperature:
+      "Temperatura",
+
+    connectedToClock:
+      "Conectado al reloj.",
+
+    waitingClockData:
+      "Esperando datos del reloj.",
+
     placeFinger:
       "Coloca el dedo en el sensor para comenzar a recibir tus datos de pulso.",
 
-    stableSignal: "Señal estable",
-    notConnected: "Sin conectar",
+    stableSignal:
+      "Señal estable",
 
-    alerts: "Alertas",
-    highHeartRate: "Frecuencia alta",
-    rememberRest: "Recuerda descansar",
-    everythingGood: "¡Todo bien!",
-    takeMomentToRelax: "Tómate un momento para relajarte.",
+    notConnected:
+      "Sin conectar",
+
+    alerts:
+      "Alertas",
+
+    highHeartRate:
+      "Frecuencia alta",
+
+    rememberRest:
+      "Recuerda descansar",
+
+    everythingGood:
+      "¡Todo bien!",
+
+    takeMomentToRelax:
+      "Tómate un momento para relajarte.",
+
     vitalsMonitored:
       "Tus signos vitales están siendo monitoreados.",
 
-    ourLand: "Nuestra tierra",
-    ourStrength: "Nuestra fuerza.",
+    ourLand:
+      "Nuestra tierra",
 
-    status: "Estado",
-    battery: "Batería",
-    active: "ACTIVO",
-    ready: "LISTO",
+    ourStrength:
+      "Nuestra fuerza.",
 
-    connectedWithYou: "Conectado contigo",
+    status:
+      "Estado",
 
-    health: "Salud",
-    trust: "Confianza",
-    innovation: "Innovación",
-    community: "Comunidad",
+    battery:
+      "Batería",
 
-    alert: "ALERTA",
-    warning: "ADVERTENCIA",
-    normal: "NORMAL",
+    active:
+      "ACTIVO",
 
-    cancel: "Cancelar",
-    confirm: "Confirmar",
-    save: "Guardar",
-    close: "Cerrar",
+    ready:
+      "LISTO",
 
-    patient: "Paciente",
-    contacts: "Contactos",
-    settings: "Configuración",
-    history: "Historial",
+    connectedWithYou:
+      "Conectado contigo",
 
-    facialCheck: "Chequeo facial",
-    pulse: "Pulso",
+    health:
+      "Salud",
 
-    noData: "Sin datos",
+    trust:
+      "Confianza",
+
+    innovation:
+      "Innovación",
+
+    community:
+      "Comunidad",
+
+    /* =====================================================
+       ESTADOS
+    ====================================================== */
+
+    alert:
+      "ALERTA",
+
+    warning:
+      "ADVERTENCIA",
+
+    normal:
+      "NORMAL",
+
+    /* =====================================================
+       ACCIONES
+    ====================================================== */
+
+    cancel:
+      "Cancelar",
+
+    confirm:
+      "Confirmar",
+
+    save:
+      "Guardar",
+
+    close:
+      "Cerrar",
+
+    /* =====================================================
+       DATOS
+    ====================================================== */
+
+    patient:
+      "Paciente",
+
+    contacts:
+      "Contactos",
+
+    settings:
+      "Configuración",
+
+    history:
+      "Historial",
+
+    facialCheck:
+      "Chequeo facial",
+
+    pulse:
+      "Pulso",
+
+    noData:
+      "Sin datos",
 
     emergency:
       "Se detectó una posible anomalía. Verifica el estado de la persona.",
 
     disclaimer:
       "NeuroWatch es una herramienta asistiva y no reemplaza la atención médica.",
+
+    /* =====================================================
+       HISTORIAL
+    ====================================================== */
+
+    historyTitle:
+      "Historial de salud",
+
+    historySubtitle:
+      "Tus registros y evolución",
+
+    facialSummary:
+      "Resumen facial",
+
+    checks:
+      "Chequeos",
+
+    average:
+      "Promedio",
+
+    latest:
+      "Último",
+
+    symmetryEvolution:
+      "Evolución de simetría",
+
+    lastChecks:
+      "Últimos chequeos",
+
+    pulseTrend:
+      "Tendencia de pulso",
+
+    noFacialChecks:
+      "Todavía no hay chequeos faciales registrados.",
+
+    startFirstCheck:
+      "Realiza tu primer chequeo para comenzar.",
+
+    /* =====================================================
+       CHEQUEO
+    ====================================================== */
+
+    checkTitle:
+      "Chequeo facial",
+
+    checkSubtitle:
+      "Evalúa la simetría de tu rostro",
+
+    openCamera:
+      "Pulsa para abrir cámara",
+
+    capturePhoto:
+      "Capturar foto",
+
+    analyzing:
+      "Analizando...",
+
+    processing:
+      "Procesando",
+
+    symmetryIndex:
+      "Índice de simetría",
+
+    symmetric:
+      "Simétrico",
+
+    slightAsymmetry:
+      "Leve asimetría",
+
+    markedAsymmetry:
+      "Asimetría marcada",
+
+    placeFace:
+      "Coloca tu rostro dentro de la guía y mantén la cabeza recta.",
+
+    dailyStreak:
+      "Racha",
+
+    day:
+      "día",
+
+    days:
+      "días",
+
+    dailyCheckCompleted:
+      "Chequeo diario completado",
+
+    newCheck:
+      "Nuevo chequeo",
+
+    /* =====================================================
+       CONTACTOS
+    ====================================================== */
+
+    contactsTitle:
+      "Contactos de emergencia",
+
+    contactsSubtitle:
+      "Personas que recibirán tus alertas",
+
+    addContact:
+      "Agregar contacto",
+
+    newContact:
+      "Nuevo contacto",
+
+    name:
+      "Nombre",
+
+    relation:
+      "Relación",
+
+    phoneNumber:
+      "Número de celular",
+
+    sendSMS:
+      "Enviar mensaje SMS",
+
+    remove:
+      "Quitar",
+
+    saveContact:
+      "Guardar contacto",
+
+    noContacts:
+      "Todavía no tienes contactos registrados.",
+
+    /* =====================================================
+       AJUSTES
+    ====================================================== */
+
+    settingsTitle:
+      "Ajustes",
+
+    settingsSubtitle:
+      "Perfil, reloj y configuración",
+
+    myData:
+      "Mis datos",
+
+    age:
+      "Edad",
+
+    restingHeartRate:
+      "Frecuencia en reposo",
+
+    saveMyData:
+      "Guardar mis datos",
+
+    dataSaved:
+      "Datos guardados",
+
+    watch:
+      "Reloj",
+
+    connectWatch:
+      "Conectar reloj",
+
+    disconnectWatch:
+      "Desconectar reloj",
+
+    rePairWatch:
+      "Conectar / re-emparejar",
+
+    bleLiveLog:
+      "Registro BLE en vivo",
+
+    lastFrame:
+      "Última trama",
+
+    waitingWatch:
+      "Esperando datos del reloj…",
+
+    monitoring:
+      "Monitoreo",
+
+    tolerance:
+      "Tolerancia",
+
+    countdown:
+      "Cuenta regresiva",
+
+    /* =====================================================
+       DÍAS
+    ====================================================== */
+
+    monday:
+      "Lun",
+
+    tuesday:
+      "Mar",
+
+    wednesday:
+      "Mié",
+
+    thursday:
+      "Jue",
+
+    friday:
+      "Vie",
+
+    saturday:
+      "Sáb",
+
+    sunday:
+      "Dom",
   },
 
   qu: {
+    /* =====================================================
+       IDIOMA
+    ====================================================== */
+
     spanish: "ESPAÑOL",
     quechua: "RUNASIMI",
+
+    /* =====================================================
+       NAVEGACIÓN
+    ====================================================== */
+
     navHome: "Qallariy",
-navCheck: "Uya qhawariy",
-navHistory: "Ñawpaq qhawariykuna",
-navContacts: "Tinkiqkuna",
-navSettings: "Rurayninkuna",
+    navCheck: "Uya qhawariy",
+    navHistory: "Ñawpaq qhawariykuna",
+    navContacts: "Tinkiqkuna",
+    navSettings: "Rurayninkuna",
 
-historyTitle: "Kawsaypa ñawpaq qhawariyninkuna",
-historySubtitle: "Qhawariykuna hinallataq wiñaynin",
-
-checkTitle: "Uya qhawariy",
-checkSubtitle: "Uyayki ch'iqiyta qhawariy",
-
-contactsTitle: "Utqay yanapakuqkuna",
-contactsSubtitle: "Runakuna alertakunata chaskiq",
-
-addContact: "Tinkiqta yapay",
-newContact: "Musuq tinkiq",
-name: "Suti",
-relation: "Imayna tinkisqa",
-phoneNumber: "Celularpa yupaynin",
-sendSMS: "SMS willakuyta kachay",
-
-myData: "Datosniy",
-age: "Watay",
-restingHeartRate: "Samaypi sunqupa muyuriynin",
-saveMyData: "Datosniyta waqaychay",
-
-watch: "Reloj",
-connected: "Tinkisqa",
-disconnected: "Rakisqa",
-connect: "Tinkichiy",
-disconnect: "Rakiy",
-
-facialSummary: "Uya qhawariypa pisiyachiy",
-checks: "Qhawariykuna",
-average: "Chawpi",
-latest: "Qhipa",
-symmetryEvolution: "Ch'iqiy wiñaynin",
-lastChecks: "Qhipa qhawariykuna",
-pulseTrend: "Sunqupa muyuriyninpa wiñaynin",
-
-noFacialChecks:
-  "Manaraqmi uya qhawariykuna waqaychasqachu.",
-startFirstCheck:
-  "Ruwariy ñawpaq uya qhawariyta qallarinaykipaq.",
+    /* =====================================================
+       GENERAL
+    ====================================================== */
 
     neuroWatch: "NeuroWatch",
     huarazPeru: "WARAS · PERÚ",
@@ -216,21 +481,34 @@ startFirstCheck:
     tagline:
       "Kawsayniykita waqaychay tecnología, sapinchikwan kuska.",
 
-    menu: "Menú",
-    notifications: "Willakuykuna",
+    menu:
+      "Menú",
+
+    notifications:
+      "Willakuykuna",
+
+    /* =====================================================
+       INICIO
+    ====================================================== */
 
     technology:
       "Kawsayniykita waqaychay tecnología",
 
-    wellbeing: "Allin kawsayniyki,",
-    ourMission: "llank'ayninchikmi.",
+    wellbeing:
+      "Allin kawsayniyki,",
+
+    ourMission:
+      "llank'ayninchikmi.",
 
     monitorDescription:
       "Kawsaypa señalkunata pacha pacha qhawariy, runakunapaq ruwasqa tecnologíawan.",
 
-    whyNeurowatch: "¿Imaraykutaq NeuroWatch?",
+    whyNeurowatch:
+      "¿Imaraykutaq NeuroWatch?",
 
-    realtime: "Pachapachalla qhawariy",
+    realtime:
+      "Pachapachalla qhawariy",
+
     realtimeDescription:
       "Sunquykita waqaychay, kawsaypa señalkunata qhawariy.",
 
@@ -240,37 +518,65 @@ startFirstCheck:
     purposefulDescription:
       "Musuq yachaywan Waraspi kawsaykunata allinchay.",
 
-    connected: "Qampiwanchik kuska",
+    connected:
+      "Qampiwanchik kuska",
 
     connectedDescription:
       "Datoswan qhawariywan qam qayllapi kachkan.",
 
-    madeForPeople: "Runakunapaq ruwasqa",
+    madeForPeople:
+      "Runakunapaq ruwasqa",
 
     madeForPeopleDescription:
       "Llaqtanchikta yuyarispa ruwasqa.",
 
-    liveMonitoring: "Kawsay qhawariy",
+    liveMonitoring:
+      "Kawsay qhawariy",
 
-    heartRate: "Sunqupa",
-    cardiac: "muyuriynin",
-    bpm: "ppm",
+    heartRate:
+      "Sunqupa muyuriynin",
 
-    currentStatus: "Kunanpa kaynin",
-    activeMonitoring: "Qhawariy kachkan",
-    waitingConnection: "Conexiónta suyarichkan",
+    cardiac:
+      "muyuriynin",
 
-    connect: "Tinkichiy",
-    connectedDevice: "Dispositivo tinkisqa",
-    disconnected: "Dispositivo rakisqa",
+    bpm:
+      "ppm",
 
-    vitalSigns: "Kawsaypa señalkuna",
-    live: "KUNAN",
-    respiration: "Samay",
-    oxygen: "Oxígeno",
-    temperature: "Rupay",
+    currentStatus:
+      "Kunanpa kaynin",
 
-    connectedToClock: "Relojwan tinkisqa.",
+    activeMonitoring:
+      "Qhawariy kachkan",
+
+    waitingConnection:
+      "Conexiónta suyarichkan",
+
+    connect:
+      "Tinkichiy",
+
+    connectedDevice:
+      "Dispositivo tinkisqa",
+
+    disconnected:
+      "Dispositivo rakisqa",
+
+    vitalSigns:
+      "Kawsaypa señalkuna",
+
+    live:
+      "KUNAN",
+
+    respiration:
+      "Samay",
+
+    oxygen:
+      "Oxígeno",
+
+    temperature:
+      "Rupay",
+
+    connectedToClock:
+      "Relojwan tinkisqa.",
 
     waitingClockData:
       "Relojmanta datokunata suyarichkan.",
@@ -278,10 +584,14 @@ startFirstCheck:
     placeFinger:
       "Relojpa sensorpi rukiykita churay pulso datokunata chaskinaykipaq.",
 
-    stableSignal: "Señal allin",
-    notConnected: "Mana tinkisqachu",
+    stableSignal:
+      "Señal allin",
 
-    alerts: "Willakuykuna",
+    notConnected:
+      "Mana tinkisqachu",
+
+    alerts:
+      "Willakuykuna",
 
     highHeartRate:
       "Sunqupa muyuriynin hatun",
@@ -289,7 +599,8 @@ startFirstCheck:
     rememberRest:
       "Samayta yuyariy",
 
-    everythingGood: "¡Llapa allin!",
+    everythingGood:
+      "¡Llapa allin!",
 
     takeMomentToRelax:
       "Pisi pachata samaypaq churakuy.",
@@ -297,52 +608,312 @@ startFirstCheck:
     vitalsMonitored:
       "Kawsaypa señalkunata qhawarichkan.",
 
-    ourLand: "Llaqtanchik",
-    ourStrength: "Kallpanchik.",
+    ourLand:
+      "Llaqtanchik",
 
-    status: "Kaynin",
-    battery: "Batería",
+    ourStrength:
+      "Kallpanchik.",
 
-    active: "KACHKAN",
-    ready: "LISTO",
+    status:
+      "Kaynin",
+
+    battery:
+      "Batería",
+
+    active:
+      "KACHKAN",
+
+    ready:
+      "LISTO",
 
     connectedWithYou:
       "Qampiwanchik kuska",
 
-    health: "Kawsay",
-    trust: "Yupaychay",
-    innovation: "Musuq yachay",
-    community: "Llaqta",
+    health:
+      "Kawsay",
 
-    alert: "ALERTA",
-    warning: "UYARIY",
-    normal: "ALLIN",
+    trust:
+      "Yupaychay",
 
-    cancel: "Saquiy",
-    confirm: "Arí",
-    save: "Waqaychay",
-    close: "Wisqay",
+    innovation:
+      "Musuq yachay",
 
-    patient: "Unquq",
-    contacts: "Tinkiqkuna",
-    settings: "Rurayninkuna",
-    history: "Ñawpaq qhawariykuna",
+    community:
+      "Llaqta",
 
-    facialCheck: "Uya qhawariy",
-    pulse: "Sunqupa muyuriynin",
+    /* =====================================================
+       ESTADOS
+    ====================================================== */
 
-    noData: "Mana datokuna kanchu",
+    alert:
+      "ALERTA",
+
+    warning:
+      "UYARIY",
+
+    normal:
+      "ALLIN",
+
+    /* =====================================================
+       ACCIONES
+    ====================================================== */
+
+    cancel:
+      "Saquiy",
+
+    confirm:
+      "Arí",
+
+    save:
+      "Waqaychay",
+
+    close:
+      "Wisqay",
+
+    /* =====================================================
+       DATOS
+    ====================================================== */
+
+    patient:
+      "Unquq",
+
+    contacts:
+      "Tinkiqkuna",
+
+    settings:
+      "Rurayninkuna",
+
+    history:
+      "Ñawpaq qhawariykuna",
+
+    facialCheck:
+      "Uya qhawariy",
+
+    pulse:
+      "Sunqupa muyuriynin",
+
+    noData:
+      "Mana datokuna kanchu",
 
     emergency:
       "Posible anomalía tarisqa. Runapa situaciónninta utqaylla qhawariy.",
 
     disclaimer:
       "NeuroWatch yanapakuy herramienta, mana hampiqpa yanapayninta rantinchu.",
+
+    /* =====================================================
+       HISTORIAL
+    ====================================================== */
+
+    historyTitle:
+      "Kawsaypa ñawpaq qhawariyninkuna",
+
+    historySubtitle:
+      "Qhawariykuna hinallataq wiñaynin",
+
+    facialSummary:
+      "Uya qhawariypa pisiyachiy",
+
+    checks:
+      "Qhawariykuna",
+
+    average:
+      "Chawpi",
+
+    latest:
+      "Qhipa",
+
+    symmetryEvolution:
+      "Ch'iqiy wiñaynin",
+
+    lastChecks:
+      "Qhipa qhawariykuna",
+
+    pulseTrend:
+      "Sunqupa muyuriyninpa wiñaynin",
+
+    noFacialChecks:
+      "Manaraqmi uya qhawariykuna waqaychasqachu.",
+
+    startFirstCheck:
+      "Ruwariy ñawpaq uya qhawariyta qallarinaykipaq.",
+
+    /* =====================================================
+       CHEQUEO
+    ====================================================== */
+
+    checkTitle:
+      "Uya qhawariy",
+
+    checkSubtitle:
+      "Uyayki ch'iqiyta qhawariy",
+
+    openCamera:
+      "Niy kayqa cámara kichanapaq",
+
+    capturePhoto:
+      "Rikch'ayta hap'iy",
+
+    analyzing:
+      "Qhawarichkan...",
+
+    processing:
+      "Ruwachkan",
+
+    symmetryIndex:
+      "Ch'iqiypa yupaynin",
+
+    symmetric:
+      "Kuskalla",
+
+    slightAsymmetry:
+      "Pisi mana kuska",
+
+    markedAsymmetry:
+      "Hatun mana kuska",
+
+    placeFace:
+      "Uyaykita guía ukuman churay, umaqa allin chiqlla kachun.",
+
+    dailyStreak:
+      "Racha",
+
+    day:
+      "p'unchay",
+
+    days:
+      "p'unchaykuna",
+
+    dailyCheckCompleted:
+      "Sapa p'unchay qhawariy tukusqa",
+
+    newCheck:
+      "Musuq qhawariy",
+
+    /* =====================================================
+       CONTACTOS
+    ====================================================== */
+
+    contactsTitle:
+      "Utqay yanapakuqkuna",
+
+    contactsSubtitle:
+      "Alertakunata chaskiq runakuna",
+
+    addContact:
+      "Tinkiqta yapay",
+
+    newContact:
+      "Musuq tinkiq",
+
+    name:
+      "Suti",
+
+    relation:
+      "Imayna tinkisqa",
+
+    phoneNumber:
+      "Celularpa yupaynin",
+
+    sendSMS:
+      "SMS willakuyta kachay",
+
+    remove:
+      "Qichuy",
+
+    saveContact:
+      "Tinkiqta waqaychay",
+
+    noContacts:
+      "Manaraqmi tinkiqkuna churaykuchu.",
+
+    /* =====================================================
+       AJUSTES
+    ====================================================== */
+
+    settingsTitle:
+      "Rurayninkuna",
+
+    settingsSubtitle:
+      "Sutiyki, reloj hinallataq qhawariy",
+
+    myData:
+      "Datosniy",
+
+    age:
+      "Watay",
+
+    restingHeartRate:
+      "Samaypi sunqupa muyuriynin",
+
+    saveMyData:
+      "Datosniyta waqaychay",
+
+    dataSaved:
+      "Datos waqaychasqa",
+
+    watch:
+      "Reloj",
+
+    connectWatch:
+      "Relojta tinkichiy",
+
+    disconnectWatch:
+      "Relojta rakiy",
+
+    rePairWatch:
+      "Tinkichiy / musuqmanta tinkichiy",
+
+    bleLiveLog:
+      "BLEpa kawsaypa qillqaynin",
+
+    lastFrame:
+      "Qhipa trama",
+
+    waitingWatch:
+      "Relojmanta datokunata suyarichkan…",
+
+    monitoring:
+      "Qhawariy",
+
+    tolerance:
+      "Tolerancia",
+
+    countdown:
+      "Suyaypa yupaynin",
+
+    /* =====================================================
+       DÍAS
+    ====================================================== */
+
+    monday:
+      "Lun",
+
+    tuesday:
+      "Mar",
+
+    wednesday:
+      "Miq",
+
+    thursday:
+      "Jue",
+
+    friday:
+      "Vie",
+
+    saturday:
+      "Sab",
+
+    sunday:
+      "Dom",
   },
 } as const;
 
-export type TranslationKey = keyof typeof translations.es;
+export type TranslationKey =
+  keyof typeof translations.es;
 
-export function getTranslations(language: Language) {
+export function getTranslations(
+  language: Language
+) {
   return translations[language];
 }
