@@ -152,28 +152,27 @@ export default function ChequeoPage() {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
-    const context = canvas.getContext("2d");
+   const context = canvas.getContext("2d");
 
-    if (!context) {
-      return;
-    }
+   if (!context) {
+   return;
+   }
 
-    /*
-     * IMPORTANTE:
-     * No hacemos translate().
-     * No hacemos scale(-1, 1).
-     * No hacemos rotate().
-     *
-     * La fotografía se guarda exactamente
-     * en la orientación que entrega la cámara.
-     */
-    context.drawImage(
-      video,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
+   // Corregir el efecto espejo de la cámara frontal
+   context.save();
+
+   context.translate(canvas.width, 0);
+   context.scale(-1, 1);
+
+   context.drawImage(
+   video,
+   0,
+   0,
+   canvas.width,
+   canvas.height
+   );
+
+context.restore();
 
     const image = canvas.toDataURL(
       "image/jpeg",
