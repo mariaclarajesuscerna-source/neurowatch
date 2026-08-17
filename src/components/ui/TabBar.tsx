@@ -30,11 +30,12 @@ export default function TabBar() {
     <>
       {/* Mobile: fixed bottom tab bar */}
       <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden">
+        <div className="andean-strip h-[4px]" />
         <div
-          className="h-21 flex items-start justify-between bg-white/55 backdrop-blur-xl border-t border-white/70"
+          className="h-21 flex items-start justify-between bg-glass-fill backdrop-blur-xl border-t border-glass-border"
           style={{
             padding: "12px 24px 26px 24px",
-            boxShadow: "0 -4px 24px rgba(31, 41, 55, 0.08)",
+            boxShadow: "0 -4px 24px rgba(59, 42, 26, 0.08)",
           }}
         >
           {tabs.map(({ href, label, Icon }) => {
@@ -65,17 +66,18 @@ export default function TabBar() {
       </nav>
 
       {/* Desktop: fixed left sidebar */}
-      <aside className="hidden md:flex fixed left-0 top-0 bottom-0 z-40 w-64 flex-col bg-white/55 backdrop-blur-xl border-r border-white/70">
+      <aside className="hidden md:flex fixed left-0 top-0 bottom-0 z-40 w-64 flex-col bg-glass-fill backdrop-blur-xl border-r border-glass-border">
+        <div className="andean-strip h-[4px] w-full" />
         <div className="flex items-center gap-3 px-6 py-6">
-          <div className="h-[34px] w-[34px] rounded-[11px] bg-brand-600 flex items-center justify-center shadow-[0_4px_12px_rgba(79,70,229,0.25)] text-white">
+          <div className="h-[34px] w-[34px] rounded-[11px] bg-brand-600 flex items-center justify-center shadow-[0_4px_12px_rgba(193,68,12,0.25)] text-white">
             <IconActivity size={20} />
           </div>
           <div className="flex flex-col gap-0.5">
-            <span className="text-[22px] font-bold text-ink-900 leading-tight">
+            <span className="font-display text-[22px] font-bold text-ink-900 leading-tight">
               Neurowatch
             </span>
             <span className="text-[13px] font-normal text-ink-600 leading-tight">
-              Monitoreo en vivo
+              Huaraz · Perú
             </span>
           </div>
         </div>
@@ -93,7 +95,7 @@ export default function TabBar() {
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
                   active
                     ? "bg-brand-100 text-brand-600 font-semibold"
-                    : "text-ink-600 font-medium hover:bg-white/50"
+                    : "text-ink-600 font-medium hover:bg-glass-fill"
                 }`}
               >
                 <Icon size={22} />
