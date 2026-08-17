@@ -91,7 +91,42 @@ export function getLastCheckPhoto(): string | null {
 export function setLastCheckPhoto(image: string): void {
   setItem("lastCheckPhoto", image);
 }
+export interface StoredFacialCheck {
+  id: string;
+  image: string;
+  date: string;
+  index: number;
+}
 
+export function getFacialChecks(): StoredFacialCheck[] {
+  return getItem<StoredFacialCheck[]>("facialChecks", []);
+}
+
+export function addFacialCheck(
+  image: string,
+  index: number
+): StoredFacialCheck {
+  const checks = getFacialChecks();
+
+  const check: StoredFacialCheck = {
+    id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+    image,
+    date: new Date().toLocaleString("es-PE"),
+    index,
+  };
+
+  setItem("facialChecks", [check, ...checks]);
+
+  return check;
+}
+
+export function removeFacialCheck(id: string): void {
+  const checks = getFacialChecks().filter(
+    (check) => check.id !== id
+  );
+
+  setItem("facialChecks", checks);
+}
 export interface Streak {
   count: number;
   lastCheckDate: string;
