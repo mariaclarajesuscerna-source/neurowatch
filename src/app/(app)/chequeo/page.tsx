@@ -474,17 +474,17 @@ export default function ChequeoPage() {
           ============================== */}
 
           <video
-            ref={videoRef}
-            playsInline
-            muted
-            autoPlay
-            className={`h-full w-full object-cover ${
-              state === "preview"
-                ? ""
-                : "hidden"
-            }`}
-          />
-
+  ref={videoRef}
+  playsInline
+  muted
+  autoPlay
+  className={`h-full w-full object-cover ${
+    state === "preview" ? "" : "hidden"
+  }`}
+  style={{
+    transform: "none",
+  }}
+/>
           {/* ==============================
               FOTO CAPTURADA
           ============================== */}
