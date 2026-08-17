@@ -4,20 +4,32 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import {
-  IconActivity,
   IconSignal,
   IconWifi,
   IconBatteryFull,
   IconBluetooth,
 } from "@/components/ui/icons";
 
-import StatusChip from "@/components/ui/StatusChip";
 import HeroStatus from "@/components/dashboard/HeroStatus";
 import PulseCard from "@/components/dashboard/PulseCard";
 import DeviceCard from "@/components/dashboard/DeviceCard";
 import AlertModal from "@/components/alert/AlertModal";
 
 import { useNeurowatch } from "@/components/NeurowatchProvider";
+
+const textilePattern = `
+  repeating-linear-gradient(
+    45deg,
+    #c94a20 0px,
+    #c94a20 8px,
+    #e8a33d 8px,
+    #e8a33d 16px,
+    #2f8f5b 16px,
+    #2f8f5b 24px,
+    #087f83 24px,
+    #087f83 32px
+  )
+`;
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -36,9 +48,11 @@ export default function DashboardPage() {
     disconnectedSince,
   } = useNeurowatch();
 
-  /* =========================================================
-     LÓGICA ORIGINAL — NO TOCAR
-  ========================================================= */
+  /*
+   * =========================================================
+   * LÓGICA ORIGINAL — NO TOCAR
+   * =========================================================
+   */
 
   useEffect(() => {
     if (disconnectedSince) {
@@ -46,66 +60,53 @@ export default function DashboardPage() {
     }
   }, [router, disconnectedSince]);
 
-  const connStatus = bleData.connected
-    ? ("ok" as const)
-    : ("muted" as const);
-
-  const connLabel = bleData.connected
-    ? "Conectado"
-    : "Desconectado";
-
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#FBF3E7] text-[#3B2A1A]">
-
+    <div className="relative min-h-dvh overflow-hidden bg-[#f7efe0] text-[#263a32]">
       {/* =====================================================
-          FONDO ANDINO
+          FONDO
       ===================================================== */}
 
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute -left-40 top-20 h-96 w-96 rounded-full bg-[#e8a33d]/15 blur-3xl" />
+        <div className="absolute -right-40 top-96 h-[500px] w-[500px] rounded-full bg-[#087f83]/10 blur-3xl" />
 
-        {/* manchas decorativas */}
-        <div className="absolute -left-28 top-40 h-72 w-72 rounded-full bg-[#DD5F1F]/10 blur-3xl" />
-        <div className="absolute -right-32 top-[500px] h-80 w-80 rounded-full bg-[#2F8F5B]/10 blur-3xl" />
-
-        {/* montañas */}
-        <div className="absolute bottom-0 left-0 right-0 h-[180px] opacity-[0.07]">
+        <div className="absolute bottom-0 left-0 right-0 h-72 opacity-[0.08]">
           <svg
-            viewBox="0 0 1000 220"
+            viewBox="0 0 1200 300"
             className="h-full w-full"
             preserveAspectRatio="none"
           >
             <path
-              d="M0 220 L0 150 L110 75 L185 145 L285 45 L400 155 L510 65 L620 150 L735 35 L850 135 L930 75 L1000 120 L1000 220 Z"
-              fill="#C1440C"
+              d="M0 300V205L130 95l95 100L355 60l130 155L625 85l120 120L890 45l140 150 90-95 80 60v140Z"
+              fill="#087f83"
             />
-
             <path
-              d="M0 220 L0 180 L150 110 L250 170 L360 90 L470 180 L600 105 L710 175 L820 80 L930 165 L1000 125 L1000 220 Z"
-              fill="#2F8F5B"
+              d="M0 300V245l170-110 100 70 145-105 130 105 130-85 120 75 145-110 160 95 120-70v190Z"
+              fill="#c94a20"
             />
           </svg>
         </div>
       </div>
 
       {/* =====================================================
-          CONTENEDOR PRINCIPAL
+          CONTENEDOR
       ===================================================== */}
 
-      <div className="relative mx-auto w-full max-w-[520px] px-4 pb-24 pt-3 md:px-5 md:pt-6">
+      <main className="mx-auto w-full max-w-[1500px] px-3 pb-28 pt-3 sm:px-5 lg:px-8 lg:pb-12 lg:pt-6">
 
         {/* ===================================================
-            STATUS BAR
+            BARRA SUPERIOR
         =================================================== */}
 
-        <div className="mb-3 flex items-center justify-between px-1 md:hidden">
-          <span className="text-[15px] font-semibold">
+        <div className="mb-3 flex items-center justify-between lg:hidden">
+          <span className="text-sm font-black text-[#3b2a1a]">
             {new Date().toLocaleTimeString("es-ES", {
               hour: "2-digit",
               minute: "2-digit",
             })}
           </span>
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2 text-[#075d63]">
             <IconSignal size={16} />
             <IconWifi size={16} />
             <IconBatteryFull size={16} />
@@ -113,743 +114,622 @@ export default function DashboardPage() {
         </div>
 
         {/* ===================================================
-            FRANJA TEXTIL SUPERIOR
+            PATRÓN TEXTIL SUPERIOR
         =================================================== */}
 
         <div
-          className="mb-4 h-[28px] overflow-hidden rounded-b-[14px] shadow-sm"
-          style={{
-            backgroundImage: `
-              repeating-linear-gradient(
-                45deg,
-                #C1440C 0px,
-                #C1440C 8px,
-                #E8A33D 8px,
-                #E8A33D 16px,
-                #2F8F5B 16px,
-                #2F8F5B 24px,
-                #087F83 24px,
-                #087F83 32px
-              )
-            `,
-          }}
+          className="mb-4 h-7 w-full overflow-hidden rounded-b-2xl border border-[#b86b31]/30 shadow-sm"
+          style={{ backgroundImage: textilePattern }}
         />
 
         {/* ===================================================
             HEADER
         =================================================== */}
 
-        <header className="mb-4 flex items-center justify-between">
+        <header className="mb-5 flex flex-col gap-4 rounded-[28px] border border-[#e4c99e] bg-[#fff9ed]/90 p-4 shadow-[0_12px_35px_rgba(72,48,25,0.08)] backdrop-blur-xl sm:p-5 lg:flex-row lg:items-center lg:justify-between">
 
-          <div className="flex items-center gap-3">
-
-            {/* logo */}
-            <div className="flex h-[48px] w-[48px] items-center justify-center rounded-[16px] bg-[#087F83] text-white shadow-[0_8px_20px_rgba(8,127,131,0.25)]">
-              <IconActivity size={25} />
+          <div className="flex items-center gap-4">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#087f83] text-3xl text-white shadow-[0_8px_20px_rgba(8,127,131,0.25)]">
+              ❤️
             </div>
 
             <div>
-              <div className="font-display text-[25px] font-extrabold uppercase leading-none tracking-tight text-[#075D63]">
+              <h1 className="font-display text-3xl font-black uppercase leading-none tracking-tight text-[#075d63] sm:text-4xl">
                 NeuroWatch
-              </div>
+              </h1>
 
-              <div className="mt-1 text-[11px] font-bold uppercase tracking-[0.16em] text-[#C1440C]">
+              <p className="mt-1 text-xs font-black uppercase tracking-[0.22em] text-[#c1440c]">
                 Huaraz · Perú
-              </div>
-            </div>
+              </p>
 
+              <p className="mt-1 text-xs font-semibold text-[#79634d]">
+                Tecnología que cuida tu vida, con raíces que nos unen.
+              </p>
+            </div>
           </div>
 
           <div className="flex items-center gap-2">
-
-            {/* menú */}
             <button
               type="button"
-              className="flex h-10 w-10 items-center justify-center rounded-[13px] border border-[#E8CBA5] bg-white/70 text-xl shadow-sm"
+              className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#e3c89f] bg-white/80 text-xl shadow-sm"
+              aria-label="Menú"
             >
               ☰
             </button>
 
-            {/* campana visual */}
             <button
               type="button"
-              className="relative flex h-10 w-10 items-center justify-center rounded-[13px] border border-[#E8CBA5] bg-white/70 text-xl shadow-sm"
+              className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-[#e3c89f] bg-white/80 text-xl shadow-sm"
+              aria-label="Notificaciones"
             >
               🔔
-              <span className="absolute right-[8px] top-[7px] h-2 w-2 rounded-full bg-[#C1272D]" />
+              <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-[#c1272d]" />
             </button>
-
           </div>
         </header>
 
         {/* ===================================================
-            SELECTOR ESPAÑOL / QUECHUA
+            IDIOMAS
         =================================================== */}
 
-        <div className="mb-4 flex justify-center">
-
-          <div className="flex w-full max-w-[330px] overflow-hidden rounded-[16px] border border-[#E6C89E] bg-[#FFF9EE] p-1 shadow-sm">
-
+        <div className="mb-5 flex justify-center">
+          <div className="flex w-full max-w-sm rounded-2xl border border-[#e3c89f] bg-[#fffaf0] p-1 shadow-sm">
             <button
               type="button"
-              className="flex-1 rounded-[12px] bg-[#087F83] py-2.5 text-[12px] font-extrabold text-white"
+              className="flex-1 rounded-xl bg-[#087f83] py-2.5 text-xs font-black text-white"
             >
               ESPAÑOL
             </button>
 
             <button
               type="button"
-              className="flex-1 rounded-[12px] py-2.5 text-[12px] font-extrabold text-[#704A2D]"
+              className="flex-1 rounded-xl py-2.5 text-xs font-black text-[#704a2d]"
             >
               QUECHUA
             </button>
-
           </div>
         </div>
 
         {/* ===================================================
-            HERO HUARAZ
+            GRID PRINCIPAL
         =================================================== */}
 
-        <section className="relative mb-4 overflow-hidden rounded-[27px] border border-[#E7C99E] bg-[#FFF8E9] shadow-[0_12px_35px_rgba(72,48,25,0.12)]">
+        <div className="grid gap-5 lg:grid-cols-[0.8fr_1.35fr_0.8fr]">
 
-          {/* patrón superior */}
-          <div
-            className="h-[26px]"
-            style={{
-              backgroundImage: `
-                repeating-linear-gradient(
-                  45deg,
-                  #C1440C 0px,
-                  #C1440C 7px,
-                  #E8A33D 7px,
-                  #E8A33D 14px,
-                  #087F83 14px,
-                  #087F83 21px,
-                  #2F8F5B 21px,
-                  #2F8F5B 28px
-                )
-              `,
-            }}
-          />
+          {/* =================================================
+              COLUMNA IZQUIERDA
+          ================================================= */}
 
-          <div className="relative p-5">
+          <aside className="space-y-5">
 
-            <div className="absolute right-3 top-2 text-[54px] opacity-20">
-              ☀️
-            </div>
+            {/* HERO HUARAZ */}
 
-            <div className="mb-2 text-[11px] font-black uppercase tracking-[0.18em] text-[#C1440C]">
-              Tecnología que cuida tu vida
-            </div>
+            <section className="relative overflow-hidden rounded-[30px] border border-[#dfbf8e] bg-[#fff7e8] shadow-[0_16px_40px_rgba(72,48,25,0.12)]">
+              <div
+                className="h-7"
+                style={{ backgroundImage: textilePattern }}
+              />
 
-            <h1 className="max-w-[340px] font-display text-[31px] font-extrabold uppercase leading-[1.02] text-[#075D63]">
-              Tu bienestar,
-              <br />
-              nuestra misión.
-            </h1>
+              <div className="relative min-h-[430px] p-6">
 
-            <p className="mt-3 max-w-[350px] text-[13px] leading-relaxed text-[#6B5842]">
-              Monitorea tus signos vitales en tiempo real
-              con tecnología creada pensando en nuestra gente.
-            </p>
-
-            {/* paisaje decorativo */}
-            <div className="mt-4 flex items-end justify-between">
-
-              <div className="flex items-end gap-[-5px]">
-
-                <div className="text-[55px] leading-none">
-                  🏔️
+                <div className="absolute right-4 top-5 text-5xl opacity-80">
+                  ☀️
                 </div>
 
-                <div className="text-[40px] leading-none">
-                  ⛰️
+                <p className="max-w-[260px] text-xs font-black uppercase tracking-[0.18em] text-[#c1440c]">
+                  Tecnología que cuida tu vida
+                </p>
+
+                <h2 className="mt-3 max-w-[300px] font-display text-4xl font-black uppercase leading-[0.95] text-[#075d63]">
+                  Tu bienestar,
+                  <br />
+                  nuestra misión.
+                </h2>
+
+                <p className="mt-4 max-w-[300px] text-sm leading-relaxed text-[#6b5842]">
+                  Monitorea tus signos vitales en tiempo real con tecnología
+                  creada pensando en nuestra gente.
+                </p>
+
+                {/* Paisaje */}
+
+                <div className="absolute bottom-5 left-0 right-0 px-5">
+                  <div className="relative h-48 overflow-hidden rounded-3xl bg-gradient-to-b from-[#cde7e2] via-[#a9d4d1] to-[#e4c38f]">
+
+                    <div className="absolute left-3 top-7 text-6xl">
+                      ⛰️
+                    </div>
+
+                    <div className="absolute left-20 top-3 text-7xl">
+                      🏔️
+                    </div>
+
+                    <div className="absolute right-8 top-10 text-6xl">
+                      ⛰️
+                    </div>
+
+                    <div className="absolute bottom-2 left-0 right-0 text-center text-7xl">
+                      🏡
+                    </div>
+
+                    <div className="absolute bottom-1 left-5 text-5xl">
+                      🌺
+                    </div>
+
+                    <div className="absolute bottom-0 right-4 text-6xl">
+                      🌺
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* POR QUÉ */}
+
+            <section className="overflow-hidden rounded-[27px] border border-[#dfbf8e] bg-[#fff9ed] shadow-[0_12px_30px_rgba(72,48,25,0.09)]">
+              <div className="flex items-center justify-between bg-[#c1440c] px-5 py-4 text-white">
+                <h2 className="font-display text-xl font-black uppercase">
+                  ¿Por qué NeuroWatch?
+                </h2>
+
+                <span>✦</span>
+              </div>
+
+              <div className="space-y-5 p-5">
+
+                <div className="flex gap-3">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#c1440c]/10 text-2xl">
+                    ❤️
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-black uppercase text-[#263a32]">
+                      Monitoreo en tiempo real
+                    </h3>
+
+                    <p className="mt-1 text-xs leading-relaxed text-[#6b5842]">
+                      Cuida tu corazón y vigila tus signos vitales.
+                    </p>
+                  </div>
                 </div>
 
+                <div className="flex gap-3">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#087f83]/10 text-2xl">
+                    💡
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-black uppercase">
+                      Tecnología con propósito
+                    </h3>
+
+                    <p className="mt-1 text-xs leading-relaxed text-[#6b5842]">
+                      Innovación que busca mejorar vidas en Huaraz.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#2f8f5b]/10 text-2xl">
+                    🛡️
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-black uppercase">
+                      Conectado contigo
+                    </h3>
+
+                    <p className="mt-1 text-xs leading-relaxed text-[#6b5842]">
+                      Datos y monitoreo siempre cerca de ti.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e8a33d]/15 text-2xl">
+                    👥
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-black uppercase">
+                      Hecho para nuestra gente
+                    </h3>
+
+                    <p className="mt-1 text-xs leading-relaxed text-[#6b5842]">
+                      Diseñado pensando en nuestra tierra.
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              <div className="text-[48px]">
-                🌺
+              <div
+                className="h-5"
+                style={{ backgroundImage: textilePattern }}
+              />
+            </section>
+          </aside>
+
+          {/* =================================================
+              COLUMNA CENTRAL
+          ================================================= */}
+
+          <section className="space-y-5">
+
+            {/* FRECUENCIA */}
+
+            <section className="relative overflow-hidden rounded-[32px] border border-[#dfbf8e] bg-[#fff9ed] p-5 shadow-[0_16px_40px_rgba(72,48,25,0.11)] sm:p-7">
+
+              <div className="absolute right-5 top-5 text-5xl opacity-80">
+                ❤️
               </div>
 
-            </div>
-
-          </div>
-        </section>
-
-        {/* ===================================================
-            FRECUENCIA CARDÍACA
-        =================================================== */}
-
-        <section className="relative mb-4 overflow-hidden rounded-[28px] border border-[#E5C59B] bg-[#FFF9ED] p-5 shadow-[0_12px_30px_rgba(72,48,25,0.10)]">
-
-          <div className="mb-2 flex items-center justify-between">
-
-            <div>
-              <p className="text-[11px] font-black uppercase tracking-[0.15em] text-[#087F83]">
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-[#087f83]">
                 Monitoreo en vivo
               </p>
 
-              <h2 className="mt-1 font-display text-[24px] font-extrabold uppercase leading-none text-[#3B2A1A]">
+              <h2 className="mt-2 font-display text-3xl font-black uppercase leading-none text-[#263a32] sm:text-4xl">
                 Frecuencia
                 <br />
                 cardíaca
               </h2>
-            </div>
 
-            <div className="text-[38px]">
-              ❤️
-            </div>
+              {/* Corazón */}
 
-          </div>
+              <div className="my-6 flex justify-center">
+                <div className="relative flex h-48 w-52 items-center justify-center">
 
-          {/* corazón principal */}
-          <div className="relative my-5 flex justify-center">
+                  <div className="absolute text-[170px] leading-none drop-shadow-[0_12px_18px_rgba(193,68,12,0.25)]">
+                    ❤️
+                  </div>
 
-            <div className="relative flex h-[170px] w-[185px] items-center justify-center">
+                  <div className="relative z-10 mt-2 text-center text-white">
+                    <div className="text-5xl font-black leading-none">
+                      {bleData.bpm > 0 ? bleData.bpm : "--"}
+                    </div>
 
-              <div className="absolute inset-0 flex items-center justify-center text-[155px] leading-none drop-shadow-[0_10px_15px_rgba(193,68,12,0.20)]">
-                ❤️
+                    <div className="mt-1 text-sm font-black">
+                      ppm
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div className="relative z-10 mt-2 text-center text-white">
+              {/* ECG */}
 
-                <div className="text-[48px] font-black leading-none">
-                  {bleData.bpm > 0 ? bleData.bpm : "--"}
+              <div className="flex items-center gap-2">
+                <div className="h-0.5 flex-1 bg-[#2f8f5b]/40" />
+
+                <div className="text-3xl font-bold tracking-tight text-[#2f8f5b]">
+                  ─╲╱╲╱╲╱─
                 </div>
 
-                <div className="text-[13px] font-bold">
-                  ppm
+                <div className="h-0.5 flex-1 bg-[#2f8f5b]/40" />
+              </div>
+
+              {/* Estado */}
+
+              <div className="mt-5 flex items-center justify-between rounded-2xl border border-[#e5cba3] bg-white/75 p-4">
+                <div>
+                  <p className="text-xs font-black uppercase text-[#3b2a1a]">
+                    Estado actual
+                  </p>
+
+                  <p className="mt-1 text-lg font-black uppercase text-[#2f8f5b]">
+                    {bleData.connected
+                      ? "Monitoreo activo"
+                      : "Esperando conexión"}
+                  </p>
                 </div>
 
+                <span
+                  className={`h-4 w-4 rounded-full ${
+                    bleData.connected
+                      ? "bg-[#2f8f5b] shadow-[0_0_12px_rgba(47,143,91,0.6)]"
+                      : "bg-[#a9967d]"
+                  }`}
+                />
               </div>
+            </section>
 
-            </div>
-          </div>
+            {/* BOTÓN BLE */}
 
-          {/* electrocardiograma */}
-          <div className="flex items-center gap-2">
+            {!bleData.connected && (
+              <button
+                onClick={connectBLE}
+                type="button"
+                className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#087f83] px-5 py-4 text-white shadow-[0_10px_25px_rgba(8,127,131,0.25)] transition hover:scale-[1.01] active:scale-[0.98]"
+              >
+                <IconBluetooth size={22} />
 
-            <div className="h-[2px] flex-1 bg-[#2F8F5B]/50" />
-
-            <div className="text-[30px] font-bold leading-none text-[#2F8F5B]">
-              ─╲╱╲╱╲╱─
-            </div>
-
-            <div className="h-[2px] flex-1 bg-[#2F8F5B]/50" />
-
-          </div>
-
-          {/* estado */}
-          <div className="mt-4 rounded-[18px] border border-[#E7D0AA] bg-white/75 p-4">
-
-            <div className="flex items-center justify-between">
-
-              <div>
-                <p className="text-[11px] font-black uppercase">
-                  Estado actual
-                </p>
-
-                <p className="mt-1 text-[16px] font-black text-[#2F8F5B]">
-                  {bleData.connected
-                    ? "MONITOREO ACTIVO"
-                    : "ESPERANDO CONEXIÓN"}
-                </p>
-              </div>
-
-              <span
-                className={`h-3 w-3 rounded-full ${
-                  bleData.connected
-                    ? "bg-[#2F8F5B]"
-                    : "bg-[#A9967D]"
-                }`}
-              />
-
-            </div>
-          </div>
-
-        </section>
-
-        {/* ===================================================
-            CONECTAR RELOJ — FUNCIÓN ORIGINAL
-        =================================================== */}
-
-        {!bleData.connected && (
-          <button
-            onClick={connectBLE}
-            type="button"
-            className="mb-4 flex w-full items-center justify-center gap-2.5 rounded-[19px] bg-[#087F83] py-4 text-white shadow-[0_9px_24px_rgba(8,127,131,0.25)] transition-transform active:scale-[0.98]"
-          >
-            <IconBluetooth size={22} />
-
-            <span className="text-base font-bold">
-              Conectar reloj NeuroWatch
-            </span>
-          </button>
-        )}
-
-        {/* ===================================================
-            ERROR BLE — FUNCIÓN ORIGINAL
-        =================================================== */}
-
-        {bleError && (
-          <div className="mb-4 rounded-[16px] border border-[#C1272D]/30 bg-[#C1272D]/10 p-4">
-            <p className="text-[13px] font-medium text-[#C1272D]">
-              {bleError}
-            </p>
-          </div>
-        )}
-
-        {/* ===================================================
-            HERO STATUS — FUNCIÓN ORIGINAL
-        =================================================== */}
-
-        {bleData.connected && bleData.bpm > 0 && (
-          <div className="mb-4">
-            <HeroStatus state={status} />
-          </div>
-        )}
-
-        {/* ===================================================
-            SIGNOS EN VIVO
-        =================================================== */}
-
-        <section className="mb-4">
-
-          <div className="mb-3 flex items-center justify-between">
-
-            <h2 className="font-display text-[20px] font-extrabold uppercase text-[#075D63]">
-              Signos en vivo
-            </h2>
-
-            <span className="text-[11px] font-bold text-[#2F8F5B]">
-              ● EN VIVO
-            </span>
-
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-
-            {/* BPM */}
-            <div className="rounded-[21px] border border-[#E8D0A8] bg-[#FFF9ED] p-4 shadow-sm">
-
-              <div className="mb-2 text-[27px]">
-                ❤️
-              </div>
-
-              <p className="text-[11px] font-bold text-[#6B5842]">
-                Frecuencia cardíaca
-              </p>
-
-              <p className="mt-1 text-[25px] font-black text-[#3B2A1A]">
-                {bleData.bpm > 0 ? bleData.bpm : "--"}
-              </p>
-
-              <p className="text-[10px] font-bold text-[#A9967D]">
-                ppm
-              </p>
-
-            </div>
-
-            {/* RESPIRACIÓN */}
-            <div className="rounded-[21px] border border-[#E8D0A8] bg-[#FFF9ED] p-4 shadow-sm">
-
-              <div className="mb-2 text-[27px]">
-                🫁
-              </div>
-
-              <p className="text-[11px] font-bold text-[#6B5842]">
-                Respiración
-              </p>
-
-              <p className="mt-1 text-[25px] font-black text-[#3B2A1A]">
-                --
-              </p>
-
-              <p className="text-[10px] font-bold text-[#A9967D]">
-                rpm
-              </p>
-
-            </div>
-
-            {/* SPO2 */}
-            <div className="rounded-[21px] border border-[#E8D0A8] bg-[#FFF9ED] p-4 shadow-sm">
-
-              <div className="mb-2 text-[27px]">
-                🩸
-              </div>
-
-              <p className="text-[11px] font-bold text-[#6B5842]">
-                Oxígeno
-              </p>
-
-              <p className="mt-1 text-[25px] font-black text-[#3B2A1A]">
-                --
-              </p>
-
-              <p className="text-[10px] font-bold text-[#A9967D]">
-                SpO₂
-              </p>
-
-            </div>
-
-            {/* TEMPERATURA */}
-            <div className="rounded-[21px] border border-[#E8D0A8] bg-[#FFF9ED] p-4 shadow-sm">
-
-              <div className="mb-2 text-[27px]">
-                🌡️
-              </div>
-
-              <p className="text-[11px] font-bold text-[#6B5842]">
-                Temperatura
-              </p>
-
-              <p className="mt-1 text-[25px] font-black text-[#3B2A1A]">
-                --
-              </p>
-
-              <p className="text-[10px] font-bold text-[#A9967D]">
-                °C
-              </p>
-
-            </div>
-
-          </div>
-        </section>
-
-        {/* ===================================================
-            ESPERANDO DATOS — FUNCIÓN ORIGINAL
-        =================================================== */}
-
-        {bleData.connected && bleData.bpm === 0 && (
-          <div className="mb-4 rounded-[20px] border border-[#E7C99E] bg-white/65 p-6 text-center shadow-sm backdrop-blur-xl">
-
-            <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-[#087F83]/10 text-2xl">
-              ❤️
-            </div>
-
-            <p className="text-[15px] font-medium text-[#6B5842]">
-              Conectado al reloj.
-            </p>
-
-            <p className="mx-auto mt-1 max-w-[300px] text-[12px] leading-relaxed text-[#8C7660]">
-              Coloca el dedo en el sensor para comenzar
-              a recibir tus datos de pulso.
-            </p>
-
-          </div>
-        )}
-
-        {/* ===================================================
-            PULSE CARD ORIGINAL
-        =================================================== */}
-
-        <div className="mb-4">
-          <PulseCard
-            bpm={bleData.bpm}
-            bars={pulseBars}
-          />
-        </div>
-
-        {/* ===================================================
-            DEVICE CARD ORIGINAL
-        =================================================== */}
-
-        <div className="mb-4">
-          <DeviceCard
-            connected={bleData.connected}
-            signalStatus={
-              bleData.connected
-                ? "Señal estable"
-                : "Sin conectar"
-            }
-            batteryPercent={Math.round(
-              bleData.batteryPercent
+                <span className="font-black">
+                  Conectar reloj NeuroWatch
+                </span>
+              </button>
             )}
-          />
+
+            {/* ERROR */}
+
+            {bleError && (
+              <div className="rounded-2xl border border-[#c1272d]/30 bg-[#c1272d]/10 p-4">
+                <p className="text-sm font-semibold text-[#c1272d]">
+                  {bleError}
+                </p>
+              </div>
+            )}
+
+            {/* ESTADO */}
+
+            {bleData.connected && bleData.bpm > 0 && (
+              <HeroStatus state={status} />
+            )}
+
+            {/* SIGNOS */}
+
+            <section className="rounded-[28px] border border-[#dfbf8e] bg-[#fff9ed] p-5 shadow-[0_12px_30px_rgba(72,48,25,0.08)]">
+
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="font-display text-2xl font-black uppercase text-[#075d63]">
+                  Signos en vivo
+                </h2>
+
+                <span className="text-xs font-black text-[#2f8f5b]">
+                  ● EN VIVO
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+
+                <VitalCard
+                  icon="❤️"
+                  title="Frecuencia cardíaca"
+                  value={bleData.bpm > 0 ? String(bleData.bpm) : "--"}
+                  unit="ppm"
+                />
+
+                <VitalCard
+                  icon="🫁"
+                  title="Respiración"
+                  value="--"
+                  unit="rpm"
+                />
+
+                <VitalCard
+                  icon="🩸"
+                  title="Oxígeno"
+                  value="--"
+                  unit="SpO₂"
+                />
+
+                <VitalCard
+                  icon="🌡️"
+                  title="Temperatura"
+                  value="--"
+                  unit="°C"
+                />
+              </div>
+            </section>
+
+            {/* ESPERANDO DATOS */}
+
+            {bleData.connected && bleData.bpm === 0 && (
+              <div className="rounded-[24px] border border-[#dfbf8e] bg-white/70 p-6 text-center shadow-sm">
+                <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-[#087f83]/10 text-2xl">
+                  ❤️
+                </div>
+
+                <p className="font-semibold text-[#6b5842]">
+                  Conectado al reloj.
+                </p>
+
+                <p className="mx-auto mt-1 max-w-sm text-xs leading-relaxed text-[#8c7660]">
+                  Coloca el dedo en el sensor para comenzar a recibir tus
+                  datos de pulso.
+                </p>
+              </div>
+            )}
+
+            {/* GRÁFICA */}
+
+            <PulseCard
+              bpm={bleData.bpm}
+              bars={pulseBars}
+            />
+
+            {/* RELOJ */}
+
+            <DeviceCard
+              connected={bleData.connected}
+              signalStatus={
+                bleData.connected
+                  ? "Señal estable"
+                  : "Sin conectar"
+              }
+              batteryPercent={Math.round(
+                bleData.batteryPercent
+              )}
+            />
+          </section>
+
+          {/* =================================================
+              COLUMNA DERECHA
+          ================================================= */}
+
+          <aside className="space-y-5">
+
+            {/* ALERTAS */}
+
+            <section className="overflow-hidden rounded-[30px] border border-[#dfbf8e] bg-[#fff9ed] shadow-[0_16px_40px_rgba(72,48,25,0.10)]">
+
+              <div className="flex items-center justify-between bg-[#e85a20] px-5 py-4 text-white">
+                <h2 className="font-display text-2xl font-black uppercase">
+                  Alertas
+                </h2>
+
+                <span className="text-2xl">
+                  🔔
+                </span>
+              </div>
+
+              <div className="space-y-3 p-5">
+
+                <AlertRow
+                  icon="❤️"
+                  title="Frecuencia alta"
+                  description={
+                    bleData.bpm > 0
+                      ? `Frecuencia cardíaca: ${bleData.bpm} ppm`
+                      : "Esperando datos del reloj."
+                  }
+                  time="EN VIVO"
+                  type="danger"
+                />
+
+                <AlertRow
+                  icon="⚠️"
+                  title="Recuerda descansar"
+                  description="Tómate un momento para relajarte."
+                  time="09:15 AM"
+                  type="warning"
+                />
+
+                <AlertRow
+                  icon="✓"
+                  title="¡Todo bien!"
+                  description="Tus signos vitales están siendo monitoreados."
+                  time="08:00 AM"
+                  type="success"
+                />
+              </div>
+
+              <div
+                className="h-5"
+                style={{ backgroundImage: textilePattern }}
+              />
+            </section>
+
+            {/* HUARAZ */}
+
+            <section className="relative overflow-hidden rounded-[30px] border border-[#dfbf8e] bg-[#eaf0dc] shadow-[0_16px_40px_rgba(72,48,25,0.10)]">
+
+              <div className="relative min-h-[300px] p-6">
+
+                <div className="absolute right-4 top-3 text-5xl">
+                  ☀️
+                </div>
+
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-[#c1440c]">
+                  Nuestra tierra
+                </p>
+
+                <h2 className="mt-1 font-display text-4xl font-black uppercase text-[#075d63]">
+                  Huaraz
+                </h2>
+
+                <p className="mt-1 max-w-[230px] text-sm font-bold leading-relaxed text-[#536456]">
+                  Nuestra tierra,
+                  <br />
+                  nuestra fuerza.
+                </p>
+
+                <div className="absolute bottom-5 left-4 right-4 h-40 overflow-hidden rounded-3xl bg-gradient-to-b from-[#a9d7e0] via-[#72b7c0] to-[#d7b879]">
+
+                  <div className="absolute left-3 top-5 text-6xl">
+                    🗿
+                  </div>
+
+                  <div className="absolute left-20 top-0 text-7xl">
+                    🏔️
+                  </div>
+
+                  <div className="absolute right-6 top-8 text-6xl">
+                    🦙
+                  </div>
+
+                  <div className="absolute bottom-0 left-0 right-0 text-center text-5xl">
+                    🌊🌺🌿
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* CONECTADO CONTIGO */}
+
+            <section className="overflow-hidden rounded-[27px] border border-[#dfbf8e] bg-[#fff9ed] shadow-[0_12px_30px_rgba(72,48,25,0.08)]">
+
+              <div className="p-5">
+
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#087f83] text-2xl text-white">
+                    🛡️
+                  </div>
+
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#087f83]">
+                      NeuroWatch
+                    </p>
+
+                    <h2 className="font-display text-xl font-black uppercase">
+                      Conectado contigo
+                    </h2>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+
+                  <div className="rounded-2xl bg-[#087f83]/10 p-3">
+                    <p className="text-[10px] font-bold text-[#6b5842]">
+                      Estado
+                    </p>
+
+                    <p className="mt-1 text-sm font-black text-[#2f8f5b]">
+                      {bleData.connected ? "ACTIVO" : "LISTO"}
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl bg-[#c1440c]/10 p-3">
+                    <p className="text-[10px] font-bold text-[#6b5842]">
+                      Batería
+                    </p>
+
+                    <p className="mt-1 text-sm font-black">
+                      {bleData.connected
+                        ? `${Math.round(
+                            bleData.batteryPercent
+                          )}%`
+                        : "--"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                className="h-5"
+                style={{ backgroundImage: textilePattern }}
+              />
+            </section>
+          </aside>
         </div>
 
         {/* ===================================================
-            TARJETA CONECTADO CONTIGO
+            PIE CULTURAL
         =================================================== */}
 
-        <section className="mb-4 overflow-hidden rounded-[23px] border border-[#E7C99E] bg-[#FFF9ED] shadow-sm">
+        <section className="mt-5 overflow-hidden rounded-[28px] border border-[#dfbf8e] bg-[#fff9ed] shadow-[0_12px_30px_rgba(72,48,25,0.08)]">
 
-          <div className="p-5">
+          <div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-4">
 
-            <div className="mb-4 flex items-center gap-3">
-
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#087F83] text-2xl">
-                🛡️
-              </div>
-
-              <div>
-                <p className="text-[11px] font-black uppercase tracking-[0.12em] text-[#087F83]">
-                  NeuroWatch
-                </p>
-
-                <h3 className="font-display text-[19px] font-extrabold uppercase">
-                  Conectado contigo
-                </h3>
-              </div>
-
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-
-              <div className="rounded-[15px] bg-[#087F83]/10 p-3">
-                <p className="text-[10px] font-bold text-[#6B5842]">
-                  Estado
-                </p>
-
-                <p className="mt-1 text-[14px] font-black text-[#2F8F5B]">
-                  {bleData.connected
-                    ? "ACTIVO"
-                    : "LISTO"}
-                </p>
-              </div>
-
-              <div className="rounded-[15px] bg-[#C1440C]/10 p-3">
-                <p className="text-[10px] font-bold text-[#6B5842]">
-                  Batería
-                </p>
-
-                <p className="mt-1 text-[14px] font-black">
-                  {bleData.connected
-                    ? `${Math.round(
-                        bleData.batteryPercent
-                      )}%`
-                    : "--"}
-                </p>
-              </div>
-
-            </div>
+            <CultureItem icon="❤️" text="Salud" />
+            <CultureItem icon="🤝" text="Confianza" />
+            <CultureItem icon="💡" text="Innovación" />
+            <CultureItem icon="👥" text="Comunidad" />
           </div>
 
-          {/* franja */}
           <div
-            className="h-[18px]"
-            style={{
-              backgroundImage: `
-                repeating-linear-gradient(
-                  45deg,
-                  #C1440C 0px,
-                  #C1440C 6px,
-                  #E8A33D 6px,
-                  #E8A33D 12px,
-                  #2F8F5B 12px,
-                  #2F8F5B 18px,
-                  #087F83 18px,
-                  #087F83 24px
-                )
-              `,
-            }}
+            className="h-5"
+            style={{ backgroundImage: textilePattern }}
           />
-
         </section>
-
-        {/* ===================================================
-            HUARAZ
-        =================================================== */}
-
-        <section className="mb-4 overflow-hidden rounded-[25px] bg-[#087F83] text-white shadow-[0_12px_30px_rgba(8,127,131,0.20)]">
-
-          <div className="relative p-5">
-
-            <div className="absolute right-3 top-2 text-[65px] opacity-30">
-              ☀️
-            </div>
-
-            <p className="text-[11px] font-black uppercase tracking-[0.18em] text-white/70">
-              Nuestra tierra
-            </p>
-
-            <h2 className="mt-1 font-display text-[29px] font-extrabold uppercase">
-              Huaraz
-            </h2>
-
-            <p className="mt-1 max-w-[260px] text-[13px] font-medium leading-relaxed text-white/85">
-              Tecnología con raíces que nos unen.
-            </p>
-
-            <div className="mt-4 flex items-end justify-between">
-
-              <span className="text-[55px]">
-                🏔️
-              </span>
-
-              <span className="text-[45px]">
-                🦙
-              </span>
-
-              <span className="text-[45px]">
-                🌺
-              </span>
-
-            </div>
-
-          </div>
-
-        </section>
-
-        {/* ===================================================
-            POR QUÉ NEUROWATCH
-        =================================================== */}
-
-        <section className="mb-4 rounded-[24px] border border-[#E7C99E] bg-[#FFF9ED] p-5 shadow-sm">
-
-          <h2 className="mb-4 font-display text-[20px] font-extrabold uppercase text-[#C1440C]">
-            ¿Por qué NeuroWatch?
-          </h2>
-
-          <div className="space-y-4">
-
-            <div className="flex items-start gap-3">
-              <span className="text-[27px]">❤️</span>
-
-              <div>
-                <p className="text-[13px] font-black uppercase">
-                  Monitoreo en tiempo real
-                </p>
-
-                <p className="text-[11px] leading-relaxed text-[#6B5842]">
-                  Cuida tu corazón y vigila tus signos vitales.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <span className="text-[27px]">💡</span>
-
-              <div>
-                <p className="text-[13px] font-black uppercase">
-                  Tecnología con propósito
-                </p>
-
-                <p className="text-[11px] leading-relaxed text-[#6B5842]">
-                  Innovación pensada para mejorar vidas.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <span className="text-[27px]">🤝</span>
-
-              <div>
-                <p className="text-[13px] font-black uppercase">
-                  Hecho para nuestra gente
-                </p>
-
-                <p className="text-[11px] leading-relaxed text-[#6B5842]">
-                  Una solución inspirada en nuestra tierra.
-                </p>
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-        {/* ===================================================
-            ALERTAS VISUAL
-        =================================================== */}
-
-        <section className="mb-5 overflow-hidden rounded-[24px] border border-[#E7C99E] bg-[#FFF9ED] shadow-sm">
-
-          <div className="flex items-center justify-between bg-[#C1440C] px-5 py-3 text-white">
-
-            <h2 className="font-display text-[19px] font-extrabold uppercase">
-              Alertas
-            </h2>
-
-            <span className="text-xl">
-              🔔
-            </span>
-
-          </div>
-
-          <div className="space-y-3 p-4">
-
-            <div className="flex items-center gap-3 rounded-[15px] bg-[#2F8F5B]/10 p-3">
-
-              <span className="text-[25px]">
-                ✅
-              </span>
-
-              <div>
-                <p className="text-[12px] font-black uppercase">
-                  Estado estable
-                </p>
-
-                <p className="text-[10px] text-[#6B5842]">
-                  Tus signos vitales están siendo monitoreados.
-                </p>
-              </div>
-
-            </div>
-
-            <div className="flex items-center gap-3 rounded-[15px] bg-[#E8A33D]/10 p-3">
-
-              <span className="text-[25px]">
-                ⚠️
-              </span>
-
-              <div>
-                <p className="text-[12px] font-black uppercase">
-                  Recuerda descansar
-                </p>
-
-                <p className="text-[10px] text-[#6B5842]">
-                  Tómate un momento para relajarte.
-                </p>
-              </div>
-
-            </div>
-
-          </div>
-        </section>
-
-      </div>
-
-      {/* =====================================================
-          BARRA INFERIOR — VISUAL
-          No modifica ninguna navegación existente.
-      ===================================================== */}
-
-      <nav className="fixed bottom-0 left-0 right-0 z-40 mx-auto max-w-[520px] border-t border-[#E2C79E] bg-[#FFF9ED]/95 px-3 pb-3 pt-2 shadow-[0_-8px_25px_rgba(72,48,25,0.10)] backdrop-blur-xl">
-
-        <div className="grid grid-cols-4 gap-1">
-
-          <div className="flex flex-col items-center gap-1 rounded-[14px] bg-[#087F83] py-2 text-white">
-            <span className="text-[20px]">⌂</span>
-            <span className="text-[9px] font-black uppercase">
-              Inicio
-            </span>
-          </div>
-
-          <div className="flex flex-col items-center gap-1 rounded-[14px] py-2 text-[#6B5842]">
-            <span className="text-[20px]">▣</span>
-            <span className="text-[9px] font-black uppercase">
-              Historial
-            </span>
-          </div>
-
-          <div className="flex flex-col items-center gap-1 rounded-[14px] py-2 text-[#6B5842]">
-            <span className="text-[20px]">🔔</span>
-            <span className="text-[9px] font-black uppercase">
-              Alertas
-            </span>
-          </div>
-
-          <div className="flex flex-col items-center gap-1 rounded-[14px] py-2 text-[#6B5842]">
-            <span className="text-[20px]">●</span>
-            <span className="text-[9px] font-black uppercase">
-              Perfil
-            </span>
-          </div>
-
-        </div>
-      </nav>
+      </main>
 
       {/* =====================================================
           ALERT MODAL — FUNCIÓN ORIGINAL
@@ -862,7 +742,108 @@ export default function DashboardPage() {
         contacts={contacts.map((c) => c.name)}
         onCancel={cancelAlert}
       />
+    </div>
+  );
+}
 
+/* =========================================================
+   COMPONENTES VISUALES
+========================================================= */
+
+function VitalCard({
+  icon,
+  title,
+  value,
+  unit,
+}: {
+  icon: string;
+  title: string;
+  value: string;
+  unit: string;
+}) {
+  return (
+    <div className="rounded-[20px] border border-[#e6cfa9] bg-[#fffaf0] p-4 shadow-sm">
+      <div className="mb-2 text-2xl">
+        {icon}
+      </div>
+
+      <p className="text-[11px] font-bold text-[#6b5842]">
+        {title}
+      </p>
+
+      <p className="mt-1 text-2xl font-black text-[#263a32]">
+        {value}
+      </p>
+
+      <p className="text-[10px] font-black text-[#a9967d]">
+        {unit}
+      </p>
+    </div>
+  );
+}
+
+function AlertRow({
+  icon,
+  title,
+  description,
+  time,
+  type,
+}: {
+  icon: string;
+  title: string;
+  description: string;
+  time: string;
+  type: "danger" | "warning" | "success";
+}) {
+  const styles = {
+    danger: "bg-[#c1272d]/10",
+    warning: "bg-[#e8a33d]/15",
+    success: "bg-[#2f8f5b]/10",
+  };
+
+  return (
+    <div
+      className={`flex items-start gap-3 rounded-2xl p-3 ${styles[type]}`}
+    >
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/80 text-xl">
+        {icon}
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <div className="flex items-start justify-between gap-2">
+          <p className="text-xs font-black uppercase">
+            {title}
+          </p>
+
+          <span className="shrink-0 text-[9px] font-bold text-[#8c7660]">
+            {time}
+          </span>
+        </div>
+
+        <p className="mt-1 text-[10px] leading-relaxed text-[#6b5842]">
+          {description}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function CultureItem({
+  icon,
+  text,
+}: {
+  icon: string;
+  text: string;
+}) {
+  return (
+    <div className="flex flex-col items-center justify-center gap-1 rounded-2xl bg-[#f9f0df] p-3 text-center">
+      <span className="text-2xl">
+        {icon}
+      </span>
+
+      <span className="text-[11px] font-black uppercase text-[#3b2a1a]">
+        {text}
+      </span>
     </div>
   );
 }
