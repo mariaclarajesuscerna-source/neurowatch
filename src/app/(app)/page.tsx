@@ -249,38 +249,31 @@ const {
                   Monitorea tus signos vitales en tiempo real con tecnología
                   creada pensando en nuestra gente.
                 </p>
+{/* PAISAJE REAL DE HUARAZ */}
 
-                {/* Paisaje */}
+<div className="absolute bottom-5 left-0 right-0 px-5">
+  <div className="relative h-48 overflow-hidden rounded-3xl shadow-lg">
 
-                <div className="absolute bottom-5 left-0 right-0 px-5">
-                  <div className="relative h-48 overflow-hidden rounded-3xl bg-gradient-to-b from-[#cde7e2] via-[#a9d4d1] to-[#e4c38f]">
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Huascaran_Huandoy_Chopicalqui_seen_from_Huaraz.JPG"
+      alt="Cordillera Blanca y Huaraz"
+      className="absolute inset-0 h-full w-full object-cover"
+    />
 
-                    <div className="absolute left-3 top-7 text-6xl">
-                      ⛰️
-                    </div>
+    <div className="absolute inset-0 bg-gradient-to-t from-[#173c3a]/45 via-transparent to-transparent" />
 
-                    <div className="absolute left-20 top-3 text-7xl">
-                      🏔️
-                    </div>
+    <div className="absolute bottom-3 left-4 right-4">
+      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-white">
+        Huaraz · Áncash
+      </p>
 
-                    <div className="absolute right-8 top-10 text-6xl">
-                      ⛰️
-                    </div>
+      <p className="mt-1 text-lg font-black text-white">
+        Cordillera Blanca
+      </p>
+    </div>
 
-                    <div className="absolute bottom-2 left-0 right-0 text-center text-7xl">
-                      🏡
-                    </div>
-
-                    <div className="absolute bottom-1 left-5 text-5xl">
-                      🌺
-                    </div>
-
-                    <div className="absolute bottom-0 right-4 text-6xl">
-                      🌺
-                    </div>
-                  </div>
-                </div>
-              </div>
+  </div>
+</div>
             </section>
 
             {/* POR QUÉ */}
@@ -630,25 +623,27 @@ const {
                   nuestra fuerza.
                 </p>
 
-                <div className="absolute bottom-5 left-4 right-4 h-40 overflow-hidden rounded-3xl bg-gradient-to-b from-[#a9d7e0] via-[#72b7c0] to-[#d7b879]">
+               <div className="absolute bottom-5 left-4 right-4 h-40 overflow-hidden rounded-3xl shadow-lg">
 
-                  <div className="absolute left-3 top-5 text-6xl">
-                    🗿
-                  </div>
+  <img
+    src="https://d36tnp772eyphs.cloudfront.net/blogs/1/2019/07/Plaza-De-Armas-in-Peruvian-city-of-Huaraz.jpg"
+    alt="Plaza de Armas de Huaraz"
+    className="h-full w-full object-cover"
+  />
 
-                  <div className="absolute left-20 top-0 text-7xl">
-                    🏔️
-                  </div>
+  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
-                  <div className="absolute right-6 top-8 text-6xl">
-                    🦙
-                  </div>
+  <div className="absolute bottom-3 left-3">
+    <p className="text-[10px] font-black uppercase tracking-[0.15em] text-white">
+      Nuestra tierra
+    </p>
 
-                  <div className="absolute bottom-0 left-0 right-0 text-center text-5xl">
-                    🌊🌺🌿
-                  </div>
-                </div>
-              </div>
+    <p className="text-lg font-black text-white">
+      Huaraz
+    </p>
+  </div>
+
+</div>
             </section>
 
             {/* CONECTADO CONTIGO */}
