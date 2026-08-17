@@ -38,7 +38,6 @@ import {
   type StoredContact,
   type StoredSettings,
   type Streak,
-  type StoredFacialCheck,
 } from "@/lib/storage";
 
 interface PulseBar {
