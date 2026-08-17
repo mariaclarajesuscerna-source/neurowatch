@@ -505,15 +505,14 @@ export function NeurowatchProvider({
         }
       );
 
-      const check: StoredFacialCheck = {
-        id: `${Date.now()}-${Math.random()
-          .toString(36)
-          .slice(2)}`,
-        date,
-        index,
-        image: image ?? "",
-      };
-
+     const check: StoredFacialCheck = {
+  id: `${Date.now()}-${Math.random()
+    .toString(36)
+    .slice(2)}`,
+  date,
+  index,
+  photo: image ?? "",
+};
       /*
        * Guardar permanentemente
        */
