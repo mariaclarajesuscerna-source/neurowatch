@@ -24,7 +24,6 @@ export default function AlertaEnviadaPage() {
   const {
     contacts,
     patient,
-    bleData,
     alertSentAt,
     clearAlertSent,
   } = useNeurowatch();
@@ -67,9 +66,11 @@ export default function AlertaEnviadaPage() {
             "Celularta qayllapi waqaychay, waqyakuna chaskinaykipaq.",
           callEmergency:
             "Utqay yanapakuyman waqyay",
-          back:
-            "Qallariyman kutiy",
+          back: "Qallariyman kutiy",
           telegram: "Telegram",
+          patient: "Unquq",
+          noContacts:
+            "Mana tinkiqkuna kanchu.",
         }
       : {
           emergency: "Emergencia",
@@ -90,9 +91,11 @@ export default function AlertaEnviadaPage() {
             "Mantén el teléfono cerca para recibir llamadas.",
           callEmergency:
             "Llamar a urgencias",
-          back:
-            "Volver al dashboard",
+          back: "Volver al dashboard",
           telegram: "Telegram",
+          patient: "Paciente",
+          noContacts:
+            "No hay contactos registrados.",
         };
 
   const instructions = [
@@ -103,7 +106,7 @@ export default function AlertaEnviadaPage() {
 
   return (
     <div className="relative min-h-dvh overflow-hidden bg-[#f7efe0] px-4 pb-28 pt-5 md:px-8 md:pb-10">
-      {/* PATRÓN TEXTIL SUPERIOR */}
+      {/* DECORACIÓN TEXTIL */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 h-2">
         <div
           className="h-full"
@@ -126,7 +129,7 @@ export default function AlertaEnviadaPage() {
       </div>
 
       <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-4">
-        {/* STATUS BAR — MOBILE */}
+        {/* STATUS BAR */}
         <div className="flex items-center justify-between px-1 md:hidden">
           <span className="text-[15px] font-semibold text-[#263a32]">
             {new Date().toLocaleTimeString("es-ES", {
@@ -179,101 +182,117 @@ export default function AlertaEnviadaPage() {
         </div>
 
         {/* ALERTA ENVIADA */}
-        <GlassCard className="items-center rounded-[26px] border border-[#b8ddc5] bg-[#edf8f1] p-6 shadow-[0_10px_28px_rgba(47,143,91,0.10)]">
+        <GlassCard className="flex flex-col items-center gap-3 rounded-[26px] border border-[#b8ddc5] bg-[#edf8f1] p-6 text-center shadow-[0_10px_28px_rgba(47,143,91,0.10)]">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#2f8f5b] text-white shadow-[0_8px_20px_rgba(47,143,91,0.25)]">
             <IconCheck size={30} />
           </div>
 
-          <h2 className="mt-3 text-center text-[24px] font-black text-[#263a32]">
+          <h2 className="text-[24px] font-black text-[#263a32]">
             {text.sent}
           </h2>
 
-          <p className="mt-1 max-w-[290px] text-center text-[13px] leading-relaxed text-[#5f745f]">
+          <p className="max-w-[290px] text-[13px] leading-relaxed text-[#5f745f]">
             {text.notified}
           </p>
 
-          {name && (
-            <span className="mt-2 rounded-full bg-white/70 px-3 py-1 text-[11px] font-bold text-[#6b5842]">
-              {name}
-            </span>
-          )}
+          <span className="rounded-full bg-white/70 px-3 py-1 text-[11px] font-bold text-[#6b5842]">
+            {text.patient}: {name}
+          </span>
         </GlassCard>
 
         {/* CONTACTOS */}
-        <GlassCard className="rounded-[26px] border border-[#dfc49a] bg-[#fff9ed] p-5">
+        <GlassCard className="rounded-[26px] border border-[#dfc49a] bg-[#fff9ed] p-5 shadow-[0_10px_28px_rgba(72,48,25,0.08)]">
           <span className="text-[12px] font-black uppercase tracking-[0.08em] text-[#6b5842]">
             {text.contacts}
           </span>
 
-          <div className="mt-4 flex flex-col gap-4">
-            {contacts.map((c, i) => {
-              const initials = c.name
-                .charAt(0)
-                .toUpperCase();
+          {contacts.length === 0 ? (
+            <div className="mt-4 rounded-2xl bg-[#f7efe0] p-4 text-center">
+              <p className="text-sm text-[#8c7660]">
+                {text.noContacts}
+              </p>
+            </div>
+          ) : (
+            <div className="mt-4 flex flex-col gap-4">
+              {contacts.map((contact, index) => {
+                const initials =
+                  contact.name
+                    .charAt(0)
+                    .toUpperCase();
 
-              const bgColors = [
-                "bg-[#087f83]",
-                "bg-[#2f8f5b]",
-              ];
+                const bgColors = [
+                  "bg-[#087f83]",
+                  "bg-[#2f8f5b]",
+                ];
 
-              const ts = Math.max(
-                0,
-                secondsAgo - i * 2
-              );
+                const elapsedSeconds =
+                  Math.max(
+                    0,
+                    secondsAgo - index * 2
+                  );
 
-              return (
-                <div
-                  key={c.telegramChatId}
-                  className="flex items-center gap-3"
-                >
+                return (
                   <div
-                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${
-                      bgColors[i % 2]
-                    }`}
+                    key={
+                      contact.telegramChatId
+                    }
+                    className="flex items-center gap-3"
                   >
-                    <span className="text-base font-bold text-white">
-                      {initials}
-                    </span>
-                  </div>
+                    {/* AVATAR */}
+                    <div
+                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${
+                        bgColors[index % 2]
+                      }`}
+                    >
+                      <span className="text-base font-black text-white">
+                        {initials}
+                      </span>
+                    </div>
 
-                  <div className="min-w-0 flex-1">
-                    <span className="block truncate text-[15px] font-bold text-[#263a32]">
-                      {c.name}
-                    </span>
+                    {/* INFO */}
+                    <div className="min-w-0 flex-1">
+                      <span className="block truncate text-[15px] font-bold text-[#263a32]">
+                        {contact.name}
+                      </span>
 
-                    <div className="mt-0.5 flex items-center gap-1.5">
-                      <IconSend size={13} />
+                      <div className="mt-0.5 flex items-center gap-1.5">
+                        <IconSend size={13} />
 
-                      <span className="truncate text-xs text-[#6b5842]">
-                        {c.relation} ·{" "}
-                        {text.telegram}
+                        <span className="truncate text-xs text-[#6b5842]">
+                          {contact.relation} ·{" "}
+                          {text.telegram}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* ESTADO */}
+                    <div className="flex shrink-0 flex-col items-end gap-1">
+                      <StatusChip
+                        label={
+                          text.sentStatus
+                        }
+                        status="ok"
+                        size="sm"
+                      />
+
+                      <span className="text-[11px] text-[#9a8065]">
+                        {text.ago}{" "}
+                        {elapsedSeconds}s
                       </span>
                     </div>
                   </div>
-
-                  <div className="flex shrink-0 flex-col items-end gap-1">
-                    <StatusChip
-                      label={text.sentStatus}
-                      status="ok"
-                      size="sm"
-                    />
-
-                    <span className="text-[11px] text-[#9a8065]">
-                      {text.ago} {ts}s
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </GlassCard>
 
-        {/* INSTRUCCIONES */}
-        <GlassCard className="rounded-[26px] border border-[#dfc49a] bg-[#fff9ed] p-5">
-          <div className="flex items-center gap-2">
-            <IconHeartPulse
-              size={19}
-            />
+        {/* RECOMENDACIONES */}
+        <GlassCard className="rounded-[26px] border border-[#dfc49a] bg-[#fff9ed] p-5 shadow-[0_10px_28px_rgba(72,48,25,0.08)]">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#087f83]/10 text-[#087f83]">
+              <IconHeartPulse size={20} />
+            </div>
 
             <span className="text-[15px] font-black text-[#263a32]">
               {text.meanwhile}
@@ -282,14 +301,14 @@ export default function AlertaEnviadaPage() {
 
           <div className="mt-4 flex flex-col gap-3">
             {instructions.map(
-              (instruction, i) => (
+              (instruction, index) => (
                 <div
-                  key={i}
+                  key={index}
                   className="flex items-start gap-3"
                 >
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#e7f1ee]">
                     <span className="text-xs font-black text-[#087f83]">
-                      {i + 1}
+                      {index + 1}
                     </span>
                   </span>
 
@@ -321,7 +340,7 @@ export default function AlertaEnviadaPage() {
             clearAlertSent();
             router.push("/");
           }}
-          className="w-full py-3 text-[13px] font-bold text-[#8c7660] transition hover:text-[#087f83]"
+          className="w-full rounded-xl py-3 text-[13px] font-bold text-[#8c7660] transition hover:bg-[#f1e5ce] hover:text-[#087f83]"
         >
           {text.back}
         </button>
