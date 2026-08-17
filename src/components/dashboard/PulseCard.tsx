@@ -11,56 +11,85 @@ interface PulseCardProps {
   bars: PulseBar[];
 }
 
-export default function PulseCard({ bpm, bars }: PulseCardProps) {
+export default function PulseCard({
+  bpm,
+  bars,
+}: PulseCardProps) {
   const maxH = 60;
 
   return (
-    <GlassCard className="flex flex-col gap-3.5 p-5">
-      {/* Top row */}
+    <GlassCard className="rounded-[26px] border-[#E4C99E] bg-[#FFF9ED] p-5">
+
+      {/* Encabezado */}
+
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <IconHeartPulse size={18} />
-          <span className="text-[15px] font-semibold text-ink-900">
+          <IconHeartPulse
+            size={20}
+            className="text-[#C1440C]"
+          />
+
+          <span className="text-sm font-black uppercase text-[#263A32]">
             Pulso en vivo
           </span>
         </div>
+
         <div className="flex items-end gap-1">
-          <span className="text-[34px] font-bold text-ink-900 leading-none tabular-nums">
-            {bpm}
+          <span className="text-3xl font-black leading-none tabular-nums text-[#263A32]">
+            {bpm > 0 ? bpm : "--"}
           </span>
-          <span className="text-[13px] font-semibold text-ink-600 leading-none pb-[6px]">
+
+          <span className="pb-1 text-xs font-black text-[#6B5842]">
             BPM
           </span>
         </div>
       </div>
 
-      {/* Chart */}
-      <div className="h-[76px] bg-brand-300/15 rounded-[14px] flex items-end justify-between gap-[3px] px-2.5 py-2">
-        {bars.map((bar, i) => (
+      {/* Gráfica */}
+
+      <div className="mt-4 flex h-[82px] items-end justify-between gap-[3px] rounded-2xl bg-[#087F83]/10 px-3 py-2">
+
+        {bars.map((bar, index) => (
           <div
-            key={i}
-            className={`flex-1 rounded-full min-w-0 ${
-              bar.status === "warn" ? "bg-warn" : "bg-brand-600"
+            key={index}
+            className={`min-w-0 flex-1 rounded-full ${
+              bar.status === "warn"
+                ? "bg-[#E8A33D]"
+                : "bg-[#087F83]"
             }`}
-            style={{ height: `${(bar.value / maxH) * 100}%` }}
+            style={{
+              height: `${Math.max(
+                10,
+                Math.min(
+                  100,
+                  (bar.value / maxH) * 100
+                )
+              )}%`,
+            }}
           />
         ))}
       </div>
 
-      {/* Legend */}
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-1.5">
-          <span className="h-[6px] w-[14px] rounded-full bg-brand-600 shrink-0" />
-          <span className="text-xs font-normal text-ink-600">
+      {/* Leyenda */}
+
+      <div className="mt-4 flex flex-wrap gap-4">
+
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-5 rounded-full bg-[#087F83]" />
+
+          <span className="text-[11px] font-semibold text-[#6B5842]">
             Pulso real
           </span>
         </div>
-        <div className="flex items-center gap-1.5">
-          <span className="h-[6px] w-[14px] rounded-full bg-brand-300 shrink-0" />
-          <span className="text-xs font-normal text-ink-600">
+
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-5 rounded-full bg-[#79C7C5]" />
+
+          <span className="text-[11px] font-semibold text-[#6B5842]">
             Rango esperado
           </span>
         </div>
+
       </div>
     </GlassCard>
   );
