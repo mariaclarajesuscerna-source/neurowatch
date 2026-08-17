@@ -1,8 +1,8 @@
 const STORAGE_PREFIX = "neurowatch_";
 
 /* =========================================================
-   PACIENTE
-========================================================= */
+   TIPOS
+   ========================================================= */
 
 export interface StoredPatient {
   name: string;
@@ -10,34 +10,34 @@ export interface StoredPatient {
   restingBPM: number;
 }
 
-/* =========================================================
-   CONTACTOS
-========================================================= */
-
 export interface StoredContact {
   name: string;
   relation: string;
   telegramChatId: string;
 }
 
-/* =========================================================
-   CONFIGURACIÓN
-========================================================= */
-
 export interface StoredSettings {
   toleranceBPM: number;
   countdownSeconds: number;
 }
 
+export interface StoredFacialCheck {
+  id: string;
+  date: string;
+  index: number;
+  image: string;
+}
+
 /* =========================================================
    STORAGE GENERAL
-========================================================= */
+   ========================================================= */
 
-function getItem<T>(
-  key: string,
-  fallback: T
-): T {
+function getItem<T>(key: string, fallback: T): T {
   try {
+    if (typeof window === "undefined") {
+      return fallback;
+    }
+
     const raw = localStorage.getItem(
       STORAGE_PREFIX + key
     );
@@ -57,21 +57,24 @@ function setItem(
   value: unknown
 ): void {
   try {
+    if (typeof window === "undefined") {
+      return;
+    }
+
     localStorage.setItem(
       STORAGE_PREFIX + key,
       JSON.stringify(value)
     );
   } catch {
-    // Storage lleno o no disponible
+    // Storage lleno o no disponible.
   }
 }
 
 /* =========================================================
    PACIENTE
-========================================================= */
+   ========================================================= */
 
-export function getPatient():
-  StoredPatient | null {
+export function getPatient(): StoredPatient | null {
   return getItem<StoredPatient | null>(
     "patient",
     null
@@ -81,18 +84,14 @@ export function getPatient():
 export function setPatient(
   patient: StoredPatient
 ): void {
-  setItem(
-    "patient",
-    patient
-  );
+  setItem("patient", patient);
 }
 
 /* =========================================================
    CONTACTOS
-========================================================= */
+   ========================================================= */
 
-export function getContacts():
-  StoredContact[] {
+export function getContacts(): StoredContact[] {
   return getItem<StoredContact[]>(
     "contacts",
     []
@@ -102,39 +101,29 @@ export function getContacts():
 export function addContact(
   contact: StoredContact
 ): void {
-  const contacts =
-    getContacts();
+  const contacts = getContacts();
 
   contacts.push(contact);
 
-  setItem(
-    "contacts",
-    contacts
-  );
+  setItem("contacts", contacts);
 }
 
 export function removeContact(
   telegramChatId: string
 ): void {
-  const contacts =
-    getContacts().filter(
-      (contact) =>
-        contact.telegramChatId !==
-        telegramChatId
-    );
-
-  setItem(
-    "contacts",
-    contacts
+  const contacts = getContacts().filter(
+    (contact) =>
+      contact.telegramChatId !== telegramChatId
   );
+
+  setItem("contacts", contacts);
 }
 
 /* =========================================================
-   CONFIGURACIÓN
-========================================================= */
+   AJUSTES
+   ========================================================= */
 
-export function getSettings():
-  StoredSettings {
+export function getSettings(): StoredSettings {
   return getItem<StoredSettings>(
     "settings",
     {
@@ -147,33 +136,24 @@ export function getSettings():
 export function setSettings(
   settings: StoredSettings
 ): void {
-  setItem(
-    "settings",
-    settings
-  );
+  setItem("settings", settings);
 }
 
 /* =========================================================
-   BASELINE BPM
-========================================================= */
+   BPM BASE
+   ========================================================= */
 
-export function getBaselineBPM():
-  number | null {
-  const patient =
-    getPatient();
+export function getBaselineBPM(): number | null {
+  const patient = getPatient();
 
-  return (
-    patient?.restingBPM ??
-    null
-  );
+  return patient?.restingBPM ?? null;
 }
 
 /* =========================================================
    IMAGEN BASE
-========================================================= */
+   ========================================================= */
 
-export function getBaselineImage():
-  string | null {
+export function getBaselineImage(): string | null {
   return getItem<string | null>(
     "baselineImage",
     null
@@ -191,10 +171,9 @@ export function setBaselineImage(
 
 /* =========================================================
    ÚLTIMA FOTO
-========================================================= */
+   ========================================================= */
 
-export function getLastCheckPhoto():
-  string | null {
+export function getLastCheckPhoto(): string | null {
   return getItem<string | null>(
     "lastCheckPhoto",
     null
@@ -211,63 +190,28 @@ export function setLastCheckPhoto(
 }
 
 /* =========================================================
-   CHEQUEOS FACIALES
-========================================================= */
+   HISTORIAL FACIAL
+   ========================================================= */
 
 /*
  * IMPORTANTE:
- *
- * SOLO existe una StoredFacialCheck.
- *
- * Usamos "image" como nombre oficial
- * para la imagen del chequeo.
- *
- * "photo" queda opcional para que datos
- * antiguos del navegador no rompan
- * la aplicación.
+ * Esta es la ÚNICA definición de StoredFacialCheck.
  */
 
-export interface StoredFacialCheck {
-  id: string;
-  image: string;
-  date: string;
-  index: number;
-  photo?: string;
-}
-
-/* =========================================================
-   OBTENER CHEQUEOS
-========================================================= */
-
-export function getFacialChecks():
-  StoredFacialCheck[] {
-  const checks =
-    getItem<StoredFacialCheck[]>(
-      "facialChecks",
-      []
-    );
-
-  /*
-   * Compatibilidad con datos antiguos
-   * que podrían tener "photo".
-   */
-
-  return checks.map(
-    (check) => ({
-      ...check,
-
-      image:
-        check.image ??
-        check.photo ??
-        "",
-    })
+export function getFacialChecks(): StoredFacialCheck[] {
+  return getItem<StoredFacialCheck[]>(
+    "facialChecks",
+    []
   );
 }
 
-/* =========================================================
-   GUARDAR CHEQUEO
-========================================================= */
-
+/*
+ * Guarda un nuevo chequeo facial.
+ *
+ * ORDEN:
+ * image -> string
+ * index -> number
+ */
 export function addFacialCheck(
   image: string,
   index: number
@@ -276,35 +220,31 @@ export function addFacialCheck(
     getFacialChecks();
 
   const check: StoredFacialCheck = {
-    id:
-      `${Date.now()}-${Math.random()
-        .toString(36)
-        .slice(2)}`,
+    id: `${Date.now()}-${Math.random()
+      .toString(36)
+      .slice(2)}`,
 
     image,
 
-    date:
-      new Date().toLocaleString(
-        "es-PE"
-      ),
+    date: new Date().toLocaleDateString(
+      "es-PE",
+      {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      }
+    ),
 
     index,
   };
 
   setItem(
     "facialChecks",
-    [
-      check,
-      ...checks,
-    ]
+    [check, ...checks]
   );
 
   return check;
 }
-
-/* =========================================================
-   ELIMINAR CHEQUEO
-========================================================= */
 
 export function removeFacialCheck(
   id: string
@@ -322,20 +262,11 @@ export function removeFacialCheck(
 }
 
 /* =========================================================
-   HISTORIAL FACIAL
-========================================================= */
+   HISTORIAL FACIAL COMPATIBLE
+   ========================================================= */
 
-/*
- * Mantenemos estas funciones porque
- * alguna página de NeuroWatch podría
- * estar utilizándolas.
- */
-
-export function getFacialHistory():
-  StoredFacialCheck[] {
-  return getItem<
-    StoredFacialCheck[]
-  >(
+export function getFacialHistory(): StoredFacialCheck[] {
+  return getItem<StoredFacialCheck[]>(
     "facialHistory",
     []
   );
@@ -347,36 +278,27 @@ export function addFacialHistory(
   const history =
     getFacialHistory();
 
-  const normalized: StoredFacialCheck =
-    {
-      ...check,
-
-      image:
-        check.image ??
-        check.photo ??
-        "",
-    };
+  const updated = [
+    check,
+    ...history,
+  ];
 
   setItem(
     "facialHistory",
-    [
-      normalized,
-      ...history,
-    ]
+    updated
   );
 }
 
 /* =========================================================
    RACHA
-========================================================= */
+   ========================================================= */
 
 export interface Streak {
   count: number;
   lastCheckDate: string;
 }
 
-export function getStreak():
-  Streak {
+export function getStreak(): Streak {
   return getItem<Streak>(
     "streak",
     {
@@ -386,8 +308,7 @@ export function getStreak():
   );
 }
 
-export function updateStreak():
-  Streak {
+export function updateStreak(): Streak {
   const today =
     new Date()
       .toISOString()
@@ -395,12 +316,6 @@ export function updateStreak():
 
   const current =
     getStreak();
-
-  /*
-   * Si ya hizo el chequeo
-   * de hoy, no aumentamos
-   * nuevamente la racha.
-   */
 
   if (
     current.lastCheckDate ===
@@ -438,18 +353,16 @@ export function updateStreak():
 
 /* =========================================================
    ONBOARDING
-========================================================= */
+   ========================================================= */
 
-export function getOnboardingComplete():
-  boolean {
+export function getOnboardingComplete(): boolean {
   return getItem<boolean>(
     "onboardingComplete",
     false
   );
 }
 
-export function setOnboardingComplete():
-  void {
+export function setOnboardingComplete(): void {
   setItem(
     "onboardingComplete",
     true
@@ -457,28 +370,33 @@ export function setOnboardingComplete():
 }
 
 /* =========================================================
-   LIMPIAR TODO
-========================================================= */
+   LIMPIAR DATOS
+   ========================================================= */
 
 export function clearAll(): void {
   try {
+    if (
+      typeof window ===
+      "undefined"
+    ) {
+      return;
+    }
+
     const keys =
       Object.keys(
         localStorage
-      ).filter(
-        (key) =>
-          key.startsWith(
-            STORAGE_PREFIX
-          )
+      ).filter((key) =>
+        key.startsWith(
+          STORAGE_PREFIX
+        )
       );
 
-    keys.forEach(
-      (key) =>
-        localStorage.removeItem(
-          key
-        )
+    keys.forEach((key) =>
+      localStorage.removeItem(
+        key
+      )
     );
   } catch {
-    // Storage no disponible
+    // Storage no disponible.
   }
 }
