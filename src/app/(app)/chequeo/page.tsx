@@ -296,23 +296,24 @@ export default function ChequeoPage() {
      * rotate()
      * translate()
      */
+context.save();
 
-    context.setTransform(
-      1,
-      0,
-      0,
-      1,
-      0,
-      0
-    );
+context.translate(
+  canvas.width,
+  0
+);
 
-    context.drawImage(
-      video,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
+context.scale(-1, 1);
+
+context.drawImage(
+  video,
+  0,
+  0,
+  canvas.width,
+  canvas.height
+);
+
+context.restore();
 
     /*
      * AQUÍ se crea la foto.
