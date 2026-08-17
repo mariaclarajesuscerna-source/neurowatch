@@ -116,11 +116,9 @@ export function NeurowatchProvider({
 }) {
   const router = useRouter();
 
-  /*
-   * ================================
-   * BLE
-   * ================================
-   */
+  /* ================================
+     BLE
+  ================================= */
 
   const {
     data: bleData,
@@ -130,11 +128,9 @@ export function NeurowatchProvider({
     cancelDeviceAlert,
   } = useBLE();
 
-  /*
-   * ================================
-   * ESTADOS
-   * ================================
-   */
+  /* ================================
+     ESTADOS
+  ================================= */
 
   const [patient, setPatientState] =
     useState<StoredPatient | null>(null);
@@ -186,11 +182,9 @@ export function NeurowatchProvider({
       lastCheckDate: "",
     });
 
-  /*
-   * ================================
-   * REFERENCIAS
-   * ================================
-   */
+  /* ================================
+     REFERENCIAS
+  ================================= */
 
   const bpmBufferRef =
     useRef<number[]>([]);
@@ -204,11 +198,9 @@ export function NeurowatchProvider({
   const bufferSeededRef =
     useRef(false);
 
-  /*
-   * ================================
-   * CARGAR DATOS
-   * ================================
-   */
+  /* ================================
+     CARGAR DATOS
+  ================================= */
 
   useEffect(() => {
     setPatientState(getPatient());
@@ -246,11 +238,9 @@ export function NeurowatchProvider({
     );
   }, []);
 
-  /*
-   * ================================
-   * BPM
-   * ================================
-   */
+  /* ================================
+     BPM
+  ================================= */
 
   useEffect(() => {
     if (
@@ -308,11 +298,9 @@ export function NeurowatchProvider({
     bleData.frameCount,
   ]);
 
-  /*
-   * ================================
-   * DESCONEXIÓN
-   * ================================
-   */
+  /* ================================
+     DESCONEXIÓN
+  ================================= */
 
   useEffect(() => {
     if (bleData.connected) {
@@ -358,11 +346,9 @@ export function NeurowatchProvider({
     onboardingComplete,
   ]);
 
-  /*
-   * ================================
-   * DETECCIÓN DE ANOMALÍAS
-   * ================================
-   */
+  /* ================================
+     DETECCIÓN
+  ================================= */
 
   const restingBPM =
     patient?.restingBPM ?? 70;
@@ -386,11 +372,9 @@ export function NeurowatchProvider({
       ? "alert"
       : detectedStatus;
 
-  /*
-   * ================================
-   * ALERTAS
-   * ================================
-   */
+  /* ================================
+     ALERTAS
+  ================================= */
 
   const handleAlertComplete =
     useCallback(async () => {
@@ -404,7 +388,7 @@ export function NeurowatchProvider({
             contact.telegramChatId,
 
           message:
-            `ALERTA Neurowatch: Se detecto una anomalia en el pulso de ${
+            `ALERTA Neurowatch: Se detectó una anomalía en el pulso de ${
               patient?.name ??
               "el paciente"
             }. BPM actual: ${
@@ -491,11 +475,9 @@ export function NeurowatchProvider({
       setAlertSentAt(null);
     }, []);
 
-  /*
-   * ================================
-   * PACIENTE
-   * ================================
-   */
+  /* ================================
+     PACIENTE
+  ================================= */
 
   const savePatient =
     useCallback(
@@ -506,11 +488,9 @@ export function NeurowatchProvider({
       []
     );
 
-  /*
-   * ================================
-   * CONTACTOS
-   * ================================
-   */
+  /* ================================
+     CONTACTOS
+  ================================= */
 
   const saveContact =
     useCallback(
@@ -536,11 +516,9 @@ export function NeurowatchProvider({
       []
     );
 
-  /*
-   * ================================
-   * AJUSTES
-   * ================================
-   */
+  /* ================================
+     AJUSTES
+  ================================= */
 
   const saveSettingsAction =
     useCallback(
@@ -552,11 +530,9 @@ export function NeurowatchProvider({
       []
     );
 
-  /*
-   * ================================
-   * IMAGEN BASE
-   * ================================
-   */
+  /* ================================
+     IMAGEN BASE
+  ================================= */
 
   const saveBaselineImage =
     useCallback(
@@ -570,11 +546,9 @@ export function NeurowatchProvider({
       []
     );
 
-  /*
-   * ================================
-   * ÚLTIMA FOTO
-   * ================================
-   */
+  /* ================================
+     ÚLTIMA FOTO
+  ================================= */
 
   const saveLastCheckPhotoFn =
     useCallback(
@@ -586,11 +560,9 @@ export function NeurowatchProvider({
       []
     );
 
-  /*
-   * ================================
-   * ONBOARDING
-   * ================================
-   */
+  /* ================================
+     ONBOARDING
+  ================================= */
 
   const finishOnboarding =
     useCallback(() => {
@@ -601,14 +573,13 @@ export function NeurowatchProvider({
       );
     }, []);
 
-  /*
-   * ================================
-   * HISTORIAL FACIAL
-   * ================================
-   *
-   * IMPORTANTE:
-   * Este bloque debe existir UNA SOLA VEZ.
-   */
+  /* ================================
+     HISTORIAL FACIAL
+
+     IMPORTANTE:
+     Solo usamos "image".
+     No usamos "photo".
+  ================================= */
 
   const addFacialCheck =
     useCallback(
@@ -626,45 +597,24 @@ export function NeurowatchProvider({
             }
           );
 
-        const savedImage =
-          image ?? "";
+        const check: StoredFacialCheck = {
+          id: `${Date.now()}-${Math.random()
+            .toString(36)
+            .slice(2)}`,
 
-        /*
-         * StoredFacialCheck utiliza
-         * image y photo.
-         *
-         * Guardamos la misma imagen
-         * en ambos para mantener
-         * compatibilidad con el proyecto.
-         */
+          date,
 
-        const check: StoredFacialCheck =
-          {
-            id: `${Date.now()}-${Math.random()
-              .toString(36)
-              .slice(2)}`,
+          index,
 
-            date,
+          image: image ?? "",
+        };
 
-            index,
-
-            image: savedImage,
-
-            photo: savedImage,
-          };
-
-        /*
-         * Guardar permanentemente
-         */
-
+        /* Guardar permanentemente */
         persistFacialCheck(
           check
         );
 
-        /*
-         * Actualizar lista completa
-         */
-
+        /* Actualizar chequeos */
         setFacialChecks(
           (prev) => [
             check,
@@ -672,10 +622,7 @@ export function NeurowatchProvider({
           ]
         );
 
-        /*
-         * Actualizar historial
-         */
-
+        /* Actualizar historial */
         setFacialHistory(
           (prev) => [
             {
@@ -686,10 +633,7 @@ export function NeurowatchProvider({
           ]
         );
 
-        /*
-         * Actualizar racha
-         */
-
+        /* Actualizar racha */
         setStreak(
           updateStreak()
         );
@@ -697,11 +641,9 @@ export function NeurowatchProvider({
       []
     );
 
-  /*
-   * ================================
-   * BARRAS BPM
-   * ================================
-   */
+  /* ================================
+     BARRAS BPM
+  ================================= */
 
   const pulseBars: PulseBar[] =
     recentBPMs.map(
@@ -743,11 +685,9 @@ export function NeurowatchProvider({
     });
   }
 
-  /*
-   * ================================
-   * PROVIDER
-   * ================================
-   */
+  /* ================================
+     PROVIDER
+  ================================= */
 
   return (
     <NeurowatchContext.Provider
@@ -819,11 +759,9 @@ export function NeurowatchProvider({
   );
 }
 
-/*
- * ================================
- * HOOK
- * ================================
- */
+/* ================================
+   HOOK
+================================ */
 
 export function useNeurowatch() {
   const ctx =
