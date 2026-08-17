@@ -145,9 +145,9 @@ const {
                 NeuroWatch
               </h1>
 
-              <p className="mt-1 text-xs font-black uppercase tracking-[0.22em] text-[#c1440c]">
-                Huaraz · Perú
-              </p>
+             <p className="mt-1 text-xs font-black uppercase tracking-[0.22em] text-[#c1440c]">
+  {t("huarazPeru")}
+</p>
 
               <p className="mt-1 text-xs font-semibold text-[#79634d]">
                 Tecnología que cuida tu vida, con raíces que nos unen.
