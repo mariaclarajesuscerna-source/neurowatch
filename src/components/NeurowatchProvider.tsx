@@ -15,9 +15,7 @@ import { useCountdown } from "@/hooks/useCountdown";
 import { detectAnomaly, type QualitativeStatus } from "@/lib/detection";
 import { sendTelegramAlert } from "@/lib/telegram";
 
-import { 
-  getFacialHistory,
-  addFacialHistory,
+import {
   type StoredFacialCheck,
   getPatient,
   setPatient,
@@ -494,52 +492,58 @@ export function NeurowatchProvider({
       );
     }, []);
 
-  /*
+    /*
    * Historial facial persistente
    */
   const addFacialCheck = useCallback(
-  (index: number, image: string) => {
-    const date = new Date().toLocaleDateString("es-ES", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
+    (index: number, image?: string) => {
+      const date = new Date().toLocaleDateString("es-ES", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
 
-    const check: StoredFacialCheck = {
-      id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
-      date,
-      index,
-      photo: image,
-    };
+      const check: StoredFacialCheck = {
+        id: `${Date.now()}-${Math.random()
+          .toString(36)
+          .slice(2)}`,
+        date,
+        index,
+        photo: image ?? "",
+      };
 
-    addFacialHistory(check);
-    setFacialHistory((prev) => [check, ...prev]);
-    setStreak(updateStreak());
-  },
-  []
-);
-          /*
-           * Mantiene compatibilidad
-           * con llamadas antiguas.
-           */
-          setFacialHistory(
-            (prev) => [
-              {
-                date: today,
-                index,
-              },
-              ...prev,
-            ]
-          );
-        }
+      /*
+       * Guardar permanentemente
+       */
+      persistFacialCheck(check);
 
-        setStreak(
-          updateStreak()
-        );
-      },
-      []
-    );
+      /*
+       * Actualizar historial completo
+       */
+      setFacialChecks((prev) => [
+        check,
+        ...prev,
+      ]);
 
+      /*
+       * Actualizar historial utilizado
+       * por la página Historial.
+       */
+      setFacialHistory((prev) => [
+        {
+          date: check.date,
+          index: check.index,
+        },
+        ...prev,
+      ]);
+
+      /*
+       * Actualizar racha
+       */
+      setStreak(updateStreak());
+    },
+    []
+  );
   /*
    * Barras BPM
    */
