@@ -518,16 +518,6 @@ export function NeurowatchProvider({
   },
   []
 );
-          setFacialHistory(
-            (prev) => [
-              {
-                date: today,
-                index,
-              },
-              ...prev,
-            ]
-          );
-        } else {
           /*
            * Mantiene compatibilidad
            * con llamadas antiguas.
