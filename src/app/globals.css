@@ -1,34 +1,36 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-600: #4F46E5;
-  --color-brand-500: #6366F1;
-  --color-brand-300: #A5B4FC;
-  --color-brand-100: #E0E7FF;
+  /* Paleta Andina / Huaraz — terracota como color principal (antes indigo) */
+  --color-brand-600: #C1440C;
+  --color-brand-500: #DD5F1F;
+  --color-brand-300: #F0B78C;
+  --color-brand-100: #FBEAD9;
 
-  --color-bg-from: #EEF2FF;
-  --color-bg-to: #ECFEFF;
+  --color-bg-from: #FBF3E7;
+  --color-bg-to: #F6E7CC;
 
-  --color-ok: #10B981;
-  --color-warn: #F59E0B;
-  --color-alert: #EF4444;
-  --color-muted: #94A3B8;
+  --color-ok: #2F8F5B;
+  --color-warn: #E8A33D;
+  --color-alert: #C1272D;
+  --color-muted: #A9967D;
 
-  --color-ink-900: #0F172A;
-  --color-ink-600: #475569;
-  --color-ink-400: #94A3B8;
+  --color-ink-900: #3B2A1A;
+  --color-ink-600: #6B5842;
+  --color-ink-400: #A9967D;
 
-  --color-glass-fill: #FFFFFF8C;
-  --color-glass-border: #FFFFFFB3;
-  --color-alert-fill: #EF44441A;
-  --color-alert-border: #EF444459;
-  --color-ok-fill: #10B9811A;
+  --color-glass-fill: #FFFBF3E0;
+  --color-glass-border: #F0C79866;
+  --color-alert-fill: #C1272D1A;
+  --color-alert-border: #C1272D59;
+  --color-ok-fill: #2F8F5B1A;
 
-  --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-baloo), 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
-  background: linear-gradient(135deg, #EEF2FF 0%, #ECFEFF 100%);
+  background: linear-gradient(135deg, #FBF3E7 0%, #F6E7CC 100%);
   color: var(--color-ink-900);
   font-family: var(--font-body);
   min-height: 100dvh;
@@ -36,6 +38,25 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Franja decorativa inspirada en textiles andinos (rombos de colores). */
+.andean-strip {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--color-brand-600) 0px,
+    var(--color-brand-600) 6px,
+    var(--color-warn) 6px,
+    var(--color-warn) 12px,
+    var(--color-ok) 12px,
+    var(--color-ok) 18px,
+    var(--color-alert) 18px,
+    var(--color-alert) 24px
+  );
+}
+
+.font-display {
+  font-family: var(--font-display);
 }
 
 @media (prefers-reduced-motion: reduce) {
