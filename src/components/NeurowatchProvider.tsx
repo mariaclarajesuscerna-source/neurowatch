@@ -556,28 +556,30 @@ export function NeurowatchProvider({
   ======================================================= */
 
   const cancelAlert =
-    useCallback(
-      async () => {
-        countdown.cancel();
+  useCallback(
+    async () => {
+      // Detener la cuenta regresiva
+      countdown.cancel();
 
-        setAlertOpen(false);
+      // Cerrar inmediatamente la ventana
+      setAlertOpen(false);
 
-        alertTriggeredRef.current =
-          false;
+      // IMPORTANTE:
+      // marcar la alerta como ya atendida para que
+      // el useEffect NO vuelva a iniciar el contador
+      alertTriggeredRef.current = true;
 
-        try {
-          await cancelDeviceAlert();
-        } catch {
-          /*
-           * La alerta visual ya fue cancelada.
-           */
-        }
-      },
-      [
-        cancelDeviceAlert,
-        countdown,
-      ]
-    );
+      try {
+        await cancelDeviceAlert();
+      } catch {
+        // La alerta visual ya fue cancelada.
+      }
+    },
+    [
+      cancelDeviceAlert,
+      countdown,
+    ]
+  );
 
   /* =======================================================
      ACTIVAR ALERTA AUTOMÁTICAMENTE
