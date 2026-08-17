@@ -34,22 +34,26 @@ export default function CountdownRing({
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="#C1272D26"
+          stroke="#EF444426"
           strokeWidth="14"
         />
+
         {/* Progress */}
         <motion.circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="#C1272D"
+          stroke="#EF4444"
           strokeWidth="14"
           strokeLinecap="round"
           strokeDasharray={circumference}
           initial={{ strokeDashoffset: 0 }}
           animate={{ strokeDashoffset }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          transition={{
+            duration: 1,
+            ease: "easeOut",
+          }}
         />
       </svg>
 
@@ -58,10 +62,11 @@ export default function CountdownRing({
           key={remainingSeconds}
           initial={{ scale: 1.2, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="text-[76px] font-bold text-alert leading-none tabular-nums"
+          className="text-[76px] font-bold leading-none tabular-nums text-alert"
         >
           {remainingSeconds}
         </motion.span>
+
         <span className="text-[15px] font-semibold text-ink-600">
           segundos
         </span>
