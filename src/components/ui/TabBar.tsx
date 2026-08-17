@@ -12,48 +12,133 @@ import {
 } from "./icons";
 
 const tabs = [
-  { href: "/", label: "Inicio", Icon: IconHouse },
-  { href: "/chequeo", label: "Chequeo", Icon: IconScanFace },
-  { href: "/historial", label: "Historial", Icon: IconTrendingUp },
-  { href: "/contactos", label: "Contactos", Icon: IconUsers },
-  { href: "/ajustes", label: "Ajustes", Icon: IconSettings },
+  {
+    href: "/",
+    label: "Inicio",
+    Icon: IconHouse,
+  },
+  {
+    href: "/chequeo",
+    label: "Chequeo",
+    Icon: IconScanFace,
+  },
+  {
+    href: "/historial",
+    label: "Historial",
+    Icon: IconTrendingUp,
+  },
+  {
+    href: "/contactos",
+    label: "Contactos",
+    Icon: IconUsers,
+  },
+  {
+    href: "/ajustes",
+    label: "Ajustes",
+    Icon: IconSettings,
+  },
 ] as const;
 
-const dashboardRoutes = ["/", "/alerta-enviada", "/desconectado"];
+const dashboardRoutes = [
+  "/",
+  "/alerta-enviada",
+  "/desconectado",
+];
 
 export default function TabBar() {
   const pathname = usePathname();
-  const isHomeActive = dashboardRoutes.includes(pathname);
+
+  const isHomeActive =
+    dashboardRoutes.includes(pathname);
 
   return (
     <>
-      {/* Mobile: fixed bottom tab bar */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden">
+      {/* =====================================================
+          MOBILE
+      ====================================================== */}
+
+      <nav className="fixed bottom-0 left-0 right-0 z-50 px-3 pb-3 md:hidden">
         <div
-          className="flex h-21 items-start justify-between border-t border-white/70 bg-white/55 backdrop-blur-xl"
-          style={{
-            padding: "12px 24px 26px 24px",
-            boxShadow: "0 -4px 24px rgba(31, 41, 55, 0.08)",
-          }}
+          className="
+            mx-auto
+            flex
+            max-w-xl
+            items-center
+            justify-between
+            gap-1
+            rounded-[28px]
+            border
+            border-white/80
+            bg-white/85
+            px-2
+            py-2
+            shadow-[0_12px_40px_rgba(31,41,55,0.14)]
+            backdrop-blur-2xl
+          "
         >
           {tabs.map(({ href, label, Icon }) => {
             const active =
-              href === "/" ? isHomeActive : pathname.startsWith(href);
+              href === "/"
+                ? isHomeActive
+                : pathname.startsWith(href);
 
             return (
               <Link
                 key={href}
                 href={href}
-                className="flex w-full min-w-0 flex-col items-center gap-[5px]"
+                aria-current={active ? "page" : undefined}
+                className={`
+                  group
+                  flex
+                  min-w-0
+                  flex-1
+                  flex-col
+                  items-center
+                  justify-center
+                  rounded-[21px]
+                  px-1
+                  py-2
+                  transition-all
+                  duration-200
+                  active:scale-95
+                  ${
+                    active
+                      ? "bg-brand-600 text-white shadow-[0_6px_18px_rgba(79,70,229,0.28)]"
+                      : "text-ink-500 hover:bg-brand-50 hover:text-brand-600"
+                  }
+                `}
               >
-                <Icon size={24} />
+                <div
+                  className={`
+                    flex
+                    h-9
+                    w-9
+                    items-center
+                    justify-center
+                    rounded-full
+                    transition-all
+                    ${
+                      active
+                        ? "bg-white/15"
+                        : "bg-transparent group-hover:bg-brand-100"
+                    }
+                  `}
+                >
+                  <Icon size={21} />
+                </div>
 
                 <span
-                  className={`text-[11px] leading-none ${
-                    active
-                      ? "font-semibold text-brand-600"
-                      : "font-medium text-ink-400"
-                  }`}
+                  className={`
+                    mt-0.5
+                    truncate
+                    text-[10px]
+                    leading-tight
+                    ${
+                      active
+                        ? "font-bold text-white"
+                        : "font-semibold text-ink-500"
+                    }
+                  `}
                 >
                   {label}
                 </span>
@@ -63,52 +148,166 @@ export default function TabBar() {
         </div>
       </nav>
 
-      {/* Desktop: fixed left sidebar */}
-      <aside className="fixed bottom-0 left-0 top-0 z-40 hidden w-64 flex-col border-r border-white/70 bg-white/55 backdrop-blur-xl md:flex">
-        <div className="flex items-center gap-3 px-6 py-6">
-          <div className="flex h-[34px] w-[34px] items-center justify-center rounded-[11px] bg-brand-600 text-white shadow-[0_4px_12px_rgba(79,70,229,0.25)]">
-            <IconActivity size={20} />
-          </div>
+      {/* =====================================================
+          DESKTOP
+      ====================================================== */}
 
-          <div className="flex flex-col gap-0.5">
-            <span className="text-[22px] font-bold leading-tight text-ink-900">
-              Neurowatch
-            </span>
+      <aside
+        className="
+          fixed
+          bottom-0
+          left-0
+          top-0
+          z-50
+          hidden
+          w-64
+          flex-col
+          border-r
+          border-white/70
+          bg-white/75
+          shadow-[8px_0_35px_rgba(31,41,55,0.06)]
+          backdrop-blur-2xl
+          md:flex
+        "
+      >
+        {/* LOGO */}
 
-            <span className="text-[13px] font-normal leading-tight text-ink-600">
-              Monitoreo en vivo
-            </span>
+        <div className="px-5 pb-5 pt-6">
+          <div
+            className="
+              flex
+              items-center
+              gap-3
+              rounded-[22px]
+              border
+              border-white
+              bg-white/70
+              p-3
+              shadow-[0_6px_25px_rgba(31,41,55,0.06)]
+            "
+          >
+            <div
+              className="
+                flex
+                h-11
+                w-11
+                shrink-0
+                items-center
+                justify-center
+                rounded-[15px]
+                bg-brand-600
+                text-white
+                shadow-[0_6px_16px_rgba(79,70,229,0.28)]
+              "
+            >
+              <IconActivity size={22} />
+            </div>
+
+            <div className="min-w-0">
+              <span className="block text-[20px] font-bold leading-tight text-ink-900">
+                Neurowatch
+              </span>
+
+              <span className="block text-[11px] font-medium text-ink-500">
+                Monitoreo en vivo
+              </span>
+            </div>
           </div>
         </div>
 
-        <nav className="flex flex-1 flex-col gap-1 px-4 pt-2">
+        {/* BOTONES */}
+
+        <nav className="flex flex-1 flex-col gap-2 px-4">
           {tabs.map(({ href, label, Icon }) => {
             const active =
-              href === "/" ? isHomeActive : pathname.startsWith(href);
+              href === "/"
+                ? isHomeActive
+                : pathname.startsWith(href);
 
             return (
               <Link
                 key={href}
                 href={href}
-                className={`flex items-center gap-3 rounded-xl px-4 py-3 transition-colors ${
-                  active
-                    ? "bg-brand-100 font-semibold text-brand-600"
-                    : "font-medium text-ink-600 hover:bg-white/50"
-                }`}
+                aria-current={active ? "page" : undefined}
+                className={`
+                  group
+                  flex
+                  items-center
+                  gap-3
+                  rounded-[18px]
+                  border
+                  px-4
+                  py-3.5
+                  transition-all
+                  duration-200
+                  active:scale-[0.98]
+                  ${
+                    active
+                      ? "border-brand-200 bg-brand-600 text-white shadow-[0_7px_20px_rgba(79,70,229,0.22)]"
+                      : "border-transparent text-ink-600 hover:border-brand-100 hover:bg-brand-50 hover:text-brand-600"
+                  }
+                `}
               >
-                <Icon size={22} />
-                <span className="text-[15px]">{label}</span>
+                <div
+                  className={`
+                    flex
+                    h-10
+                    w-10
+                    shrink-0
+                    items-center
+                    justify-center
+                    rounded-[13px]
+                    transition-all
+                    ${
+                      active
+                        ? "bg-white/15"
+                        : "bg-ink-900/[0.04] group-hover:bg-brand-100"
+                    }
+                  `}
+                >
+                  <Icon size={21} />
+                </div>
+
+                <span
+                  className={`
+                    text-[14px]
+                    ${
+                      active
+                        ? "font-bold text-white"
+                        : "font-semibold"
+                    }
+                  `}
+                >
+                  {label}
+                </span>
+
+                {active && (
+                  <span className="ml-auto h-2 w-2 rounded-full bg-white" />
+                )}
               </Link>
             );
           })}
         </nav>
 
-        <div className="px-6 pb-6">
-          <p className="text-[11px] leading-relaxed text-ink-600">
-            Neurowatch es una herramienta asistiva. No reemplaza atencion
-            medica ni constituye diagnostico. Ante una emergencia, llame a
-            servicios de urgencia.
-          </p>
+        {/* AVISO */}
+
+        <div className="px-5 pb-6">
+          <div
+            className="
+              rounded-[18px]
+              border
+              border-white
+              bg-white/60
+              p-3
+            "
+          >
+            <p className="text-[10px] leading-relaxed text-ink-500">
+              Neurowatch es una herramienta asistiva.
+              No reemplaza atención médica ni constituye
+              diagnóstico. Ante una emergencia, llama a
+              los servicios de urgencia.
+            </p>
+          </div>
         </div>
       </aside>
     </>
