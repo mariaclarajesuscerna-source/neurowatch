@@ -213,14 +213,20 @@ export default function ChequeoPage() {
      * La foto mantiene la orientación real
      * del video.
      */
-    context.drawImage(
-      video,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
+    context.save();
 
+    context.translate(canvas.width, 0);
+    context.scale(-1, 1);
+
+    context.drawImage(
+    video,
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+    context.restore();
     const image =
       canvas.toDataURL(
         "image/jpeg",
@@ -365,15 +371,12 @@ export default function ChequeoPage() {
           />
 
           {/* Foto capturada */}
-          {state === "result" &&
-            photo && (
+          {state === "result" && photo && (
               <img
                 src={photo}
                 alt="Foto capturada"
                 className="absolute inset-0 h-full w-full object-cover"
-                style={{
-                  transform: "none",
-                }}
+               }}
               />
             )}
 
