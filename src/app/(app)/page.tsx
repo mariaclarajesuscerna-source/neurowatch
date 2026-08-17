@@ -34,7 +34,6 @@ export default function DashboardPage() {
     settings,
     cancelAlert,
     disconnectedSince,
-    streak,
   } = useNeurowatch();
 
   useEffect(() => {
@@ -146,13 +145,16 @@ export default function DashboardPage() {
 
           </div>
 
-          {/* DATOS */}
+          {/* =================================================
+              DATOS EN VIVO
+          ================================================= */}
 
           <div className="mt-5 grid grid-cols-3 gap-2">
 
             {/* PULSO */}
 
             <div className="rounded-2xl bg-white/10 p-3">
+
               <p className="text-[10px] text-white/60">
                 Pulso
               </p>
@@ -167,24 +169,27 @@ export default function DashboardPage() {
               <p className="text-[9px] text-white/55">
                 BPM
               </p>
+
             </div>
 
             {/* BATERÍA */}
 
             <div className="rounded-2xl bg-white/10 p-3">
+
               <p className="text-[10px] text-white/60">
                 Batería
               </p>
 
               <p className="mt-1 text-[20px] font-bold">
                 {bleData.connected
-                  ? `${batteryPercent}%`
+                  ? batteryPercent + "%"
                   : "--"}
               </p>
 
               <p className="text-[9px] text-white/55">
                 dispositivo
               </p>
+
             </div>
 
             {/* ESTADO */}
@@ -198,11 +203,11 @@ export default function DashboardPage() {
               <div className="mt-2 flex items-center gap-1.5">
 
                 <span
-                  className={`h-2.5 w-2.5 rounded-full ${
+                  className={
                     bleData.connected
-                      ? "bg-green-300"
-                      : "bg-white/30"
-                  }`}
+                      ? "h-2.5 w-2.5 rounded-full bg-green-300"
+                      : "h-2.5 w-2.5 rounded-full bg-white/30"
+                  }
                 />
 
                 <span className="text-[11px] font-semibold">
@@ -217,13 +222,13 @@ export default function DashboardPage() {
 
           </div>
 
-          {/* CHEQUEO FACIAL */}
+          {/* =================================================
+              CHEQUEO FACIAL
+          ================================================= */}
 
           <button
             type="button"
-            onClick={() =>
-              router.push("/chequeo")
-            }
+            onClick={() => router.push("/chequeo")}
             className="mt-4 flex w-full items-center justify-center gap-2 rounded-[15px] bg-white py-3.5 text-[14px] font-bold text-brand-600 transition-all hover:bg-white/90 active:scale-[0.98]"
           >
             <IconCamera size={19} />
@@ -232,45 +237,6 @@ export default function DashboardPage() {
 
         </div>
       </div>
-
-      {/* =====================================================
-          RACHA
-      ===================================================== */}
-
-      {streak && streak.count > 0 && (
-        <div className="flex items-center justify-between rounded-[18px] border border-white/70 bg-white/55 px-4 py-3 backdrop-blur-xl">
-
-          <div className="flex items-center gap-2.5">
-
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-500/10">
-              <IconZap size={19} />
-            </div>
-
-            <div>
-
-              <p className="text-[13px] font-bold text-ink-900">
-                Racha de monitoreo
-              </p>
-
-              <p className="text-[11px] text-ink-600">
-                Seguimiento diario
-              </p>
-
-            </div>
-
-          </div>
-
-          <span className="text-[18px] font-bold text-brand-600">
-            {streak.count}
-            <span className="ml-1 text-[11px]">
-              {streak.count === 1
-                ? "día"
-                : "días"}
-            </span>
-          </span>
-
-        </div>
-      )}
 
       {/* =====================================================
           CONECTAR RELOJ
@@ -282,9 +248,11 @@ export default function DashboardPage() {
           className="w-full flex items-center justify-center gap-2.5 py-4 rounded-[18px] bg-brand-600 text-white shadow-[0_8px_20px_rgba(79,70,229,0.25)] active:scale-[0.98] transition-transform"
         >
           <IconBluetooth size={22} />
+
           <span className="text-base font-bold">
             Conectar reloj
           </span>
+
         </button>
       )}
 
@@ -301,18 +269,16 @@ export default function DashboardPage() {
       )}
 
       {/* =====================================================
-          ESTADO
+          ESTADO DEL MONITOREO
       ===================================================== */}
 
       {bleData.connected &&
         bleData.bpm > 0 && (
-          <HeroStatus
-            state={status}
-          />
+          <HeroStatus state={status} />
         )}
 
       {/* =====================================================
-          ESPERANDO PULSO
+          ESPERANDO DATOS
       ===================================================== */}
 
       {bleData.connected &&
@@ -328,7 +294,7 @@ export default function DashboardPage() {
         )}
 
       {/* =====================================================
-          PULSO
+          PULSE CARD
       ===================================================== */}
 
       <PulseCard
@@ -337,7 +303,7 @@ export default function DashboardPage() {
       />
 
       {/* =====================================================
-          DISPOSITIVO
+          DEVICE CARD
       ===================================================== */}
 
       <DeviceCard
@@ -347,9 +313,7 @@ export default function DashboardPage() {
             ? "Señal estable"
             : "Sin conectar"
         }
-        batteryPercent={
-          batteryPercent
-        }
+        batteryPercent={batteryPercent}
       />
 
       {/* =====================================================
@@ -358,12 +322,8 @@ export default function DashboardPage() {
 
       <AlertModal
         open={alertOpen}
-        remainingSeconds={
-          countdownSeconds
-        }
-        totalSeconds={
-          settings.countdownSeconds
-        }
+        remainingSeconds={countdownSeconds}
+        totalSeconds={settings.countdownSeconds}
         contacts={contacts.map(
           (c) => c.name
         )}
