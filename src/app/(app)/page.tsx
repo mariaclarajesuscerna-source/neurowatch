@@ -1,8 +1,10 @@
-import { useLanguage } from "@/components/LanguageProvider";
+
 "use client";
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+
+import { useLanguage } from "@/components/LanguageProvider";
 
 import {
   IconSignal,
