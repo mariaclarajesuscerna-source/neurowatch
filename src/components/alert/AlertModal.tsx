@@ -76,15 +76,17 @@ export default function AlertModal({
             </div>
 
             {/* Cancel button */}
-            <button
-              onClick={onCancel}
-              className="w-full h-16 flex items-center justify-center gap-2.5 rounded-2xl bg-brand-600 text-white shadow-[0_8px_20px_rgba(79,70,229,0.25)] active:scale-[0.98] transition-transform"
-            >
-              <IconCheck size={24} />
-              <span className="text-[19px] font-bold">
-                Estoy bien &middot; Cancelar
-              </span>
-            </button>
+          <button
+  type="button"
+  onClick={onCancel}
+  className="w-full h-16 flex items-center justify-center gap-2.5 rounded-2xl bg-[#087f83] text-white shadow-[0_8px_20px_rgba(8,127,131,0.25)] active:scale-[0.98] transition-transform"
+>
+  <IconCheck size={24} />
+
+  <span className="text-[19px] font-bold">
+   Estoy bien &middot; Cancelar
+  </span>
+</button>
 
             {/* Caption */}
             <p className="text-xs font-normal text-ink-400 text-center max-w-[280px]">
