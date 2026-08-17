@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 import {
   IconHouse,
   IconScanFace,
@@ -11,31 +12,43 @@ import {
   IconActivity,
 } from "./icons";
 
+import { useLanguage } from "@/components/LanguageProvider";
+
 const tabs = [
   {
     href: "/",
-    label: "Inicio",
+    es: "Inicio",
+    qu: "Qallariy",
     Icon: IconHouse,
+    emoji: "🏠",
   },
   {
     href: "/chequeo",
-    label: "Chequeo",
+    es: "Chequeo",
+    qu: "Qhawariy",
     Icon: IconScanFace,
+    emoji: "🧠",
   },
   {
     href: "/historial",
-    label: "Historial",
+    es: "Historial",
+    qu: "Ñawpaq qhawariykuna",
     Icon: IconTrendingUp,
+    emoji: "📊",
   },
   {
     href: "/contactos",
-    label: "Contactos",
+    es: "Contactos",
+    qu: "Tinkiqkuna",
     Icon: IconUsers,
+    emoji: "👥",
   },
   {
     href: "/ajustes",
-    label: "Ajustes",
+    es: "Ajustes",
+    qu: "Rurayninkuna",
     Icon: IconSettings,
+    emoji: "⚙️",
   },
 ] as const;
 
@@ -47,6 +60,7 @@ const dashboardRoutes = [
 
 export default function TabBar() {
   const pathname = usePathname();
+  const { language } = useLanguage();
 
   const isHomeActive =
     dashboardRoutes.includes(pathname);
@@ -64,87 +78,138 @@ export default function TabBar() {
             flex
             max-w-xl
             items-center
-            justify-between
-            gap-1
-            rounded-[28px]
+            gap-1.5
+            rounded-[30px]
             border
-            border-white/80
-            bg-white/85
+            border-[#e4c99e]
+            bg-[#fff9ed]/95
             px-2
             py-2
-            shadow-[0_12px_40px_rgba(31,41,55,0.14)]
+            shadow-[0_14px_40px_rgba(72,48,25,0.16)]
             backdrop-blur-2xl
           "
         >
-          {tabs.map(({ href, label, Icon }) => {
-            const active =
-              href === "/"
-                ? isHomeActive
-                : pathname.startsWith(href);
+          {tabs.map(
+            ({
+              href,
+              es,
+              qu,
+              Icon,
+              emoji,
+            }) => {
+              const active =
+                href === "/"
+                  ? isHomeActive
+                  : pathname.startsWith(href);
 
-            return (
-              <Link
-                key={href}
-                href={href}
-                aria-current={active ? "page" : undefined}
-                className={`
-                  group
-                  flex
-                  min-w-0
-                  flex-1
-                  flex-col
-                  items-center
-                  justify-center
-                  rounded-[21px]
-                  px-1
-                  py-2
-                  transition-all
-                  duration-200
-                  active:scale-95
-                  ${
+              const label =
+                language === "qu"
+                  ? qu
+                  : es;
+
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  aria-current={
                     active
-                      ? "bg-brand-600 text-white shadow-[0_6px_18px_rgba(79,70,229,0.28)]"
-                      : "text-ink-500 hover:bg-brand-50 hover:text-brand-600"
+                      ? "page"
+                      : undefined
                   }
-                `}
-              >
-                <div
                   className={`
+                    group
+                    relative
                     flex
-                    h-9
-                    w-9
+                    min-w-0
+                    flex-1
+                    flex-col
                     items-center
                     justify-center
-                    rounded-full
+                    rounded-[22px]
+                    px-1
+                    py-2.5
                     transition-all
+                    duration-200
+                    active:scale-95
                     ${
                       active
-                        ? "bg-white/15"
-                        : "bg-transparent group-hover:bg-brand-100"
+                        ? "bg-[#087f83] text-white shadow-[0_7px_20px_rgba(8,127,131,0.28)]"
+                        : "text-[#6b5842] hover:bg-[#f1e5ce]"
                     }
                   `}
                 >
-                  <Icon size={21} />
-                </div>
+                  {/* MINI DECORACIÓN */}
 
-                <span
-                  className={`
-                    mt-0.5
-                    truncate
-                    text-[10px]
-                    leading-tight
-                    ${
-                      active
-                        ? "font-bold text-white"
-                        : "font-semibold text-ink-500"
-                    }
-                  `}
-                >
-                  {label}
-                </span>
-              </Link>
-            );
-          })}
+                  {active && (
+                    <span
+                      className="
+                        absolute
+                        right-2
+                        top-2
+                        h-1.5
+                        w-1.5
+                        rounded-full
+                        bg-[#e8a33d]
+                      "
+                    />
+                  )}
+
+                  <div
+                    className={`
+                      flex
+                      h-10
+                      w-10
+                      items-center
+                      justify-center
+                      rounded-[15px]
+                      transition-all
+                      ${
+                        active
+                          ? "bg-white/15"
+                          : "bg-[#f7efe0] group-hover:bg-[#e8ddc5]"
+                      }
+                    `}
+                  >
+                    <Icon
+                      size={21}
+                    />
+                  </div>
+
+                  <span
+                    className={`
+                      mt-1
+                      max-w-full
+                      truncate
+                      px-0.5
+                      text-[9px]
+                      leading-tight
+                      ${
+                        active
+                          ? "font-black text-white"
+                          : "font-bold text-[#6b5842]"
+                      }
+                    `}
+                  >
+                    {label}
+                  </span>
+
+                  <span
+                    className={`
+                      mt-0.5
+                      text-[9px]
+                      ${
+                        active
+                          ? "opacity-100"
+                          : "opacity-70"
+                      }
+                    `}
+                  >
+                    {emoji}
+                  </span>
+                </Link>
+              );
+            }
+          )}
         </div>
       </nav>
 
@@ -163,9 +228,9 @@ export default function TabBar() {
           w-64
           flex-col
           border-r
-          border-white/70
-          bg-white/75
-          shadow-[8px_0_35px_rgba(31,41,55,0.06)]
+          border-[#dfc49a]
+          bg-[#fff9ed]/95
+          shadow-[8px_0_35px_rgba(72,48,25,0.10)]
           backdrop-blur-2xl
           md:flex
         "
@@ -175,42 +240,65 @@ export default function TabBar() {
         <div className="px-5 pb-5 pt-6">
           <div
             className="
-              flex
-              items-center
-              gap-3
-              rounded-[22px]
+              overflow-hidden
+              rounded-[24px]
               border
-              border-white
-              bg-white/70
-              p-3
-              shadow-[0_6px_25px_rgba(31,41,55,0.06)]
+              border-[#dfc49a]
+              bg-[#fff4df]
+              shadow-[0_8px_25px_rgba(72,48,25,0.08)]
             "
           >
+            {/* PATRÓN */}
+
             <div
-              className="
-                flex
-                h-11
-                w-11
-                shrink-0
-                items-center
-                justify-center
-                rounded-[15px]
-                bg-brand-600
-                text-white
-                shadow-[0_6px_16px_rgba(79,70,229,0.28)]
-              "
-            >
-              <IconActivity size={22} />
-            </div>
+              className="h-2"
+              style={{
+                backgroundImage:
+                  `
+                  repeating-linear-gradient(
+                    45deg,
+                    #c94a20 0px,
+                    #c94a20 8px,
+                    #e8a33d 8px,
+                    #e8a33d 16px,
+                    #2f8f5b 16px,
+                    #2f8f5b 24px,
+                    #087f83 24px,
+                    #087f83 32px
+                  )
+                `,
+              }}
+            />
 
-            <div className="min-w-0">
-              <span className="block text-[20px] font-bold leading-tight text-ink-900">
-                Neurowatch
-              </span>
+            <div className="flex items-center gap-3 p-4">
+              <div
+                className="
+                  flex
+                  h-12
+                  w-12
+                  shrink-0
+                  items-center
+                  justify-center
+                  rounded-[16px]
+                  bg-[#087f83]
+                  text-white
+                  shadow-[0_7px_18px_rgba(8,127,131,0.25)]
+                "
+              >
+                <IconActivity
+                  size={23}
+                />
+              </div>
 
-              <span className="block text-[11px] font-medium text-ink-500">
-                Monitoreo en vivo
-              </span>
+              <div className="min-w-0">
+                <span className="block text-[20px] font-black leading-tight text-[#075d63]">
+                  NeuroWatch
+                </span>
+
+                <span className="block text-[10px] font-bold uppercase tracking-[0.12em] text-[#c1440c]">
+                  Huaraz · Áncash
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -218,75 +306,131 @@ export default function TabBar() {
         {/* BOTONES */}
 
         <nav className="flex flex-1 flex-col gap-2 px-4">
-          {tabs.map(({ href, label, Icon }) => {
-            const active =
-              href === "/"
-                ? isHomeActive
-                : pathname.startsWith(href);
+          {tabs.map(
+            ({
+              href,
+              es,
+              qu,
+              Icon,
+              emoji,
+            }) => {
+              const active =
+                href === "/"
+                  ? isHomeActive
+                  : pathname.startsWith(
+                      href
+                    );
 
-            return (
-              <Link
-                key={href}
-                href={href}
-                aria-current={active ? "page" : undefined}
-                className={`
-                  group
-                  flex
-                  items-center
-                  gap-3
-                  rounded-[18px]
-                  border
-                  px-4
-                  py-3.5
-                  transition-all
-                  duration-200
-                  active:scale-[0.98]
-                  ${
+              const label =
+                language === "qu"
+                  ? qu
+                  : es;
+
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  aria-current={
                     active
-                      ? "border-brand-200 bg-brand-600 text-white shadow-[0_7px_20px_rgba(79,70,229,0.22)]"
-                      : "border-transparent text-ink-600 hover:border-brand-100 hover:bg-brand-50 hover:text-brand-600"
+                      ? "page"
+                      : undefined
                   }
-                `}
-              >
-                <div
                   className={`
+                    group
+                    relative
                     flex
-                    h-10
-                    w-10
-                    shrink-0
                     items-center
-                    justify-center
-                    rounded-[13px]
+                    gap-3
+                    overflow-hidden
+                    rounded-[20px]
+                    border
+                    px-3
+                    py-3
                     transition-all
+                    duration-200
+                    active:scale-[0.98]
                     ${
                       active
-                        ? "bg-white/15"
-                        : "bg-ink-900/[0.04] group-hover:bg-brand-100"
+                        ? "border-[#087f83] bg-[#087f83] text-white shadow-[0_8px_22px_rgba(8,127,131,0.20)]"
+                        : "border-transparent bg-transparent text-[#6b5842] hover:border-[#e4c99e] hover:bg-[#f7efe0]"
                     }
                   `}
                 >
-                  <Icon size={21} />
-                </div>
+                  {/* DETALLE TEXTIL */}
 
-                <span
-                  className={`
-                    text-[14px]
-                    ${
-                      active
-                        ? "font-bold text-white"
-                        : "font-semibold"
-                    }
-                  `}
-                >
-                  {label}
-                </span>
+                  <span
+                    className={`
+                      absolute
+                      bottom-0
+                      left-0
+                      top-0
+                      w-1
+                      ${
+                        active
+                          ? "bg-[#e8a33d]"
+                          : "bg-transparent"
+                      }
+                    `}
+                  />
 
-                {active && (
-                  <span className="ml-auto h-2 w-2 rounded-full bg-white" />
-                )}
-              </Link>
-            );
-          })}
+                  <div
+                    className={`
+                      flex
+                      h-11
+                      w-11
+                      shrink-0
+                      items-center
+                      justify-center
+                      rounded-[15px]
+                      ${
+                        active
+                          ? "bg-white/15"
+                          : "bg-[#f7efe0]"
+                      }
+                    `}
+                  >
+                    <Icon
+                      size={22}
+                    />
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <span
+                      className={`
+                        block
+                        truncate
+                        text-[14px]
+                        ${
+                          active
+                            ? "font-black text-white"
+                            : "font-bold text-[#3b2a1a]"
+                        }
+                      `}
+                    >
+                      {label}
+                    </span>
+
+                    <span
+                      className={`
+                        text-[10px]
+                        ${
+                          active
+                            ? "text-white/70"
+                            : "text-[#9a8065]"
+                        }
+                      `}
+                    >
+                      {emoji}
+                    </span>
+                  </div>
+
+                  {active && (
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#e8a33d] shadow-[0_0_10px_rgba(232,163,61,0.8)]" />
+                  )}
+                </Link>
+              );
+            }
+          )}
         </nav>
 
         {/* AVISO */}
@@ -294,18 +438,35 @@ export default function TabBar() {
         <div className="px-5 pb-6">
           <div
             className="
-              rounded-[18px]
+              overflow-hidden
+              rounded-[20px]
               border
-              border-white
-              bg-white/60
-              p-3
+              border-[#dfc49a]
+              bg-[#f7efe0]
             "
           >
-            <p className="text-[10px] leading-relaxed text-ink-500">
-              Neurowatch es una herramienta asistiva.
-              No reemplaza atención médica ni constituye
-              diagnóstico. Ante una emergencia, llama a
-              los servicios de urgencia.
+            <div
+              className="h-1.5"
+              style={{
+                backgroundImage:
+                  `
+                  repeating-linear-gradient(
+                    45deg,
+                    #c94a20 0px,
+                    #c94a20 7px,
+                    #e8a33d 7px,
+                    #e8a33d 14px,
+                    #087f83 14px,
+                    #087f83 21px
+                  )
+                `,
+              }}
+            />
+
+            <p className="p-3 text-[9px] font-medium leading-relaxed text-[#78634c]">
+              {language === "qu"
+                ? "NeuroWatch yanapakuymi. Mana hampiqpa yanapayninta rantinchu."
+                : "NeuroWatch es una herramienta asistiva. No reemplaza la atención médica."}
             </p>
           </div>
         </div>
