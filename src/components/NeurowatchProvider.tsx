@@ -15,7 +15,10 @@ import { useCountdown } from "@/hooks/useCountdown";
 import { detectAnomaly, type QualitativeStatus } from "@/lib/detection";
 import { sendTelegramAlert } from "@/lib/telegram";
 
-import {
+import { 
+  getFacialHistory,
+  addFacialHistory,
+  type StoredFacialCheck,
   getPatient,
   setPatient,
   getContacts,
@@ -84,12 +87,7 @@ interface NeurowatchContextType {
 
   disconnectedSince: number | null;
 
-  facialHistory: {
-    date: string;
-    index: number;
-  }[];
-
-  facialChecks: StoredFacialCheck[];
+  facialHistory: {date: string; index: number; }[];
 
   addFacialCheck: (
     index: number,
@@ -499,39 +497,27 @@ export function NeurowatchProvider({
   /*
    * Historial facial persistente
    */
-  const addFacialCheck =
-    useCallback(
-      (
-        index: number,
-        image?: string
-      ) => {
-        const today =
-          new Date().toLocaleDateString(
-            "es-ES",
-            {
-              day: "numeric",
-              month: "short",
-            }
-          );
+  const addFacialCheck = useCallback(
+  (index: number, image: string) => {
+    const date = new Date().toLocaleDateString("es-ES", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
 
-        /*
-         * Si tenemos imagen,
-         * la guardamos permanentemente.
-         */
-        if (image) {
-          const saved =
-            persistFacialCheck(
-              image,
-              index
-            );
+    const check: StoredFacialCheck = {
+      id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+      date,
+      index,
+      photo: image,
+    };
 
-          setFacialChecks(
-            (prev) => [
-              saved,
-              ...prev,
-            ]
-          );
-
+    addFacialHistory(check);
+    setFacialHistory((prev) => [check, ...prev]);
+    setStreak(updateStreak());
+  },
+  []
+);
           setFacialHistory(
             (prev) => [
               {
