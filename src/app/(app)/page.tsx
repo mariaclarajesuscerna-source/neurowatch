@@ -551,71 +551,76 @@ const text = pageText[language];
 
           <aside className="space-y-5">
 
-            {/* HERO HUARAZ */}
+           {/* HERO HUARAZ */}
 
-            <section className="relative overflow-hidden rounded-[30px] border border-[#dfbf8e] bg-[#fff7e8] shadow-[0_16px_40px_rgba(72,48,25,0.12)]">
+<section className="relative overflow-hidden rounded-[30px] border border-[#dfbf8e] bg-[#fff7e8] shadow-[0_16px_40px_rgba(72,48,25,0.12)]">
 
-              <div
-                className="h-7"
-                style={{ backgroundImage: textilePattern }}
-              />
+  {/* Patrón textil */}
 
-           <div className="relative p-6">
+  <div
+    className="h-7"
+    style={{ backgroundImage: textilePattern }}
+  />
 
-                <div className="absolute right-4 top-5 text-5xl opacity-80">
-                  ☀️
-                </div>
+  <div className="p-6">
 
-                <p className="max-w-[260px] text-xs font-black uppercase tracking-[0.18em] text-[#c1440c]">
-                  Tecnología que cuida tu vida
-                </p>
+    <div className="flex justify-end">
+      <span className="text-5xl opacity-80">
+        ☀️
+      </span>
+    </div>
 
-                <h2 className="mt-3 max-w-[300px] font-display text-4xl font-black uppercase leading-[0.95] text-[#075d63]">
-                  Tu bienestar,
-                  <br />
-                  nuestra misión.
-                </h2>
+    <p className="mt-1 max-w-[260px] text-xs font-black uppercase tracking-[0.18em] text-[#c1440c]">
+      {text.technology}
+    </p>
 
-                <p className="mt-4 max-w-[300px] text-sm leading-relaxed text-[#6b5842]">
-                  Monitorea tus signos vitales en tiempo real con tecnología
-                  creada pensando en nuestra gente.
-                </p>
+    <h2 className="mt-3 max-w-[300px] font-display text-4xl font-black uppercase leading-[0.95] text-[#075d63]">
+      {text.wellbeing}
+      <br />
+      {text.mission}
+    </h2>
 
-              {/* FOTO REAL: CORDILLERA BLANCA */}
+    <p className="mt-4 max-w-[300px] text-sm leading-relaxed text-[#6b5842]">
+      {text.monitor}
+    </p>
 
-<div className="mt-8">
+    {/* FOTO REAL: CORDILLERA BLANCA */}
 
-  <div className="relative h-48 overflow-hidden rounded-3xl shadow-lg">
+    <div className="mt-8">
 
-    <img
-      src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Huascaran_Huandoy_Chopicalqui_seen_from_Huaraz.JPG"
-      alt="Cordillera Blanca vista desde Huaraz"
-      className="h-full w-full object-cover"
-    />
+      <div className="relative h-48 overflow-hidden rounded-3xl shadow-lg">
 
-    <div className="absolute inset-0 bg-gradient-to-t from-[#173c3a]/70 via-transparent to-transparent" />
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Huascaran_Huandoy_Chopicalqui_seen_from_Huaraz.JPG"
+          alt="Cordillera Blanca vista desde Huaraz"
+          className="h-full w-full object-cover"
+        />
 
-    {/* TEXTO SOBRE LA IMAGEN */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#173c3a]/70 via-transparent to-transparent" />
 
-    <div className="absolute bottom-3 left-4 right-4">
+        {/* TEXTO SOBRE LA IMAGEN */}
 
-      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-white">
-        Huaraz · Áncash
-      </p>
+        <div className="absolute bottom-3 left-4 right-4">
 
-      <p className="mt-1 text-lg font-black text-white">
-        {text.mountain}
-      </p>
+          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-white">
+            Huaraz · Áncash
+          </p>
+
+          <p className="mt-1 text-lg font-black text-white">
+            {text.mountain}
+          </p>
+
+        </div>
+
+      </div>
 
     </div>
 
   </div>
 
-</div>
+</section>
 
-            </section>
-
-            {/* POR QUÉ NEUROWATCH */}
+{/* POR QUÉ NEUROWATCH */}
 
             <section className="overflow-hidden rounded-[27px] border border-[#dfbf8e] bg-[#fff9ed] shadow-[0_12px_30px_rgba(72,48,25,0.09)]">
 
