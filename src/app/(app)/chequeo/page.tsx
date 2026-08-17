@@ -13,11 +13,23 @@ import GlassCard from "@/components/ui/GlassCard";
 import { useNeurowatch } from "@/components/NeurowatchProvider";
 import { evaluateFacialSymmetry } from "@/lib/detection";
 
-type ChequeoState = "idle" | "preview" | "analyzing" | "result";
+type ChequeoState =
+  | "idle"
+  | "preview"
+  | "analyzing"
+  | "result";
 
-function SymmetryBar({ value }: { value: number }) {
+function SymmetryBar({
+  value,
+}: {
+  value: number;
+}) {
   const color =
-    value > 85 ? "bg-ok" : value >= 70 ? "bg-warn" : "bg-alert";
+    value > 85
+      ? "bg-ok"
+      : value >= 70
+        ? "bg-warn"
+        : "bg-alert";
 
   const label =
     value > 85
@@ -41,7 +53,12 @@ function SymmetryBar({ value }: { value: number }) {
       <div className="h-3 w-full overflow-hidden rounded-full bg-ink-900/10">
         <div
           className={`h-full rounded-full transition-all duration-700 ${color}`}
-          style={{ width: `${value}%` }}
+          style={{
+            width: `${Math.min(
+              100,
+              Math.max(0, value)
+            )}%`,
+          }}
         />
       </div>
 
@@ -63,27 +80,65 @@ export default function ChequeoPage() {
     streak,
   } = useNeurowatch();
 
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const streamRef = useRef<MediaStream | null>(null);
+  const videoRef =
+    useRef<HTMLVideoElement>(null);
 
-  const [state, setState] = useState<ChequeoState>("idle");
-  const [cameraReady, setCameraReady] = useState(false);
-  const [photo, setPhoto] = useState<string | null>(lastCheckPhoto);
-  const [index, setIndex] = useState<number | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [countdown, setCountdown] = useState(0);
+  const streamRef =
+    useRef<MediaStream | null>(null);
+
+  const [state, setState] =
+    useState<ChequeoState>("idle");
+
+  const [cameraReady, setCameraReady] =
+    useState(false);
+
+  const [photo, setPhoto] =
+    useState<string | null>(
+      lastCheckPhoto
+    );
+
+  const [index, setIndex] =
+    useState<number | null>(null);
+
+  const [error, setError] =
+    useState<string | null>(null);
+
+  const [countdown, setCountdown] =
+    useState(0);
 
   /*
+   * ======================================================
    * DETENER CÁMARA
+   * ======================================================
    */
+
   const stopCamera = useCallback(() => {
-    streamRef.current?.getTracks().forEach((track) => {
-      track.stop();
-    });
+    const stream =
+      streamRef.current;
+
+    if (stream) {
+      stream
+        .getTracks()
+        .forEach((track) => {
+          track.stop();
+        });
+    }
 
     streamRef.current = null;
+
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.srcObject = null;
+    }
+
     setCameraReady(false);
   }, []);
+
+  /*
+   * ======================================================
+   * LIMPIAR AL SALIR
+   * ======================================================
+   */
 
   useEffect(() => {
     return () => {
@@ -92,8 +147,11 @@ export default function ChequeoPage() {
   }, [stopCamera]);
 
   /*
+   * ======================================================
    * CONECTAR STREAM AL VIDEO
+   * ======================================================
    */
+
   useEffect(() => {
     if (
       !cameraReady ||
@@ -103,208 +161,355 @@ export default function ChequeoPage() {
       return;
     }
 
-    videoRef.current.srcObject = streamRef.current;
+    const video =
+      videoRef.current;
 
-    videoRef.current.play().catch(() => {});
+    video.srcObject =
+      streamRef.current;
+
+    video.muted = true;
+    video.playsInline = true;
+
+    video
+      .play()
+      .catch(() => {});
   }, [cameraReady]);
 
   /*
+   * ======================================================
    * ABRIR CÁMARA
    *
    * IMPORTANTE:
-   * La cámara NO se invierte.
+   *
+   * NO usamos:
+   * scaleX(-1)
+   * scale(-1, 1)
+   * rotate()
+   * translate()
+   *
+   * La cámara se muestra en orientación REAL.
+   * ======================================================
    */
-  const startCamera = async () => {
-    try {
-      setError(null);
 
-      stopCamera();
+  const startCamera =
+    async () => {
+      try {
+        setError(null);
 
-      if (!navigator.mediaDevices?.getUserMedia) {
-        throw new Error(
-          "Este navegador no permite usar la camara."
+        stopCamera();
+
+        if (
+          !navigator.mediaDevices ||
+          !navigator.mediaDevices.getUserMedia
+        ) {
+          throw new Error(
+            "Este navegador no permite usar la cámara."
+          );
+        }
+
+        const stream =
+          await navigator.mediaDevices.getUserMedia(
+            {
+              video: {
+                facingMode: "user",
+
+                width: {
+                  ideal: 720,
+                },
+
+                height: {
+                  ideal: 960,
+                },
+              },
+
+              audio: false,
+            }
+          );
+
+        streamRef.current =
+          stream;
+
+        setPhoto(null);
+        setIndex(null);
+
+        setState("preview");
+
+        setCameraReady(true);
+      } catch (cause) {
+        const message =
+          cause instanceof Error
+            ? cause.message
+            : "No se pudo abrir la cámara.";
+
+        setError(
+          `No se pudo abrir la cámara: ${message}. Verifica los permisos de cámara y utiliza HTTPS o localhost.`
         );
+
+        setState("idle");
       }
-
-      const stream =
-        await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: {
-              ideal: "user",
-            },
-            width: {
-              ideal: 720,
-            },
-            height: {
-              ideal: 960,
-            },
-          },
-          audio: false,
-        });
-
-      streamRef.current = stream;
-
-      setState("preview");
-      setCameraReady(true);
-    } catch (cause) {
-      const message =
-        cause instanceof Error
-          ? cause.message
-          : "No se pudo abrir la camara.";
-
-      setError(
-        `No se pudo abrir la camara: ${message}. Usa HTTPS o localhost y permite el acceso.`
-      );
-    }
-  };
+    };
 
   /*
+   * ======================================================
    * CAPTURAR FOTO
    *
    * IMPORTANTE:
-   * NO usamos efecto espejo.
    *
-   * NO usamos:
-   * translate()
-   * scale(-1, 1)
-   * rotate()
+   * drawImage() se usa directamente.
+   *
+   * NO hacemos:
+   *
+   * context.scale(-1, 1)
+   *
+   * Por eso la foto NO se voltea.
+   * ======================================================
    */
-  const capture = async () => {
-    const video = videoRef.current;
 
-    if (
-      !video ||
-      !video.videoWidth ||
-      !video.videoHeight
-    ) {
-      return;
-    }
+  const capture =
+    async () => {
+      const video =
+        videoRef.current;
 
-    const canvas = document.createElement("canvas");
+      if (
+        !video ||
+        !video.videoWidth ||
+        !video.videoHeight
+      ) {
+        setError(
+          "La cámara todavía no está lista. Espera un momento e inténtalo nuevamente."
+        );
 
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+        return;
+      }
 
-    const context = canvas.getContext("2d");
+      /*
+       * Crear canvas con las dimensiones
+       * REALES de la cámara.
+       */
 
-    if (!context) {
-      return;
-    }
+      const canvas =
+        document.createElement(
+          "canvas"
+        );
 
-    /*
-     * Dibujar el video sin invertirlo.
-     */
-    context.drawImage(
-      video,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
+      canvas.width =
+        video.videoWidth;
 
-    const image = canvas.toDataURL(
-      "image/jpeg",
-      0.9
-    );
+      canvas.height =
+        video.videoHeight;
 
-    /*
-     * Detener cámara después de tomar la foto.
-     */
-    stopCamera();
+      const context =
+        canvas.getContext("2d");
 
-    /*
-     * Mostrar la foto mientras se analiza.
-     */
-    setPhoto(image);
-    setState("analyzing");
+      if (!context) {
+        setError(
+          "No se pudo procesar la fotografía."
+        );
 
-    const startedAt = Date.now();
+        return;
+      }
 
-    setCountdown(3);
+      /*
+       * IMPORTANTE:
+       *
+       * No modificar la transformación
+       * del canvas.
+       *
+       * Esto conserva la orientación real.
+       */
 
-    const tick = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(tick);
-          return 0;
+      context.setTransform(
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      );
+
+      context.drawImage(
+        video,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+
+      const image =
+        canvas.toDataURL(
+          "image/jpeg",
+          0.92
+        );
+
+      /*
+       * Detener cámara.
+       */
+
+      stopCamera();
+
+      /*
+       * Mostrar foto.
+       */
+
+      setPhoto(image);
+
+      setState("analyzing");
+
+      /*
+       * Animación de análisis.
+       */
+
+      const startedAt =
+        Date.now();
+
+      setCountdown(3);
+
+      const tick =
+        window.setInterval(() => {
+          setCountdown(
+            (previous) => {
+              if (
+                previous <= 1
+              ) {
+                window.clearInterval(
+                  tick
+                );
+
+                return 0;
+              }
+
+              return previous - 1;
+            }
+          );
+        }, 1000);
+
+      /*
+       * ANALIZAR ROSTRO
+       */
+
+      let symmetryIndex = 95;
+
+      try {
+        symmetryIndex =
+          await evaluateFacialSymmetry(
+            baselineImage,
+            image
+          );
+      } catch {
+        /*
+         * Si el análisis no está disponible,
+         * mantenemos el comportamiento actual
+         * de tu prototipo.
+         */
+
+        symmetryIndex = 95;
+      }
+
+      /*
+       * Mantener análisis durante
+       * aproximadamente 3 segundos.
+       */
+
+      const elapsed =
+        Date.now() -
+        startedAt;
+
+      const remaining =
+        Math.max(
+          0,
+          3000 - elapsed
+        );
+
+      await new Promise<void>(
+        (resolve) => {
+          window.setTimeout(
+            resolve,
+            remaining
+          );
         }
+      );
 
-        return prev - 1;
-      });
-    }, 1000);
+      window.clearInterval(
+        tick
+      );
 
-    /*
-     * ANALIZAR SIMETRÍA
-     */
-    let symmetryIndex = 95;
+      setCountdown(0);
 
-    try {
-      symmetryIndex = await evaluateFacialSymmetry(
-        baselineImage,
+      setIndex(
+        symmetryIndex
+      );
+
+      setState("result");
+
+      /*
+       * ==================================================
+       * PRIMERA FOTO
+       * = LÍNEA BASE
+       * ==================================================
+       */
+
+      if (!baselineImage) {
+        saveBaselineImage(
+          image
+        );
+      }
+
+      /*
+       * ==================================================
+       * GUARDAR ÚLTIMA FOTO
+       * ==================================================
+       */
+
+      saveLastCheckPhoto(
         image
       );
-    } catch {
-      symmetryIndex = 95;
-    }
 
-    /*
-     * Mantener la animación aproximadamente 3 segundos.
-     */
-    const elapsed = Date.now() - startedAt;
+      /*
+       * ==================================================
+       * GUARDAR CHEQUEO
+       * ==================================================
+       */
 
-    const remaining = Math.max(
-      0,
-      3000 - elapsed
-    );
-
-    await new Promise<void>((resolve) => {
-      setTimeout(resolve, remaining);
-    });
-
-    clearInterval(tick);
-
-    setCountdown(0);
-    setIndex(symmetryIndex);
-    setState("result");
-
-    /*
-     * PRIMERA FOTO = LÍNEA BASE
-     */
-    if (!baselineImage) {
-      saveBaselineImage(image);
-    }
-
-    /*
-     * GUARDAR ÚLTIMA FOTO
-     */
-    saveLastCheckPhoto(image);
-
-    /*
-     * GUARDAR EN HISTORIAL
-     *
-     * Pasamos también la imagen.
-     */
-    addFacialCheck(
-      symmetryIndex,
-      image
-    );
-  };
+      addFacialCheck(
+        symmetryIndex,
+        image
+      );
+    };
 
   /*
+   * ======================================================
    * NUEVO CHEQUEO
+   * ======================================================
    */
-  const reset = () => {
-    setPhoto(null);
-    setIndex(null);
-    setState("idle");
-  };
 
-  const lastCheck = facialHistory[0];
+  const reset =
+    () => {
+      stopCamera();
+
+      setPhoto(null);
+      setIndex(null);
+      setCountdown(0);
+      setError(null);
+
+      setState("idle");
+    };
+
+  const lastCheck =
+    facialHistory[0];
+
+  /*
+   * ======================================================
+   * INTERFAZ
+   * ======================================================
+   */
 
   return (
     <div className="flex flex-col gap-4 px-5 pt-4 md:mx-auto md:max-w-lg">
 
-      {/* ENCABEZADO */}
+      {/* ==================================================
+          ENCABEZADO
+      ================================================== */}
+
       <div className="flex items-center gap-2">
         <div className="rounded-lg bg-brand-600 p-2 text-white">
           <IconActivity />
@@ -316,106 +521,172 @@ export default function ChequeoPage() {
           </h1>
 
           <p className="text-xs text-ink-600">
-            Evalua la simetria de tu rostro con la camara frontal
+            Evalúa la simetría de tu rostro con la cámara frontal
           </p>
         </div>
       </div>
 
       <GlassCard className="flex flex-col gap-3 p-4">
 
-        {/* VISOR */}
+        {/* ==================================================
+            VISOR
+        ================================================== */}
+
         <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-ink-900">
 
-          {/* CÁMARA */}
+          {/* ==============================
+              CÁMARA REAL
+          ============================== */}
+
           <video
             ref={videoRef}
             playsInline
             muted
             autoPlay
+            aria-label="Vista previa de la cámara"
             className={`h-full w-full object-cover ${
               state === "preview"
-                ? ""
+                ? "block"
                 : "hidden"
             }`}
             style={{
-              transform: "none",
+              /*
+               * NADA DE ESPEJO.
+               *
+               * Esto es lo importante.
+               */
+              transform:
+                "none",
             }}
           />
 
-          {/* FOTO CAPTURADA */}
-          {state === "result" && photo && (
-            <img
-              src={photo}
-              alt="Foto capturada"
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-          )}
+          {/* ==============================
+              FOTO CAPTURADA
+          ============================== */}
 
-          {/* ANALIZANDO */}
+          {state === "result" &&
+            photo && (
+              <img
+                src={photo}
+                alt="Foto capturada del chequeo facial"
+                className="absolute inset-0 h-full w-full object-cover"
+                style={{
+                  transform:
+                    "none",
+                }}
+              />
+            )}
+
+          {/* ==============================
+              ANÁLISIS
+          ============================== */}
+
           {state === "analyzing" && (
-            <div className="absolute inset-0 flex h-full flex-col items-center justify-center gap-4 text-white">
+            <>
+              {photo && (
+                <img
+                  src={photo}
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover"
+                  style={{
+                    transform:
+                      "none",
+                  }}
+                />
+              )}
 
-              <div className="h-12 w-12 animate-spin rounded-full border-[3px] border-white/30 border-t-white" />
+              <div className="absolute inset-0 flex h-full flex-col items-center justify-center gap-4 bg-black/35 text-white">
 
-              <div className="text-center">
-                <p className="text-[17px] font-semibold">
-                  Analizando...
-                </p>
+                <div className="h-12 w-12 animate-spin rounded-full border-[3px] border-white/30 border-t-white" />
 
-                <p className="text-[13px] text-white/60">
-                  {countdown > 0
-                    ? `${countdown}s`
-                    : "Procesando"}
-                </p>
+                <div className="text-center">
+                  <p className="text-[17px] font-semibold">
+                    Analizando...
+                  </p>
+
+                  <p className="text-[13px] text-white/70">
+                    {countdown > 0
+                      ? `${countdown}s`
+                      : "Procesando"}
+                  </p>
+                </div>
+
               </div>
-
-            </div>
+            </>
           )}
 
-          {/* ABRIR CÁMARA */}
-          {state !== "preview" &&
-            state !== "analyzing" &&
-            state !== "result" &&
+          {/* ==============================
+              BOTÓN INICIAL
+          ============================== */}
+
+          {state === "idle" &&
             !photo && (
               <button
-                onClick={startCamera}
+                onClick={
+                  startCamera
+                }
+                type="button"
                 className="absolute inset-0 flex h-full w-full flex-col items-center justify-center gap-3 text-white/80 transition-colors hover:text-white"
               >
                 <div className="flex h-[52px] w-[52px] items-center justify-center rounded-full bg-white/15">
-                  <IconCamera size={26} />
+                  <IconCamera
+                    size={26}
+                  />
                 </div>
 
                 <span className="text-[15px] font-medium">
-                  Pulsa para abrir camara
+                  Pulsa para abrir cámara
                 </span>
               </button>
             )}
 
-          {/* GUÍA FACIAL */}
+          {/* ==============================
+              GUÍA FACIAL
+          ============================== */}
+
           {state === "preview" && (
             <div className="pointer-events-none absolute inset-8 rounded-[45%] border-[3px] border-brand-500" />
           )}
 
         </div>
 
-        {/* ERROR */}
+        {/* ==================================================
+            MENSAJE
+        ================================================== */}
+
+        {state === "preview" && (
+          <div className="rounded-xl bg-brand-500/10 px-3 py-2 text-center">
+            <p className="text-xs font-medium text-ink-700">
+              Coloca tu rostro dentro de la guía y mantén la cabeza recta.
+            </p>
+          </div>
+        )}
+
+        {/* ==================================================
+            ERROR
+        ================================================== */}
+
         {error && (
           <p className="rounded-lg bg-alert-fill p-3 text-sm text-alert">
             {error}
           </p>
         )}
 
-        {/* RACHA */}
+        {/* ==================================================
+            RACHA
+        ================================================== */}
+
         <div className="flex items-center justify-between px-2 py-1">
 
           <div className="flex items-center gap-2">
             <IconZap size={20} />
 
             <span className="text-[14px] font-semibold text-ink-900">
-              Racha de {streak.count}{" "}
+              Racha de{" "}
+              {streak.count}{" "}
               {streak.count === 1
-                ? "dia"
-                : "dias"}
+                ? "día"
+                : "días"}
             </span>
           </div>
 
@@ -427,77 +698,112 @@ export default function ChequeoPage() {
 
         </div>
 
-        {/* BOTÓN ABRIR CÁMARA */}
+        {/* ==================================================
+            ABRIR CÁMARA
+        ================================================== */}
+
         {state === "idle" && (
           <button
-            onClick={startCamera}
-            className="flex h-12 items-center justify-center gap-2 rounded-xl bg-brand-600 font-semibold text-white"
+            onClick={
+              startCamera
+            }
+            type="button"
+            className="flex h-12 items-center justify-center gap-2 rounded-xl bg-brand-600 font-semibold text-white transition-all hover:opacity-90 active:scale-[0.98]"
           >
             <IconCamera />
-            Abrir camara
+            Abrir cámara
           </button>
         )}
 
-        {/* BOTÓN CAPTURAR */}
+        {/* ==================================================
+            CAPTURAR
+        ================================================== */}
+
         {state === "preview" && (
           <button
             onClick={capture}
-            className="flex h-12 items-center justify-center gap-2 rounded-xl bg-brand-600 font-semibold text-white"
+            type="button"
+            disabled={!cameraReady}
+            className="flex h-12 items-center justify-center gap-2 rounded-xl bg-brand-600 font-semibold text-white transition-all hover:opacity-90 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
           >
             <IconCamera />
             Capturar foto
           </button>
         )}
 
-        {/* RESULTADO */}
+        {/* ==================================================
+            RESULTADO
+        ================================================== */}
+
         {state === "result" &&
           index !== null && (
             <>
-              <SymmetryBar value={index} />
+              <SymmetryBar
+                value={index}
+              />
 
               <button
-                onClick={reset}
-                className="flex h-12 items-center justify-center gap-2 rounded-xl border-[1.5px] border-brand-500 bg-white/80 font-semibold text-brand-600"
+                onClick={
+                  reset
+                }
+                type="button"
+                className="flex h-12 items-center justify-center gap-2 rounded-xl border-[1.5px] border-brand-500 bg-white/80 font-semibold text-brand-600 transition-all hover:bg-brand-500/5 active:scale-[0.98]"
               >
-                <IconRefreshCw size={18} />
+                <IconRefreshCw
+                  size={18}
+                />
 
                 Nuevo chequeo
               </button>
             </>
           )}
 
-        {/* ANALIZANDO */}
+        {/* ==================================================
+            ANALIZANDO
+        ================================================== */}
+
         {state === "analyzing" && (
           <div className="flex items-center justify-center py-2">
             <p className="text-sm text-ink-500">
-              Comparando simetria facial...
+              Comparando simetría facial...
             </p>
           </div>
         )}
 
       </GlassCard>
 
-      {/* ÚLTIMO CHEQUEO */}
+      {/* ==================================================
+          ÚLTIMO CHEQUEO
+      ================================================== */}
+
       {lastCheck && (
         <GlassCard className="flex items-center gap-3 p-4">
 
           {lastCheck.index > 85 ? (
-            <IconCircleCheck size={24} />
+            <IconCircleCheck
+              size={24}
+            />
           ) : (
-            <IconTriangleAlert size={24} />
+            <IconTriangleAlert
+              size={24}
+            />
           )}
 
           <div>
             <b>
-              {lastCheck.index > 85
-                ? "Simetrico"
-                : lastCheck.index >= 70
-                  ? "Leve asimetria"
-                  : "Asimetria marcada"}
+              {lastCheck.index >
+              85
+                ? "Simétrico"
+                : lastCheck.index >=
+                    70
+                  ? "Leve asimetría"
+                  : "Asimetría marcada"}
             </b>
 
             <p className="text-sm text-ink-600">
-              Indice {lastCheck.index} —{" "}
+              Índice{" "}
+              {lastCheck.index}{" "}
+              —{" "}
               {lastCheck.date}
             </p>
           </div>
