@@ -185,6 +185,32 @@ export const translations = {
 
     community:
       "Comunidad",
+alertTitle: "Alerta",
+alertDetected: "Detectamos un pulso anómalo",
+alertConfirm:
+  "Confirma que estás bien antes de que avisemos a tus contactos.",
+alertWillNotify:
+  "Si no cancelas, avisaremos a",
+alertByTelegram: "por Telegram.",
+alertCancel:
+  "Estoy bien · Cancelar",
+alertCannotClose:
+  "Esta alerta no se puede cerrar tocando fuera de la ventana.",
+
+emergencyTitle: "Emergencia",
+alertSent: "Alerta enviada",
+contactsNotified: "Contactos notificados",
+sent: "Enviado",
+secondsAgo: "hace",
+stayCalm: "Mientras tanto, mantén la calma",
+instruction1:
+  "Acompaña a la persona y háblale con calma.",
+instruction2:
+  "No la muevas bruscamente; afloja ropa ajustada.",
+instruction3:
+  "Mantén el teléfono cerca para recibir llamadas.",
+callEmergency: "Llamar a urgencias",
+backDashboard: "Volver al dashboard",
 
     /* =====================================================
        ESTADOS
@@ -640,7 +666,32 @@ export const translations = {
 
     community:
       "Llaqta",
+alertTitle: "Uyariy",
+alertDetected: "Sunqupa muyuriynin mana allinmi",
+alertConfirm:
+  "Allin kachkanki chayqa rikuchiy, manaraqmi tinkiqkunaman willakuyta kachachkanchu.",
+alertWillNotify:
+  "Mana saquiykuchu chayqa willakusun",
+alertByTelegram: "Telegramwan.",
+alertCancel:
+  "Allinmi · Saquiy",
+alertCannotClose:
+  "Kay uyariytaqa mana hawamanta tupaywan wisqayta atikunchu.",
 
+emergencyTitle: "Utqay yanapakuy",
+alertSent: "Uyariy kachasqa",
+contactsNotified: "Tinkiqkuna willasqa",
+sent: "Kachasqa",
+secondsAgo: "ñawpaq",
+stayCalm: "Chay pacha, samayta waqaychay",
+instruction1:
+  "Runata qhawariy hinaspa allin rimaywan yanapay.",
+instruction2:
+  "Ama utqaylla kuyuchiychu; p'achata pisiqa kachiy.",
+instruction3:
+  "Celularta qayllapi waqaychay, waqyakuna chaskinaykipaq.",
+callEmergency: "Utqay yanapakuyman waqyay",
+backDashboard: "Qallariyman kutiy",
     /* =====================================================
        ESTADOS
     ====================================================== */
