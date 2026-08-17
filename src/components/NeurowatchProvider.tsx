@@ -10,9 +10,13 @@ import {
   type ReactNode,
 } from "react";
 import { useRouter } from "next/navigation";
+
 import { useBLE, type BLEData } from "@/hooks/useBLE";
 import { useCountdown } from "@/hooks/useCountdown";
-import { detectAnomaly, type QualitativeStatus } from "@/lib/detection";
+import {
+  detectAnomaly,
+  type QualitativeStatus,
+} from "@/lib/detection";
 import { sendTelegramAlert } from "@/lib/telegram";
 
 import {
@@ -48,6 +52,7 @@ interface PulseBar {
 interface NeurowatchContextType {
   bleData: BLEData;
   bleError: string | null;
+
   connectBLE: () => Promise<void>;
   disconnectBLE: () => void;
 
@@ -79,12 +84,18 @@ interface NeurowatchContextType {
   alertOpen: boolean;
   countdownSeconds: number;
   cancelAlert: () => void;
+
   alertSentAt: number | null;
   clearAlertSent: () => void;
 
   disconnectedSince: number | null;
 
-  facialHistory: {date: string; index: number; }[];
+  facialHistory: {
+    date: string;
+    index: number;
+  }[];
+
+  facialChecks: StoredFacialCheck[];
 
   addFacialCheck: (
     index: number,
@@ -105,6 +116,12 @@ export function NeurowatchProvider({
 }) {
   const router = useRouter();
 
+  /*
+   * ================================
+   * BLE
+   * ================================
+   */
+
   const {
     data: bleData,
     error: bleError,
@@ -112,6 +129,12 @@ export function NeurowatchProvider({
     disconnect: disconnectBLE,
     cancelDeviceAlert,
   } = useBLE();
+
+  /*
+   * ================================
+   * ESTADOS
+   * ================================
+   */
 
   const [patient, setPatientState] =
     useState<StoredPatient | null>(null);
@@ -126,6 +149,9 @@ export function NeurowatchProvider({
     });
 
   const [baselineImage, setBaselineImageState] =
+    useState<string | null>(null);
+
+  const [lastCheckPhoto, setLastCheckPhoto] =
     useState<string | null>(null);
 
   const [onboardingComplete, setOnboardingCompleteState] =
@@ -154,14 +180,17 @@ export function NeurowatchProvider({
   const [facialChecks, setFacialChecks] =
     useState<StoredFacialCheck[]>([]);
 
-  const [lastCheckPhoto, setLastCheckPhoto] =
-    useState<string | null>(null);
-
   const [streak, setStreak] =
     useState<Streak>({
       count: 0,
       lastCheckDate: "",
     });
+
+  /*
+   * ================================
+   * REFERENCIAS
+   * ================================
+   */
 
   const bpmBufferRef =
     useRef<number[]>([]);
@@ -176,23 +205,38 @@ export function NeurowatchProvider({
     useRef(false);
 
   /*
-   * Cargar todos los datos persistentes
-   * cuando inicia NeuroWatch.
+   * ================================
+   * CARGAR DATOS
+   * ================================
    */
+
   useEffect(() => {
     setPatientState(getPatient());
+
     setContactsState(getContacts());
+
     setSettingsState(getSettings());
-    setBaselineImageState(getBaselineImage());
-    setLastCheckPhoto(getLastCheckPhoto());
+
+    setBaselineImageState(
+      getBaselineImage()
+    );
+
+    setLastCheckPhoto(
+      getLastCheckPhoto()
+    );
+
     setStreak(getStreak());
+
     setOnboardingCompleteState(
       getOnboardingComplete()
     );
 
-    const storedChecks = getFacialChecks();
+    const storedChecks =
+      getFacialChecks();
 
-    setFacialChecks(storedChecks);
+    setFacialChecks(
+      storedChecks
+    );
 
     setFacialHistory(
       storedChecks.map((check) => ({
@@ -203,8 +247,11 @@ export function NeurowatchProvider({
   }, []);
 
   /*
+   * ================================
    * BPM
+   * ================================
    */
+
   useEffect(() => {
     if (
       !bleData.connected ||
@@ -216,14 +263,18 @@ export function NeurowatchProvider({
     const now = Date.now();
 
     if (!bufferSeededRef.current) {
-      bufferSeededRef.current = true;
+      bufferSeededRef.current =
+        true;
 
       bpmBufferRef.current =
-        Array(MAX_RECENT_BPMS).fill(
+        Array(
+          MAX_RECENT_BPMS
+        ).fill(
           bleData.bpm
         );
 
-      lastBarTimeRef.current = now;
+      lastBarTimeRef.current =
+        now;
 
       setRecentBPMs([
         ...bpmBufferRef.current,
@@ -233,15 +284,19 @@ export function NeurowatchProvider({
     }
 
     if (
-      now - lastBarTimeRef.current >=
+      now -
+        lastBarTimeRef.current >=
       2000
     ) {
-      lastBarTimeRef.current = now;
+      lastBarTimeRef.current =
+        now;
 
       bpmBufferRef.current = [
         ...bpmBufferRef.current,
         bleData.bpm,
-      ].slice(-MAX_RECENT_BPMS);
+      ].slice(
+        -MAX_RECENT_BPMS
+      );
 
       setRecentBPMs([
         ...bpmBufferRef.current,
@@ -254,42 +309,60 @@ export function NeurowatchProvider({
   ]);
 
   /*
-   * Track disconnection
+   * ================================
+   * DESCONEXIÓN
+   * ================================
    */
+
   useEffect(() => {
     if (bleData.connected) {
       lastConnectedRef.current =
         Date.now();
 
-      setDisconnectedSince(null);
-    } else {
-      bufferSeededRef.current = false;
-      bpmBufferRef.current = [];
+      setDisconnectedSince(
+        null
+      );
 
-      if (onboardingComplete) {
-        const check = setInterval(() => {
-          const elapsed =
-            Date.now() -
-            lastConnectedRef.current;
-
-          if (
-            elapsed >
-            DISCONNECT_THRESHOLD_MS
-          ) {
-            setDisconnectedSince(
-              lastConnectedRef.current
-            );
-          }
-        }, 1000);
-
-        return () =>
-          clearInterval(check);
-      }
+      return;
     }
+
+    bufferSeededRef.current =
+      false;
+
+    bpmBufferRef.current = [];
+
+    if (!onboardingComplete) {
+      return;
+    }
+
+    const check =
+      setInterval(() => {
+        const elapsed =
+          Date.now() -
+          lastConnectedRef.current;
+
+        if (
+          elapsed >
+          DISCONNECT_THRESHOLD_MS
+        ) {
+          setDisconnectedSince(
+            lastConnectedRef.current
+          );
+        }
+      }, 1000);
+
+    return () =>
+      clearInterval(check);
   }, [
     bleData.connected,
     onboardingComplete,
   ]);
+
+  /*
+   * ================================
+   * DETECCIÓN DE ANOMALÍAS
+   * ================================
+   */
 
   const restingBPM =
     patient?.restingBPM ?? 70;
@@ -314,8 +387,11 @@ export function NeurowatchProvider({
       : detectedStatus;
 
   /*
-   * Alertas
+   * ================================
+   * ALERTAS
+   * ================================
    */
+
   const handleAlertComplete =
     useCallback(async () => {
       setAlertOpen(false);
@@ -326,7 +402,14 @@ export function NeurowatchProvider({
         await sendTelegramAlert({
           chatId:
             contact.telegramChatId,
-          message: `ALERTA Neurowatch: Se detecto una anomalia en el pulso de ${patient?.name ?? "el paciente"}. BPM actual: ${bleData.bpm}. Por favor, verifica su estado de inmediato.`,
+
+          message:
+            `ALERTA Neurowatch: Se detecto una anomalia en el pulso de ${
+              patient?.name ??
+              "el paciente"
+            }. BPM actual: ${
+              bleData.bpm
+            }. Por favor, verifica su estado de inmediato.`,
         });
       }
 
@@ -342,13 +425,14 @@ export function NeurowatchProvider({
       router,
     ]);
 
-  const countdown = useCountdown({
-    durationSeconds:
-      settings.countdownSeconds,
+  const countdown =
+    useCountdown({
+      durationSeconds:
+        settings.countdownSeconds,
 
-    onComplete:
-      handleAlertComplete,
-  });
+      onComplete:
+        handleAlertComplete,
+    });
 
   const countdownStartRef =
     useRef(countdown.start);
@@ -390,7 +474,9 @@ export function NeurowatchProvider({
       countdownStartRef.current();
     }
 
-    if (status !== "alert") {
+    if (
+      status !== "alert"
+    ) {
       alertTriggeredRef.current =
         false;
     }
@@ -406,8 +492,11 @@ export function NeurowatchProvider({
     }, []);
 
   /*
-   * Paciente
+   * ================================
+   * PACIENTE
+   * ================================
    */
+
   const savePatient =
     useCallback(
       (p: StoredPatient) => {
@@ -418,12 +507,16 @@ export function NeurowatchProvider({
     );
 
   /*
-   * Contactos
+   * ================================
+   * CONTACTOS
+   * ================================
    */
+
   const saveContact =
     useCallback(
       (c: StoredContact) => {
         addContact(c);
+
         setContactsState(
           getContacts()
         );
@@ -444,44 +537,61 @@ export function NeurowatchProvider({
     );
 
   /*
-   * Ajustes
+   * ================================
+   * AJUSTES
+   * ================================
    */
+
   const saveSettingsAction =
     useCallback(
       (s: StoredSettings) => {
         setSettings(s);
+
         setSettingsState(s);
       },
       []
     );
 
   /*
-   * Imagen base
+   * ================================
+   * IMAGEN BASE
+   * ================================
    */
+
   const saveBaselineImage =
     useCallback(
       (img: string) => {
         setBaselineImage(img);
-        setBaselineImageState(img);
+
+        setBaselineImageState(
+          img
+        );
       },
       []
     );
 
   /*
-   * Ultima foto
+   * ================================
+   * ÚLTIMA FOTO
+   * ================================
    */
+
   const saveLastCheckPhotoFn =
     useCallback(
       (img: string) => {
         persistLastCheckPhoto(img);
+
         setLastCheckPhoto(img);
       },
       []
     );
 
   /*
-   * Onboarding
+   * ================================
+   * ONBOARDING
+   * ================================
    */
+
   const finishOnboarding =
     useCallback(() => {
       setOnboardingComplete();
@@ -492,85 +602,137 @@ export function NeurowatchProvider({
     }, []);
 
   /*
-   * Historial facial persistente
+   * ================================
+   * HISTORIAL FACIAL
+   * ================================
+   *
+   * IMPORTANTE:
+   * Este bloque debe existir UNA SOLA VEZ.
    */
-  const addFacialCheck = useCallback(
-    (index: number, image?: string) => {
-      const date = new Date().toLocaleDateString(
-        "es-ES",
-        {
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-        }
-      );
 
-     const check: StoredFacialCheck = {
-  id: `${Date.now()}-${Math.random()
-    .toString(36)
-    .slice(2)}`,
-  date,
-  index,
-  photo: image ?? "",
-};
-      /*
-       * Guardar permanentemente
-       */
-      persistFacialCheck(check);
+  const addFacialCheck =
+    useCallback(
+      (
+        index: number,
+        image?: string
+      ) => {
+        const date =
+          new Date().toLocaleDateString(
+            "es-ES",
+            {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            }
+          );
 
-      /*
-       * Actualizar lista de chequeos
-       */
-      setFacialChecks((prev) => [
-        check,
-        ...prev,
-      ]);
+        const savedImage =
+          image ?? "";
 
-      /*
-       * Actualizar historial resumido
-       */
-      setFacialHistory((prev) => [
-        {
-          date: check.date,
-          index: check.index,
-        },
-        ...prev,
-      ]);
+        /*
+         * StoredFacialCheck utiliza
+         * image y photo.
+         *
+         * Guardamos la misma imagen
+         * en ambos para mantener
+         * compatibilidad con el proyecto.
+         */
 
-      /*
-       * Actualizar racha
-       */
-      setStreak(updateStreak());
-    },
-    []
-  );
+        const check: StoredFacialCheck =
+          {
+            id: `${Date.now()}-${Math.random()
+              .toString(36)
+              .slice(2)}`,
+
+            date,
+
+            index,
+
+            image: savedImage,
+
+            photo: savedImage,
+          };
+
+        /*
+         * Guardar permanentemente
+         */
+
+        persistFacialCheck(
+          check
+        );
+
+        /*
+         * Actualizar lista completa
+         */
+
+        setFacialChecks(
+          (prev) => [
+            check,
+            ...prev,
+          ]
+        );
+
+        /*
+         * Actualizar historial
+         */
+
+        setFacialHistory(
+          (prev) => [
+            {
+              date: check.date,
+              index: check.index,
+            },
+            ...prev,
+          ]
+        );
+
+        /*
+         * Actualizar racha
+         */
+
+        setStreak(
+          updateStreak()
+        );
+      },
+      []
+    );
+
   /*
-   * Barras BPM
+   * ================================
+   * BARRAS BPM
+   * ================================
    */
+
   const pulseBars: PulseBar[] =
-    recentBPMs.map((bpm) => {
-      const lower =
-        restingBPM - tolerance;
+    recentBPMs.map(
+      (bpm) => {
+        const lower =
+          restingBPM -
+          tolerance;
 
-      const upper =
-        restingBPM + tolerance;
+        const upper =
+          restingBPM +
+          tolerance;
 
-      return {
-        value: Math.min(
-          58,
-          Math.max(
-            18,
-            ((bpm - 50) / 40) * 58
-          )
-        ),
+        return {
+          value: Math.min(
+            58,
+            Math.max(
+              18,
+              ((bpm - 50) /
+                40) *
+                58
+            )
+          ),
 
-        status:
-          bpm < lower ||
-          bpm > upper
-            ? "warn"
-            : "normal",
-      };
-    });
+          status:
+            bpm < lower ||
+            bpm > upper
+              ? "warn"
+              : "normal",
+        };
+      }
+    );
 
   while (
     pulseBars.length < 24
@@ -581,53 +743,72 @@ export function NeurowatchProvider({
     });
   }
 
+  /*
+   * ================================
+   * PROVIDER
+   * ================================
+   */
+
   return (
     <NeurowatchContext.Provider
       value={{
         bleData,
         bleError,
+
         connectBLE,
         disconnectBLE,
 
         status,
+
         recentBPMs,
+
         pulseBars,
 
         patient,
+
         savePatient,
 
         contacts,
+
         saveContact,
+
         deleteContact,
 
         settings,
+
         saveSettings:
           saveSettingsAction,
 
         baselineImage,
+
         saveBaselineImage,
 
         lastCheckPhoto,
+
         saveLastCheckPhoto:
           saveLastCheckPhotoFn,
 
         streak,
 
         onboardingComplete,
+
         finishOnboarding,
 
         alertOpen,
+
         countdownSeconds:
           countdown.remaining,
 
         cancelAlert,
 
         alertSentAt,
+
         clearAlertSent,
 
         disconnectedSince,
 
         facialHistory,
+
         facialChecks,
 
         addFacialCheck,
@@ -637,6 +818,12 @@ export function NeurowatchProvider({
     </NeurowatchContext.Provider>
   );
 }
+
+/*
+ * ================================
+ * HOOK
+ * ================================
+ */
 
 export function useNeurowatch() {
   const ctx =
