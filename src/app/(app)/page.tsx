@@ -190,7 +190,7 @@ const pageText = {
       "llank'ayninchis.",
 
     monitor:
-      "Kawsayniykipa señalkunata pachan pachan qhawariy, runakunapaq ruwasqa tecnologíawan.",
+      "Kawsayniykipa señalkunata pachan pachan qhawariy, runakunapaq ruwasqa technologíawan.",
 
     why:
       "¿Imaraykutaq NeuroWatch?",
@@ -384,8 +384,12 @@ export default function DashboardPage() {
   return (
     <div className="relative min-h-dvh overflow-hidden bg-[#f7efe0] text-[#263a32]">
 
-      {/* FONDO */}
+      {/* =========================
+          FONDO
+      ========================= */}
+
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+
         <div className="absolute -left-40 top-20 h-96 w-96 rounded-full bg-[#e8a33d]/15 blur-3xl" />
 
         <div className="absolute -right-40 top-96 h-[500px] w-[500px] rounded-full bg-[#087f83]/10 blur-3xl" />
@@ -412,8 +416,12 @@ export default function DashboardPage() {
 
       <main className="mx-auto w-full max-w-[1500px] px-3 pb-28 pt-3 sm:px-5 lg:px-8 lg:pb-12 lg:pt-6">
 
-        {/* BARRA SUPERIOR */}
+        {/* =========================
+            BARRA SUPERIOR
+        ========================= */}
+
         <div className="mb-3 flex items-center justify-between lg:hidden">
+
           <span className="text-sm font-black text-[#3b2a1a]">
             {new Date().toLocaleTimeString("es-ES", {
               hour: "2-digit",
@@ -426,9 +434,13 @@ export default function DashboardPage() {
             <IconWifi size={16} />
             <IconBatteryFull size={16} />
           </div>
+
         </div>
 
-        {/* PATRÓN TEXTIL */}
+        {/* =========================
+            PATRÓN TEXTIL
+        ========================= */}
+
         <div
           className="mb-4 h-7 w-full overflow-hidden rounded-b-2xl border border-[#b86b31]/30 shadow-sm"
           style={{
@@ -436,7 +448,10 @@ export default function DashboardPage() {
           }}
         />
 
-        {/* HEADER */}
+        {/* =========================
+            HEADER
+        ========================= */}
+
         <header className="mb-5 flex flex-col gap-4 rounded-[28px] border border-[#e4c99e] bg-[#fff9ed]/90 p-4 shadow-[0_12px_35px_rgba(72,48,25,0.08)] backdrop-blur-xl sm:p-5 lg:flex-row lg:items-center lg:justify-between">
 
           <div className="flex items-center gap-4">
@@ -446,6 +461,7 @@ export default function DashboardPage() {
             </div>
 
             <div>
+
               <h1 className="font-display text-3xl font-black uppercase leading-none tracking-tight text-[#075d63] sm:text-4xl">
                 NeuroWatch
               </h1>
@@ -459,7 +475,9 @@ export default function DashboardPage() {
               <p className="mt-1 text-xs font-semibold text-[#79634d]">
                 {text.tagline}
               </p>
+
             </div>
+
           </div>
 
           <div className="flex items-center gap-2">
@@ -487,10 +505,15 @@ export default function DashboardPage() {
             </button>
 
           </div>
+
         </header>
 
-        {/* IDIOMAS */}
+        {/* =========================
+            IDIOMAS
+        ========================= */}
+
         <div className="mb-5 flex justify-center">
+
           <div className="flex w-full max-w-sm rounded-2xl border border-[#e3c89f] bg-[#fffaf0] p-1 shadow-sm">
 
             <button
@@ -518,15 +541,23 @@ export default function DashboardPage() {
             </button>
 
           </div>
+
         </div>
 
-        {/* GRID PRINCIPAL */}
+        {/* =========================
+            GRID PRINCIPAL
+        ========================= */}
+
         <div className="grid gap-5 lg:grid-cols-[0.8fr_1.35fr_0.8fr]">
 
-          {/* COLUMNA IZQUIERDA */}
+          {/* =========================
+              COLUMNA IZQUIERDA
+          ========================= */}
+
           <aside className="space-y-5">
 
             {/* HERO HUARAZ */}
+
             <section className="relative overflow-hidden rounded-[30px] border border-[#dfbf8e] bg-[#fff7e8] shadow-[0_16px_40px_rgba(72,48,25,0.12)]">
 
               <div
@@ -559,6 +590,7 @@ export default function DashboardPage() {
                 </p>
 
                 <div className="mt-8">
+
                   <div className="relative h-48 overflow-hidden rounded-3xl shadow-lg">
 
                     <img
@@ -584,10 +616,12 @@ export default function DashboardPage() {
                     </div>
                   </div>
                 </div>
+
               </div>
             </section>
 
             {/* POR QUÉ NEUROWATCH */}
+
             <section className="overflow-hidden rounded-[27px] border border-[#dfbf8e] bg-[#fff9ed] shadow-[0_12px_30px_rgba(72,48,25,0.09)]">
 
               <div className="flex items-center justify-between bg-[#c1440c] px-5 py-4 text-white">
@@ -609,6 +643,7 @@ export default function DashboardPage() {
                   </div>
 
                   <div>
+
                     <h3 className="text-sm font-black uppercase text-[#263a32]">
                       {text.realtime}
                     </h3>
@@ -616,8 +651,8 @@ export default function DashboardPage() {
                     <p className="mt-1 text-xs leading-relaxed text-[#6b5842]">
                       {text.realtimeDesc}
                     </p>
-                  </div>
 
+                  </div>
                 </div>
 
                 <div className="flex gap-3">
@@ -627,6 +662,7 @@ export default function DashboardPage() {
                   </div>
 
                   <div>
+
                     <h3 className="text-sm font-black uppercase">
                       {text.purpose}
                     </h3>
@@ -634,8 +670,8 @@ export default function DashboardPage() {
                     <p className="mt-1 text-xs leading-relaxed text-[#6b5842]">
                       {text.purposeDesc}
                     </p>
-                  </div>
 
+                  </div>
                 </div>
 
                 <div className="flex gap-3">
@@ -645,6 +681,7 @@ export default function DashboardPage() {
                   </div>
 
                   <div>
+
                     <h3 className="text-sm font-black uppercase">
                       {text.connected}
                     </h3>
@@ -652,8 +689,8 @@ export default function DashboardPage() {
                     <p className="mt-1 text-xs leading-relaxed text-[#6b5842]">
                       {text.connectedDesc}
                     </p>
-                  </div>
 
+                  </div>
                 </div>
 
                 <div className="flex gap-3">
@@ -663,6 +700,7 @@ export default function DashboardPage() {
                   </div>
 
                   <div>
+
                     <h3 className="text-sm font-black uppercase">
                       {text.people}
                     </h3>
@@ -670,8 +708,8 @@ export default function DashboardPage() {
                     <p className="mt-1 text-xs leading-relaxed text-[#6b5842]">
                       {text.peopleDesc}
                     </p>
-                  </div>
 
+                  </div>
                 </div>
 
               </div>
@@ -687,10 +725,14 @@ export default function DashboardPage() {
 
           </aside>
 
-          {/* COLUMNA CENTRAL */}
+          {/* =========================
+              COLUMNA CENTRAL
+          ========================= */}
+
           <section className="space-y-5">
 
             {/* FRECUENCIA CARDÍACA */}
+
             <section className="relative overflow-hidden rounded-[32px] border border-[#dfbf8e] bg-[#fff9ed] p-5 shadow-[0_16px_40px_rgba(72,48,25,0.11)] sm:p-7">
 
               <div className="absolute right-5 top-5 text-5xl opacity-80">
@@ -769,23 +811,23 @@ export default function DashboardPage() {
             </section>
 
             {/* BOTÓN BLUETOOTH */}
+
             {!bleData.connected && (
               <button
                 onClick={connectBLE}
                 type="button"
                 className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#087f83] px-5 py-4 text-white shadow-[0_10px_25px_rgba(8,127,131,0.25)] transition hover:scale-[1.01] active:scale-[0.98]"
               >
-
                 <IconBluetooth size={22} />
 
                 <span className="font-black">
                   {text.connectWatch}
                 </span>
-
               </button>
             )}
 
             {/* ERROR */}
+
             {bleError && (
               <div className="rounded-2xl border border-[#c1272d]/30 bg-[#c1272d]/10 p-4">
 
@@ -796,13 +838,19 @@ export default function DashboardPage() {
               </div>
             )}
 
-            {/* ESTADO */}
+            {/* =========================
+                ESTADO
+            ========================= */}
+
             {bleData.connected &&
               bleData.bpm > 0 && (
                 <HeroStatus state={status} />
               )}
 
-            {/* SIGNOS EN VIVO */}
+            {/* =========================
+                SIGNOS EN VIVO
+            ========================= */}
+
             <section className="rounded-[28px] border border-[#dfbf8e] bg-[#fff9ed] p-5 shadow-[0_12px_30px_rgba(72,48,25,0.08)]">
 
               <div className="mb-4 flex items-center justify-between">
@@ -833,7 +881,10 @@ export default function DashboardPage() {
               </div>
             </section>
 
-            {/* ESPERANDO DATOS */}
+            {/* =========================
+                ESPERANDO DATOS
+            ========================= */}
+
             {bleData.connected &&
               bleData.bpm === 0 && (
                 <div className="rounded-[24px] border border-[#dfbf8e] bg-white/70 p-6 text-center shadow-sm">
@@ -853,13 +904,19 @@ export default function DashboardPage() {
                 </div>
               )}
 
-            {/* GRÁFICA */}
+            {/* =========================
+                GRÁFICA
+            ========================= */}
+
             <PulseCard
               bpm={bleData.bpm}
               bars={pulseBars}
             />
 
-            {/* RELOJ */}
+            {/* =========================
+                RELOJ
+            ========================= */}
+
             <DeviceCard
               connected={bleData.connected}
               signalStatus={
@@ -874,10 +931,14 @@ export default function DashboardPage() {
 
           </section>
 
-          {/* COLUMNA DERECHA */}
+          {/* =========================
+              COLUMNA DERECHA
+          ========================= */}
+
           <aside className="space-y-5">
 
             {/* ALERTAS */}
+
             <section className="overflow-hidden rounded-[30px] border border-[#dfbf8e] bg-[#fff9ed] shadow-[0_16px_40px_rgba(72,48,25,0.10)]">
 
               <div className="flex items-center justify-between bg-[#e85a20] px-5 py-4 text-white">
@@ -939,6 +1000,7 @@ export default function DashboardPage() {
             </section>
 
             {/* HUARAZ */}
+
             <section className="relative overflow-hidden rounded-[30px] border border-[#dfbf8e] bg-[#eaf0dc] shadow-[0_16px_40px_rgba(72,48,25,0.10)]">
 
               <div className="relative min-h-[300px] p-6">
@@ -985,6 +1047,7 @@ export default function DashboardPage() {
             </section>
 
             {/* CONECTADO CONTIGO */}
+
             <section className="overflow-hidden rounded-[27px] border border-[#dfbf8e] bg-[#fff9ed] shadow-[0_12px_30px_rgba(72,48,25,0.08)]">
 
               <div className="p-5">
@@ -1006,7 +1069,6 @@ export default function DashboardPage() {
                     </h2>
 
                   </div>
-
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
@@ -1055,9 +1117,13 @@ export default function DashboardPage() {
             </section>
 
           </aside>
+
         </div>
 
-        {/* PIE CULTURAL */}
+        {/* =========================
+            PIE CULTURAL
+        ========================= */}
+
         <section className="mt-5 rounded-[28px] border border-[#dfbf8e] bg-[#fff9ed] p-5 shadow-[0_12px_30px_rgba(72,48,25,0.08)]">
 
           <div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-4">
@@ -1093,9 +1159,13 @@ export default function DashboardPage() {
           />
 
         </section>
+
       </main>
 
-      {/* ALERTA ORIGINAL */}
+      {/* =========================
+          ALERTA ORIGINAL
+      ========================= */}
+
       <AlertModal
         open={alertOpen}
         remainingSeconds={countdownSeconds}
@@ -1204,6 +1274,7 @@ function AlertRow({
         </p>
 
       </div>
+
     </div>
   );
 }
