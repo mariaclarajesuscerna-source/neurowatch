@@ -40,7 +40,6 @@ export const translations = {
     liveMonitoring: "Monitoreo en vivo",
     heartRate: "Frecuencia",
     cardiac: "cardíaca",
-
     bpm: "ppm",
 
     currentStatus: "Estado actual",
@@ -50,6 +49,43 @@ export const translations = {
     connect: "Conectar",
     connectedDevice: "Dispositivo conectado",
     disconnected: "Dispositivo desconectado",
+
+    vitalSigns: "Signos en vivo",
+    live: "EN VIVO",
+    respiration: "Respiración",
+    oxygen: "Oxígeno",
+    temperature: "Temperatura",
+
+    connectedToClock: "Conectado al reloj.",
+    waitingClockData: "Esperando datos del reloj.",
+    placeFinger:
+      "Coloca el dedo en el sensor para comenzar a recibir tus datos de pulso.",
+
+    stableSignal: "Señal estable",
+    notConnected: "Sin conectar",
+
+    alerts: "Alertas",
+    highHeartRate: "Frecuencia alta",
+    rememberRest: "Recuerda descansar",
+    everythingGood: "¡Todo bien!",
+    takeMomentToRelax: "Tómate un momento para relajarte.",
+    vitalsMonitored:
+      "Tus signos vitales están siendo monitoreados.",
+
+    ourLand: "Nuestra tierra",
+    ourStrength: "Nuestra fuerza.",
+
+    status: "Estado",
+    battery: "Batería",
+    active: "ACTIVO",
+    ready: "LISTO",
+
+    connectedWithYou: "Conectado contigo",
+
+    health: "Salud",
+    trust: "Confianza",
+    innovation: "Innovación",
+    community: "Comunidad",
 
     alert: "ALERTA",
     warning: "ADVERTENCIA",
@@ -67,8 +103,6 @@ export const translations = {
 
     facialCheck: "Chequeo facial",
     pulse: "Pulso",
-    temperature: "Temperatura",
-    oxygen: "Oxígeno",
 
     noData: "Sin datos",
 
@@ -85,13 +119,16 @@ export const translations = {
 
     neuroWatch: "NeuroWatch",
     huarazPeru: "WARAS · PERÚ",
+
     tagline:
       "Kawsayniykita waqaychay tecnología, sapinchikwan kuska.",
 
     menu: "Menú",
     notifications: "Willakuykuna",
 
-    technology: "Kawsayniykita waqaychay tecnología",
+    technology:
+      "Kawsayniykita waqaychay tecnología",
+
     wellbeing: "Allin kawsayniyki,",
     ourMission: "llank'ayninchikmi.",
 
@@ -104,31 +141,85 @@ export const translations = {
     realtimeDescription:
       "Sunquykita waqaychay, kawsaypa señalkunata qhawariy.",
 
-    purposefulTechnology: "Tecnología munayninwan",
+    purposefulTechnology:
+      "Tecnología munayninwan",
+
     purposefulDescription:
       "Musuq yachaywan Waraspi kawsaykunata allinchay.",
 
     connected: "Qampiwanchik kuska",
+
     connectedDescription:
       "Datoswan qhawariywan qam qayllapi kachkan.",
 
     madeForPeople: "Runakunapaq ruwasqa",
+
     madeForPeopleDescription:
       "Llaqtanchikta yuyarispa ruwasqa.",
 
     liveMonitoring: "Kawsay qhawariy",
+
     heartRate: "Sunqupa",
     cardiac: "muyuriynin",
-
     bpm: "ppm",
 
-    currentStatus: "Kunanpa situación",
+    currentStatus: "Kunanpa kaynin",
     activeMonitoring: "Qhawariy kachkan",
     waitingConnection: "Conexiónta suyarichkan",
 
     connect: "Tinkichiy",
     connectedDevice: "Dispositivo tinkisqa",
     disconnected: "Dispositivo rakisqa",
+
+    vitalSigns: "Kawsaypa señalkuna",
+    live: "KUNAN",
+    respiration: "Samay",
+    oxygen: "Oxígeno",
+    temperature: "Rupay",
+
+    connectedToClock: "Relojwan tinkisqa.",
+
+    waitingClockData:
+      "Relojmanta datokunata suyarichkan.",
+
+    placeFinger:
+      "Relojpa sensorpi rukiykita churay pulso datokunata chaskinaykipaq.",
+
+    stableSignal: "Señal allin",
+    notConnected: "Mana tinkisqachu",
+
+    alerts: "Willakuykuna",
+
+    highHeartRate:
+      "Sunqupa muyuriynin hatun",
+
+    rememberRest:
+      "Samayta yuyariy",
+
+    everythingGood: "¡Llapa allin!",
+
+    takeMomentToRelax:
+      "Pisi pachata samaypaq churakuy.",
+
+    vitalsMonitored:
+      "Kawsaypa señalkunata qhawarichkan.",
+
+    ourLand: "Llaqtanchik",
+    ourStrength: "Kallpanchik.",
+
+    status: "Kaynin",
+    battery: "Batería",
+
+    active: "KACHKAN",
+    ready: "LISTO",
+
+    connectedWithYou:
+      "Qampiwanchik kuska",
+
+    health: "Kawsay",
+    trust: "Yupaychay",
+    innovation: "Musuq yachay",
+    community: "Llaqta",
 
     alert: "ALERTA",
     warning: "UYARIY",
@@ -146,8 +237,6 @@ export const translations = {
 
     facialCheck: "Uya qhawariy",
     pulse: "Sunqupa muyuriynin",
-    temperature: "Rupay",
-    oxygen: "Oxígeno",
 
     noData: "Mana datokuna kanchu",
 
