@@ -1,6 +1,8 @@
 import { type ReactNode } from "react";
 import GlassCard from "../ui/GlassCard";
+
 type HeroState = "ok" | "warn" | "alert";
+
 type StateConfig = {
   dot: string;
   border: string;
@@ -8,6 +10,7 @@ type StateConfig = {
   label: string;
   desc: string;
 };
+
 const stateConfig: Record<HeroState, StateConfig> = {
   ok: {
     dot: "bg-ok",
