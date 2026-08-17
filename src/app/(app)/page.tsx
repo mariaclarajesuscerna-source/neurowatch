@@ -179,23 +179,35 @@ const {
             IDIOMAS
         =================================================== */}
 
-        <div className="mb-5 flex justify-center">
-          <div className="flex w-full max-w-sm rounded-2xl border border-[#e3c89f] bg-[#fffaf0] p-1 shadow-sm">
-            <button
-              type="button"
-              className="flex-1 rounded-xl bg-[#087f83] py-2.5 text-xs font-black text-white"
-            >
-              ESPAÑOL
-            </button>
+      <div className="mb-5 flex justify-center">
+  <div className="flex w-full max-w-sm rounded-2xl border border-[#e3c89f] bg-[#fffaf0] p-1 shadow-sm">
 
-            <button
-              type="button"
-              className="flex-1 rounded-xl py-2.5 text-xs font-black text-[#704a2d]"
-            >
-              QUECHUA
-            </button>
-          </div>
-        </div>
+    <button
+      type="button"
+      onClick={() => setLanguage("es")}
+      className={`flex-1 rounded-xl py-2.5 text-xs font-black transition-all ${
+        language === "es"
+          ? "bg-[#087f83] text-white shadow-md"
+          : "text-[#704a2d] hover:bg-[#087f83]/10"
+      }`}
+    >
+      ESPAÑOL
+    </button>
+
+    <button
+      type="button"
+      onClick={() => setLanguage("qu")}
+      className={`flex-1 rounded-xl py-2.5 text-xs font-black transition-all ${
+        language === "qu"
+          ? "bg-[#c1440c] text-white shadow-md"
+          : "text-[#704a2d] hover:bg-[#c1440c]/10"
+      }`}
+    >
+      QUECHUA
+    </button>
+
+  </div>
+</div>
 
         {/* ===================================================
             GRID PRINCIPAL
